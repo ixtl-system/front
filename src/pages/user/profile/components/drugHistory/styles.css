@@ -1,0 +1,83 @@
+
+/* Histórico de drogas */
+.drugs-history {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex: 1;
+}
+
+.drugs-history div {
+  margin-bottom: 15px;
+}
+
+.drugs-history p {
+  font-size: 14px;
+  color: #555555;
+  margin: 0;
+}
+
+.drugs-history input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.never-used,
+.frequency-using {
+  margin-top: 10px;
+}
+
+.never-used p,
+.frequency-using p {
+  font-size: 14px;
+  color: #555555;
+  margin: 0;
+}
+
+.never-used input[type="checkbox"] {
+  margin-left: 10px;
+}
+
+.frequency-using select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+
+.user-drug-history button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.user-drug-history button:hover {
+  background-color: #0056b3;
+}
+
+.user-drug-history button + button {
+  margin-top: 5px;
+  background-color: #6c757d;
+}
+
+.user-drug-history button + button:hover {
+  background-color: #5a6268;
+}
+
+

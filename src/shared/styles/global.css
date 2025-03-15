@@ -1,0 +1,18 @@
+:root {
+  --white: #fff;
+  --green-300: #7eca04;
+  --green-500: #66a500;
+  --red-500: #F75A68;
+}
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+button {
+    cursor: pointer
+}
+
+
+

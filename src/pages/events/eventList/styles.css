@@ -1,0 +1,76 @@
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4efe3;
+  color: #4a392e;
+  margin: 0;
+  padding: 0;
+}
+
+.events-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h1 {
+  text-align: center;
+  color: #8a5a44;
+  margin-bottom: 20px;
+}
+
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  cursor: pointer
+}
+
+.event-card {
+  background: linear-gradient(145deg, #e9e2d0, #fff);
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.event-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.event-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-bottom: 1px solid #ccc;
+}
+
+.event-details {
+  padding: 10px 15px;
+}
+
+.event-title {
+  font-size: 20px;
+  margin-bottom: 5px;
+  color: #8a5a44;
+}
+
+.event-description {
+  font-size: 14px;
+  color: #655344;
+  margin-bottom: 10px;
+}
+
+.event-date,
+.event-availability {
+  font-size: 14px;
+  margin: 5px 0;
+  color: #4a392e;
+}
+
+.event-date strong,
+.event-availability strong {
+  color: #8a5a44;
+}
