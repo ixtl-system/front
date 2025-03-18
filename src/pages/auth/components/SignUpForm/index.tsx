@@ -1,10 +1,9 @@
-import "./styles.css";
-
 import { useState } from "react";
+import { Button, Input, message } from "antd";
 
 import { IPage } from "@/pages/auth";
 import { api } from "@/shared/infra/api";
-import { Button, Input, message } from "antd";
+import { SignUpFormContainer } from "./styles";
 
 interface ISignUpProps {
   onNavigate: (page: IPage) => void;
@@ -32,7 +31,7 @@ export const SignUpForm = ({ onNavigate }: ISignUpProps) => {
   }
 
   return (
-    <div className="sign-up-form-container">
+    <SignUpFormContainer>
       <h1>IXTL</h1>
       <h4>Cadastre-se agora</h4>
 
@@ -59,6 +58,6 @@ export const SignUpForm = ({ onNavigate }: ISignUpProps) => {
           </Button>
         </section>
       </section>
-    </div>
+    </SignUpFormContainer>
   );
 };

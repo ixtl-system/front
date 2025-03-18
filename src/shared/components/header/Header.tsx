@@ -2,17 +2,17 @@ import "./styles.css";
 
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { FiBookmark, FiLogOut, FiUser } from "react-icons/fi";
 
-import { AuthContext } from "@/shared/context/AuthContext"; // Contexto de autenticação
+import { AuthContext } from "@/shared/context/AuthContext";
 
 export const Header = () => {
-  const { LogOut } = useContext(AuthContext); // Pega o estado de login do contexto
+  const { LogOut } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  // Função para lidar com o logout
   const handleLogOut = () => {
     LogOut();
-    navigate("/"); // Redireciona para a tela de login após o logout
+    navigate("/");
   };
 
   return (
@@ -22,14 +22,18 @@ export const Header = () => {
         <nav className="nav">
           <ul>
             <li>
-              <Link to="/events">Eventos</Link>
+              <Link to="/events">
+                <FiBookmark />
+              </Link>
             </li>
             <li>
-              <Link to="/profile">Perfil</Link>
+              <Link to="/profile">
+                <FiUser />
+              </Link>
             </li>
             <li>
-              <button className="log-out-button" onClick={handleLogOut}>
-                Sair
+              <button className="log-out-button" onClick={handleLogOut} title="Sair">
+                <FiLogOut />
               </button>
             </li>
           </ul>

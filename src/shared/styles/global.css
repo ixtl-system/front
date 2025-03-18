@@ -6,13 +6,20 @@
 }
 
 * {
-    margin: 0;
-    box-sizing: border-box;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: Roboto, sans-serif;
 }
 
 button {
     cursor: pointer
 }
 
-
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4efe3;
+  color: #4a392e;
+  margin: 0;
+  padding: 0;
+}
 

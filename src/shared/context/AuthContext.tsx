@@ -28,24 +28,6 @@ export function AuthContextProvider({ children }: AuthContextData) {
     api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   }, []);
 
-  //todo Insert a validate-token
-  // useEffect(() => {
-  //   const checkAuth = async () => {
-  //     const token = localStorage.getItem("token");
-  //     if (token) {
-  //       try {
-  //         // Verifique a validade do token no backend
-  //         await api.get("/validate-token", { headers: { Authorization: `Bearer ${token}` } });
-  //         setIsLoggedIn(true);
-  //       } catch {
-  //         localStorage.removeItem("token");
-  //         setIsLoggedIn(false);
-  //       }
-  //     }
-  //   };
-  //   checkAuth();
-  // }, []);
-
   const SignIn = async (props: ISignInProps) => {
     try {
       const response = await api.post("/sessions", props);

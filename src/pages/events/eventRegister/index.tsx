@@ -1,13 +1,16 @@
-import "./styles.css";
-
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router-dom";
+import { FiCalendar, FiUsers } from "react-icons/fi";
+import { DateTime } from "luxon";
 
 import image from "@/assets/logo.png";
+import { api } from "@/shared/infra/api";
 import { Modal } from "@/shared/components/modal";
 import { LayoutWithHeader } from "@/shared/components/templates/LayoutWithHeader";
-import { api } from "@/shared/infra/api";
+import { UserContext } from "@/shared/context/UserContext";
+
+import { EventRegisterContainer } from "./styles";
 
 type Event = {
   id: string;
@@ -20,6 +23,8 @@ type Event = {
 
 export const EventRegister = () => {
   const { id } = useParams<{ id: string }>();
+  const { fetchUserProfile } = useContext(UserContext);
+
   const [event, setEvent] = useState<Event | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
@@ -40,6 +45,7 @@ export const EventRegister = () => {
 
     if (id) {
       fetchEventDetails();
+      fetchUserProfile();
     }
   }, [id]);
 
@@ -74,46 +80,55 @@ export const EventRegister = () => {
 
   return (
     <LayoutWithHeader>
-      <div className="event-register-container">
+      <EventRegisterContainer>
         <Helmet title="Register" />
+
         {event ? (
           <>
             <div className="event-cover">
-              <img src={image} alt={event.name} className="event-cover-image" />
+              <section className="event-info">
+                <h2>{event.name}</h2>
+
+                <h4>
+                  <FiCalendar />
+                  {DateTime.fromISO(event.date).toFormat("dd MMM yyyy - hh:mm")}
+                </h4>
+
+                <h4>
+                  <FiUsers />
+                  Vagas disponíveis: {event.availability}
+                </h4>
+
+                <button className="settings-button">
+                  Configurar
+                </button>
+                <button onClick={handleRegister} className="register-button">
+                  Registrar-se no Evento
+                </button>
+              </section>
+
+              <img src={image} alt={event.name} className="event-preview-image" />
             </div>
+
             <div className="event-details">
-              <h1>{event.name}</h1>
+              <h3>Descrição do Evento</h3>
               <p className="event-description">{event.description}</p>
 
-              <div className="event-conduct">
-                <h3>Conduta</h3>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                </p>
-              </div>
+              <h3>Conduta</h3>
+              <p>
+                O respeito e a boa convivência são fundamentais. Todos devem agir com cordialidade, ouvindo e interagindo de forma harmoniosa. Valorizar o momento e manter uma energia positiva contribui para uma experiência mais enriquecedora para todos.
+              </p>
 
-              <div className="event-dos">
-                <h3>O que pode fazer</h3>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Integer nec odio. Praesent libero. Sed cursus ante dapibus
-                  diam.
-                </p>
-              </div>
+              <h3>O que pode fazer</h3>
+              <p>
+                Você pode interagir, compartilhar histórias e vivenciar a experiência de forma aberta e respeitosa. Aproveite o momento para se conectar com as pessoas ao seu redor, sempre mantendo uma postura amigável e receptiva.
+              </p>
 
-              <div className="event-donts">
-                <h3>O que não pode fazer</h3>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                  nisi. Nulla quis sem at nibh elementum imperdiet. Duis
-                  sagittis ipsum.
-                </p>
-              </div>
+              <h3>O que não pode fazer</h3>
+              <p>
+                Evite qualquer comportamento que possa desrespeitar os demais participantes ou prejudicar a experiência coletiva. O uso de linguagem ofensiva, atitudes desrespeitosas ou qualquer conduta que vá contra o espírito do evento não serão aceitos.
+              </p>
 
-              <button onClick={handleRegister} className="register-button">
-                Registrar-se no Evento
-              </button>
               <Modal
                 isOpen={isModalOpen}
                 onClose={closeModal}
@@ -133,7 +148,7 @@ export const EventRegister = () => {
             />
           </div>
         )}
-      </div>
-    </LayoutWithHeader>
+      </EventRegisterContainer>
+    </LayoutWithHeader >
   );
 };

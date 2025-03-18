@@ -1,9 +1,8 @@
-import "./styles.css";
-
 import { useState } from "react";
+import { Button, Input } from "antd";
 
 import { IPage } from "@/pages/auth";
-import { Button, Input } from "antd";
+import { ForgotPasswordFormContainer } from "./styles";
 
 interface IForgotPasswordProps {
   onNavigate: (page: IPage) => void;
@@ -20,8 +19,9 @@ export const ForgotPasswordForm = ({ onNavigate }: IForgotPasswordProps) => {
       console.log("Email não registrado");
     }
   }
+
   return (
-    <div className="forgot-password-form-container">
+    <ForgotPasswordFormContainer>
       <h1>IXTL</h1>
       <h4>Recuperar Senha</h4>
 
@@ -43,6 +43,6 @@ export const ForgotPasswordForm = ({ onNavigate }: IForgotPasswordProps) => {
           </Button>
         </section>
       </section>
-    </div>
+    </ForgotPasswordFormContainer>
   );
 };

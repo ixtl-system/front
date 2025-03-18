@@ -1,5 +1,3 @@
-import "./styles.css";
-
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import imagem from "@/assets/logo.png";
 import { LayoutWithHeader } from "@/shared/components/templates/LayoutWithHeader";
 import { api } from "@/shared/infra/api";
+import { EventsContainer } from "./styles";
 
 type Event = {
   id: string;
@@ -39,7 +38,7 @@ export const EventList = () => {
 
   return (
     <LayoutWithHeader>
-      <div className="events-container">
+      <EventsContainer>
         <Helmet title="Eventos" />
         <h1>Eventos Disponíveis</h1>
         <div className="events-grid">
@@ -51,20 +50,25 @@ export const EventList = () => {
             >
               <img src={imagem} alt={event.name} className="event-image" />
               <div className="event-details">
-                <h2 className="event-title">{event.name}</h2>
-                <p className="event-description">{event.description}</p>
-                <p className="event-date">
-                  <strong>Data:</strong>{" "}
-                  {new Date(event.date).toLocaleDateString()}
-                </p>
-                <p className="event-availability">
-                  <strong>Vagas Disponíveis:</strong> {event.availability}
-                </p>
+                <section>
+                  <h2 className="event-title">{event.name}</h2>
+                  <p className="event-description">{event.description}</p>
+                </section>
+
+                <section>
+                  <p className="event-date">
+                    <strong>Data:</strong>{" "}
+                    {new Date(event.date).toLocaleDateString()}
+                  </p>
+                  <p className="event-availability">
+                    <strong>Vagas Disponíveis:</strong> {event.availability}
+                  </p>
+                </section>
               </div>
             </div>
           ))}
         </div>
-      </div>
+      </EventsContainer>
     </LayoutWithHeader>
   );
 };

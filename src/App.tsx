@@ -8,8 +8,8 @@ export function App() {
   return (
     <HelmetProvider>
       <ContextProvider>
+        <RouterProvider router={router} ></RouterProvider>
         <Helmet titleTemplate="%s | ixtl" />
-        <RouterProvider router={router} />
       </ContextProvider>
     </HelmetProvider>
   );

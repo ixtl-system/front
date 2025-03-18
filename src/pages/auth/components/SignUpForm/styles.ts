@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const SignInFormContainer = styled.div`
+export const SignUpFormContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -35,3 +35,6 @@ export const SignInFormContainer = styled.div`
     }
   }
 `
+
+
+

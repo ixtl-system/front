@@ -11,6 +11,7 @@ export const DrugHistoryContainer = styled.div`
   h1 {
     margin: 0;
     font-size: 28px;
+    text-align: center;
   }
 
   .never-used p,
@@ -25,6 +26,10 @@ export const DrugHistoryContainer = styled.div`
 
   form button {
     margin: 20px 0 0 ;
+  }
+
+  form label p {
+    margin: 0;
   }
 
   .toggle-container {

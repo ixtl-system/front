@@ -1,25 +1,19 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 import { IPersonalInformation } from "@/pages/user/dtos";
-import { api } from "@/shared/infra/api";
-import { Button, Input, message, Select } from "antd";
+import { Button, Input, Select } from "antd";
 import { formFields } from "./mock";
 import { profileSchema } from "./schema";
 import { formatCpf } from "@/shared/utils/formatCpf";
 import { formatRg } from "@/shared/utils/formatRG";
-import cleanString from "@/shared/utils/cleanString";
 import { UserProfileFormContainer } from "./styles";
 import { FiMinus, FiPlus } from "react-icons/fi";
+import { UserContext } from "@/shared/context/UserContext";
 
-export function PersonalInformation({
-  user,
-  userId,
-}: {
-  user: IPersonalInformation;
-  userId: string;
-}) {
+export function PersonalInformation() {
+  const { userProfile: user, updateUserProfile } = useContext(UserContext);
   const [showUserProfile, setShowUserProfile] = useState(false);
 
   const {
@@ -47,18 +41,7 @@ export function PersonalInformation({
   }
 
   const onSubmitProfile = async (data: IPersonalInformation) => {
-    try {
-      const request = { ...data, cpf: cleanString(data.cpf), rg: cleanString(data.rg) }
-
-      if (user?.name) {
-        await api.put(`users/profiles/${userId}`, request);
-        message.success("ATUALIZADO!");
-      } else {
-        await api.post("users/profiles", request);
-      }
-    } catch (error: any) {
-      message.error(error.response.data.message);
-    }
+    await updateUserProfile(data)
   };
 
   return (
@@ -86,7 +69,7 @@ export function PersonalInformation({
                     <Select.Option value="FEMININE">Feminino</Select.Option>
                     <Select.Option value="OTHER">Outro</Select.Option>
                   </Select>
-                  {errors.gender && <span>{errors.gender.message}</span>}
+                  {errors.gender && <span className="error">{errors.gender.message}</span>}
                 </div>
               )}
             />
@@ -98,7 +81,7 @@ export function PersonalInformation({
                 <div>
                   <p>{formItem.placeholder}</p>
                   <Input type="text" placeholder={formItem.placeholder} {...field} value={formatInputValue(field?.value, field.name)} />
-                  {errors[`${formItem.name}`] && <span>{errors[`${formItem.name}`]?.message}</span>}
+                  {errors[`${formItem.name}`] && <span className="error">{errors[`${formItem.name}`]?.message}</span>}
                 </div>
               )}
             />

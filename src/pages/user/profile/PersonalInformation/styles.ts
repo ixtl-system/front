@@ -8,10 +8,10 @@ export const UserProfileFormContainer = styled.div`
   flex: 1;
 
   h1 {
-    text-align: center;
-    color: #333333;
     margin: 0;
     font-size: 28px;
+    text-align: center;
+    color: #333333;
   }
 
   form button {
@@ -22,6 +22,13 @@ export const UserProfileFormContainer = styled.div`
     margin: 10px 0 5px;
     font-size: 14px;
     color: #555555;
+  }
+
+  span.error {
+    display: flex;
+    font-size: 14px;
+    color: #e91e63;
+    margin: 5px 0;
   }
 
   .toggle-container {

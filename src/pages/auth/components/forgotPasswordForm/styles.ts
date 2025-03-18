@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const SignInFormContainer = styled.div`
+export const ForgotPasswordFormContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,7 +12,6 @@ export const SignInFormContainer = styled.div`
     flex-direction: column;
     width: 100%;
     max-width: 400px;
-    gap: 10px;
     margin: 20px 0 0;
   }
 
@@ -30,7 +29,7 @@ export const SignInFormContainer = styled.div`
   }
 
   @media screen and (max-width: 1000px) {
-    .sign-in-form-container {
+    .forgot-password-form-container {
       width: 100%;
     }
   }
