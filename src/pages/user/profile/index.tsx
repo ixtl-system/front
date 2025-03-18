@@ -4,7 +4,7 @@ import { jwtDecode } from "jwt-decode";
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { IPersonalInformation, IUserDrugsHistory } from "@/pages/user/dtos";
+import { IPersonalInformation } from "@/pages/user/dtos";
 import { DrugHistory } from "@/pages/user/profile/DrugHistory";
 import { PersonalInformation } from "@/pages/user/profile/PersonalInformation";
 // import { LoadingSpinner } from "@/shared/components/LoadingSpinner"; // Example of a reusable loading component

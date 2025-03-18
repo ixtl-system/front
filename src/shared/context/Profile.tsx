@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useEffect, useState } from "react";
+import { createContext, ReactNode } from "react";
 import { api } from "../infra/api";
 import { IDrug } from "../types/Drug";
 
