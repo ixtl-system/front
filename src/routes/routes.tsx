@@ -1,9 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 
 import { SignIn } from "@/pages/auth";
-// import { EventList } from "@/pages/events/eventList";
-// import { EventRegister } from "@/pages/events/eventRegister";
-// import { Profile } from "@/pages/users";
 import { ProtectedRoutes } from "@/routes/protectedRoutes";
 import { NotFound } from "@/shared/pages/notFound";
 

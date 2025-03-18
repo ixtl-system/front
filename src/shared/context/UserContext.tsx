@@ -1,7 +1,6 @@
 import { IPersonalInformation } from "@/pages/user/dtos";
 import { jwtDecode } from "jwt-decode";
 import { createContext, ReactNode, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { api } from "../infra/api";
 import { message } from "antd";
 import cleanString from "../utils/cleanString";

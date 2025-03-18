@@ -47,7 +47,7 @@ export const EventRegister = () => {
       fetchEventDetails();
       fetchUserProfile();
     }
-  }, [id]);
+  }, []);
 
   const handleRegister = async () => {
     try {
