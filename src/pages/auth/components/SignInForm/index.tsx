@@ -1,10 +1,10 @@
-import "./styles.css";
-
 import { useContext, useState } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 import { IPage } from "@/pages/auth";
 import { AuthContext } from "@/shared/context/AuthContext";
+import { Button, Input, message } from "antd";
+import { SignInFormContainer } from "./styles";
 
 interface ISignInProps {
   onNavigate: (page: IPage) => void;
@@ -23,44 +23,44 @@ export const SignInForm = ({ onNavigate }: ISignInProps) => {
   async function handleSignIn() {
     if (email && password) {
       try {
-        SignIn({ email, password });
+        await SignIn({ email, password });
         navigate("/events");
       } catch (error) {
-        window.alert("Faltando credenciais");
+        message.error("Faltando credenciais");
       }
     }
   }
 
   if (!isLoggedIn) {
     return (
-      <div className="sign-in-form-container">
+      <SignInFormContainer>
         <h1>IXTL</h1>
-        <h4>Login to your account</h4>
+        <h4>Faça login para continuar</h4>
 
         <section className="form">
-          <input
+          <Input
             type="email"
             placeholder="Email"
             onChange={(e) => setEmail(e.target.value)}
           />
-          <input
+          <Input
             type="password"
             placeholder="Senha"
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button onClick={handleSignIn}>Entrar</button>
+          <Button type="primary" onClick={handleSignIn}>Entrar</Button>
 
           <section className="login-options">
-            <button onClick={() => onNavigate("forgotPassword")}>
+            <Button onClick={() => onNavigate("forgotPassword")}>
               Esqueceu a senha?
-            </button>
+            </Button>
 
-            <button onClick={() => onNavigate("signUp")}>
+            <Button onClick={() => onNavigate("signUp")}>
               Criar uma nova conta
-            </button>
+            </Button>
           </section>
         </section>
-      </div>
+      </SignInFormContainer>
     );
   } else {
     return <Navigate to={from} />;

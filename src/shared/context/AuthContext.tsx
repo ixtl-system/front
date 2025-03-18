@@ -1,6 +1,7 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 
 import { api } from "@/shared/infra/api";
+import { message } from "antd";
 
 export type AuthContextData = {
   children: ReactNode;
@@ -55,7 +56,7 @@ export function AuthContextProvider({ children }: AuthContextData) {
     } catch (error) {
       localStorage.removeItem("token");
       setIsLoggedIn(false);
-      window.alert("Falha no login");
+      message.error("Falha no login");
       api.defaults.headers.common["Authorization"] = null;
     }
   };

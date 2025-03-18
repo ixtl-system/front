@@ -3,6 +3,7 @@ import "./styles.css";
 import { useState } from "react";
 
 import { IPage } from "@/pages/auth";
+import { Button, Input } from "antd";
 
 interface IForgotPasswordProps {
   onNavigate: (page: IPage) => void;
@@ -25,21 +26,21 @@ export const ForgotPasswordForm = ({ onNavigate }: IForgotPasswordProps) => {
       <h4>Recuperar Senha</h4>
 
       <section className="form">
-        <input
+        <Input
           type="email"
           placeholder="Email"
           onChange={(e) => setEmail(e.target.value)}
         />
 
-        <button onClick={handleForgotPassword}>Recuperar Senha</button>
+        <Button type="primary" onClick={handleForgotPassword}>Recuperar Senha</Button>
 
         <section className="login-options">
-          <button onClick={() => onNavigate("signIn")}>
+          <Button onClick={() => onNavigate("signIn")}>
             Já tem uma conta?
-          </button>
-          <button onClick={() => onNavigate("signUp")}>
+          </Button>
+          <Button onClick={() => onNavigate("signUp")}>
             Criar uma nova conta
-          </button>
+          </Button>
         </section>
       </section>
     </div>

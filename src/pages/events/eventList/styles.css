@@ -26,6 +26,10 @@ h1 {
 }
 
 .event-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   background: linear-gradient(145deg, #e9e2d0, #fff);
   border: 1px solid #ccc;
   border-radius: 12px;

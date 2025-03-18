@@ -1,11 +1,18 @@
 import React from "react";
 
-import { AuthContextProvider } from "@/shared/context/AuthContext";
+import { AuthContextProvider } from "./AuthContext";
+import { ProfileContextProvider } from "./Profile";
 
 interface IContextProps {
   children: React.ReactNode;
 }
 
 export const ContextProvider = ({ children }: IContextProps) => {
-  return <AuthContextProvider>{children}</AuthContextProvider>;
+  return (
+    <AuthContextProvider>
+      <ProfileContextProvider>
+        {children}
+      </ProfileContextProvider>
+    </AuthContextProvider>
+  );
 };

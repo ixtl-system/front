@@ -9,7 +9,7 @@ export function App() {
     <HelmetProvider>
       <ContextProvider>
         <Helmet titleTemplate="%s | ixtl" />
-        <RouterProvider router={router} />;
+        <RouterProvider router={router} />
       </ContextProvider>
     </HelmetProvider>
   );

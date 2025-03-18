@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import { IPage } from "@/pages/auth";
 import { api } from "@/shared/infra/api";
+import { Button, Input, message } from "antd";
 
 interface ISignUpProps {
   onNavigate: (page: IPage) => void;
@@ -17,9 +18,13 @@ export const SignUpForm = ({ onNavigate }: ISignUpProps) => {
     if (email && password) {
       try {
         await api.post("/users", { email, password });
-        window.alert("Criando conta");
+        message.success("Criando conta");
+
+        setTimeout(() => {
+          onNavigate("signIn");
+        }, 1000)
       } catch (error: any) {
-        window.alert(error.response.data.message);
+        message.error(error.response.data.message);
       }
     } else {
       console.log("Falta coisa");
@@ -29,29 +34,29 @@ export const SignUpForm = ({ onNavigate }: ISignUpProps) => {
   return (
     <div className="sign-up-form-container">
       <h1>IXTL</h1>
-      <h4>Register</h4>
+      <h4>Cadastre-se agora</h4>
 
       <section className="form">
-        <input
+        <Input
           type="email"
           placeholder="Email"
           onChange={(e) => setEmail(e.target.value)}
         />
-        <input
+        <Input
           type="password"
           placeholder="Senha"
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button onClick={handleSignUp}>Cadastre-se</button>
+        <Button type="primary" onClick={handleSignUp}>Cadastre-se</Button>
 
         <section className="login-options">
-          <button onClick={() => onNavigate("forgotPassword")}>
+          <Button onClick={() => onNavigate("forgotPassword")}>
             Esqueceu a senha?
-          </button>
+          </Button>
 
-          <button onClick={() => onNavigate("signIn")}>
+          <Button onClick={() => onNavigate("signIn")}>
             Já tem uma conta?
-          </button>
+          </Button>
         </section>
       </section>
     </div>
