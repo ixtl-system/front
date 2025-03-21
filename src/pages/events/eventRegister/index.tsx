@@ -19,6 +19,11 @@ type Event = {
   availability: number;
   date: string;
   cover: string;
+  userStatus:
+  | "OPEN"
+  | "RESERVED"
+  | "CONFIRMED"
+  | "CANCELED"
 };
 
 export const EventRegister = () => {
@@ -29,6 +34,13 @@ export const EventRegister = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [modalMessage, setModalMessage] = useState("");
+
+  const event_status = {
+    OPEN: "Registrar-se no Evento",
+    RESERVED: "Reservado",
+    CONFIRMED: "Confirmado",
+    CANCELED: "Solicitado",
+  }
 
   useEffect(() => {
     async function fetchEventDetails() {
@@ -99,11 +111,12 @@ export const EventRegister = () => {
                   Vagas disponíveis: {event.availability}
                 </h4>
 
+
                 <button className="settings-button">
                   Configurar
                 </button>
-                <button onClick={handleRegister} className="register-button">
-                  Registrar-se no Evento
+                <button onClick={handleRegister} className="register-button" disabled={event.userStatus !== "OPEN"}>
+                  {event_status[event.userStatus]}
                 </button>
               </section>
 

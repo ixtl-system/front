@@ -89,6 +89,15 @@ export const EventRegisterContainer = styled.div`
           color: #fff;
           background-color: #264653;
         }
+
+        &[disabled] {
+          cursor: not-allowed;
+          filter: grayscale(1);
+
+          &:hover {
+            background-color: #2a9d8f;
+          }
+        }
       }
     }
     
@@ -100,7 +109,7 @@ export const EventRegisterContainer = styled.div`
       justify-content: center;
       height: 100%;
       width: 100%;
-      max-width: 420px;
+      max-width: 400px;
       max-height: 240px;
       border-radius: 12px;
       background-position: 50% 50%;
