@@ -16,6 +16,8 @@ export function PersonalInformation() {
   const { userProfile: user, updateUserProfile } = useContext(UserContext);
   const [showUserProfile, setShowUserProfile] = useState(false);
 
+  const fieldsNotAllowedToUpdate = ["rg", "cpf", "email"];
+
   const {
     handleSubmit,
     control,
@@ -80,7 +82,13 @@ export function PersonalInformation() {
               render={({ field }) => (
                 <div>
                   <p>{formItem.placeholder}</p>
-                  <Input type="text" placeholder={formItem.placeholder} {...field} value={formatInputValue(field?.value, field.name)} />
+                  <Input
+                    {...field}
+                    type="text"
+                    disabled={fieldsNotAllowedToUpdate.includes(field.name) && !!field.value}
+                    placeholder={formItem.placeholder}
+                    value={formatInputValue(field?.value, field.name)}
+                  />
                   {errors[`${formItem.name}`] && <span className="error">{errors[`${formItem.name}`]?.message}</span>}
                 </div>
               )}

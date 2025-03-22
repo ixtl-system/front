@@ -33,15 +33,21 @@ export function DrugHistory() {
   const cleanRequestData = (drugs: IDrug[]) => {
     const cleanedData = drugs.map((drug) => {
       const { drugId, drugName, frequency, userId, endUsing, id, isDaimeHelp, startUsing } = drug;
-      const updatedDrug: IDrug = { drugId, drugName, frequency, isDaimeHelp, userId };
+      const updatedDrug: IDrug = { drugId, drugName, frequency, userId };
 
       if (id) Object.assign(updatedDrug, { id })
-      if (endUsing) Object.assign(updatedDrug, { endUsing })
-      if (startUsing) Object.assign(updatedDrug, { startUsing })
 
+      if (frequency !== "NEVER" && startUsing) {
+        Object.assign(updatedDrug, { startUsing })
+
+        if (frequency === "STOPPED" && endUsing) {
+          Object.assign(updatedDrug, { endUsing })
+
+          if (isDaimeHelp) Object.assign(updatedDrug, { isDaimeHelp })
+        }
+      }
       return updatedDrug
     })
-
     return cleanedData
   }
 

@@ -1,3 +1,4 @@
+import { validateCpf, validatePhone } from "@/shared/utils/validate";
 import { z } from "zod";
 
 export const profileSchema = z.object({
@@ -12,12 +13,8 @@ export const profileSchema = z.object({
   gender: z.enum(["MASCULINE", "FEMININE", "OTHER"], {
     errorMap: () => ({ message: "Selecione um gênero válido!" }),
   }),
-  rg: z
-    .string()
-    .length(9, "O RG deve conter exatamente 9 caracteres!"),
-  cpf: z
-    .string()
-    .length(11, "O CPF deve conter exatamente 11 caracteres!"),
+  rg: z.string().refine((rg) => /^\d{1,2}\.?\d{3}\.?\d{3}-?[0-9Xx]$/.test(rg), "Informe um RG válido!"),
+  cpf: z.string().refine((cpf) => validateCpf(cpf), "Informe um CPF válido!"),
   street: z
     .string()
     .min(3, "O nome da rua deve conter no mínimo 3 caracteres!")
@@ -46,8 +43,7 @@ export const profileSchema = z.object({
     .optional(),
   cellPhone: z
     .string()
-    .min(5, "O celular deve conter no mínimo 5 caracteres!")
-    .max(30, "O celular deve conter no máximo 30 caracteres!"),
+    .refine((mobile_number) => validatePhone(mobile_number), "Informe um número válido!"),
   passport: z
     .string()
     .max(30, "O passaporte deve conter no máximo 30 caracteres!")
