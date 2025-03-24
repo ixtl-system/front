@@ -14,4 +14,5 @@ export interface IPersonalInformation {
   cellPhone: string;
   passport?: string;
   birth: string;
+  role: "ADMIN" | "USER"
 }

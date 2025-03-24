@@ -23,17 +23,17 @@ export const Header = () => {
           <ul>
             <li>
               <Link to="/events">
-                <FiBookmark />
+                <FiBookmark /> Eventos
               </Link>
             </li>
             <li>
               <Link to="/profile">
-                <FiUser />
+                <FiUser /> Perfil
               </Link>
             </li>
             <li>
-              <button className="log-out-button" onClick={handleLogOut} title="Sair">
-                <FiLogOut />
+              <button className="log-out-button" onClick={handleLogOut}>
+                <FiLogOut /> Sair
               </button>
             </li>
           </ul>

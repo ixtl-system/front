@@ -37,7 +37,7 @@ export function UserContextProvider({ children }: UserContextData) {
       const id = retrieveTokenFromStorage();
 
       const { data } = await api.get(`users/${id}`);
-      setUserProfile({ email: data.email, ...data.profile });
+      setUserProfile({ email: data.email, ...data.profile, role: data.role });
     } catch (error) {
       console.error("Failed to fetch user profile:", error);
     }

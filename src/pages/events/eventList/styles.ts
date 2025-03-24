@@ -5,10 +5,31 @@ export const EventsContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
 
-  h1 {
-    text-align: center;
-    color: #8a5a44;
-    margin-bottom: 20px;
+  section.title {
+    display: grid;
+    grid-template-columns: 150px 1fr 150px;
+    align-items: center;
+    margin: 20px 0 40px;
+    
+    h1 {
+      text-align: center;
+      color: #8a5a44;
+      grid-column-start: 2;
+      height: max-content;
+    }
+
+    button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      font-size: 1rem;
+      height: max-content;
+      width: max-content;
+      padding: 10px 10px;
+    }
+
+
   }
 
   .events-grid {

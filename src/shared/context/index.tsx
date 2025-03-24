@@ -3,6 +3,7 @@ import React from "react";
 import { AuthContextProvider } from "./AuthContext";
 import { ProfileContextProvider } from "./Profile";
 import { UserContextProvider } from "./UserContext";
+import { EventProvider } from "./EventContext";
 
 interface IContextProps {
   children: React.ReactNode;
@@ -13,7 +14,9 @@ export const ContextProvider = ({ children }: IContextProps) => {
     <AuthContextProvider>
       <ProfileContextProvider>
         <UserContextProvider>
-          {children}
+          <EventProvider>
+            {children}
+          </EventProvider>
         </UserContextProvider>
       </ProfileContextProvider>
     </AuthContextProvider>

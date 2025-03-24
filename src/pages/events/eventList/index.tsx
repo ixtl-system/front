@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
+import { FiPlus } from "react-icons/fi";
+import { Button } from "antd";
 
 import imagem from "@/assets/logo.png";
 import { LayoutWithHeader } from "@/shared/components/templates/LayoutWithHeader";
 import { api } from "@/shared/infra/api";
 import { EventsContainer } from "./styles";
+import { UserContext } from "@/shared/context/UserContext";
 
 type Event = {
   id: string;
@@ -19,7 +22,9 @@ type Event = {
 
 export const EventList = () => {
   const [events, setEvents] = useState<Event[] | null>(null);
+  const { fetchUserProfile, userProfile } = useContext(UserContext)
   const navigate = useNavigate();
+
   useEffect(() => {
     async function fetchEvents() {
       try {
@@ -29,18 +34,31 @@ export const EventList = () => {
         console.log("error: ", error);
       }
     }
+
     fetchEvents();
+    fetchUserProfile()
   }, []);
 
   const handleNavigateToEvent = (id: string) => {
-    navigate(`/events/register/${id}`);
+    navigate(`/events/${id}`);
+  };
+
+  const handleNavigateToCreateEvent = () => {
+    navigate("/events/create");
   };
 
   return (
     <LayoutWithHeader>
       <EventsContainer>
         <Helmet title="Eventos" />
-        <h1>Eventos Disponíveis</h1>
+        <section className="title">
+          <h1>Eventos Disponíveis</h1>
+
+          {userProfile.role === "ADMIN" && (
+            <Button onClick={handleNavigateToCreateEvent}><FiPlus /> Criar Evento</Button>
+          )}
+        </section>
+
         <div className="events-grid">
           {events?.map((event) => (
             <div
