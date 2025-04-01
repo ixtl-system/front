@@ -1,7 +1,6 @@
 import { notification } from "antd"
 import { useNavigate } from "react-router-dom"
 
-import { LayoutWithHeader } from "@/shared/components/templates/LayoutWithHeader"
 import { useEvent } from "@/shared/hooks/useEvent"
 import { EventData } from "@/shared/types/Event"
 
@@ -21,10 +20,8 @@ export const EventCreate = () => {
     return notification.success({ message: message?.title, description: message?.description });
   }
   return (
-    <LayoutWithHeader>
-      <EventCreateContainer>
-        <CreateAndUpdateEventForm title={"Criar Evento"} onSubmit={handleCreateEvent} />
-      </EventCreateContainer>
-    </LayoutWithHeader>
+    <EventCreateContainer>
+      <CreateAndUpdateEventForm title={"Criar Evento"} onSubmit={handleCreateEvent} />
+    </EventCreateContainer>
   )
 }

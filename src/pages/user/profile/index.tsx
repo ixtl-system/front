@@ -31,18 +31,16 @@ export function Profile() {
   }, []);
 
   return (
-    <LayoutWithHeader>
-      <div className="profile">
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          <>
-            <PersonalInformation />
-            <DrugHistory />
-            <DiseasesHistory />
-          </>
-        )}
-      </div>
-    </LayoutWithHeader>
+    <div className="profile">
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <>
+          <PersonalInformation />
+          <DrugHistory />
+          <DiseasesHistory />
+        </>
+      )}
+    </div>
   );
 }

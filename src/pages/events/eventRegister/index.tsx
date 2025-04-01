@@ -9,7 +9,6 @@ import { DateTime } from "luxon";
 import image from "@/assets/logo.png";
 import { useEvent } from "@/shared/hooks/useEvent";
 import { UserContext } from "@/shared/context/UserContext";
-import { LayoutWithHeader } from "@/shared/components/templates/LayoutWithHeader";
 
 import { EventRegisterContainer } from "./styles";
 
@@ -50,63 +49,59 @@ export const EventRegister = () => {
   };
 
   if (!event) return (
-    <LayoutWithHeader>
-      <Spin indicator={<LoadingOutlined spin />} size="large" />
-    </LayoutWithHeader>
+    <Spin indicator={<LoadingOutlined spin />} size="large" />
   )
 
   return (
-    <LayoutWithHeader>
-      <EventRegisterContainer>
-        <Helmet title="Register" />
+    <EventRegisterContainer>
+      <Helmet title="Register" />
 
-        <div className="event-cover">
-          <section className="event-info">
-            <h2>{event.name}</h2>
+      <div className="event-cover">
+        <section className="event-info">
+          <h2>{event.name}</h2>
 
-            <h4>
-              <FiCalendar />
-              {DateTime.fromISO(event.date).toFormat("dd MMM yyyy - hh:mm")}
-            </h4>
+          <h4>
+            <FiCalendar />
+            {DateTime.fromISO(event.date).toFormat("dd MMM yyyy - hh:mm")}
+          </h4>
 
-            <h4>
-              <FiUsers />
-              Vagas disponíveis: {event.availability}
-            </h4>
+          <h4>
+            <FiUsers />
+            Vagas disponíveis: {event.availability}
+          </h4>
 
-            {userProfile.role === "ADMIN" && (
-              <button className="settings-button" onClick={handleNavigateToConfig}>
-                Configurar
-              </button>
-            )}
-            <button onClick={handleRegister} className="register-button" disabled={event.userStatus !== "OPEN"}>
-              {event_status[event.userStatus]}
+          {userProfile.role === "ADMIN" && (
+            <button className="settings-button" onClick={handleNavigateToConfig}>
+              Configurar
             </button>
-          </section>
+          )}
+          <button onClick={handleRegister} className="register-button" disabled={event.userStatus !== "OPEN"}>
+            {event_status[event.userStatus]}
+          </button>
+        </section>
 
-          <img src={image} alt={event.name} className="event-preview-image" />
-        </div>
+        <img src={image} alt={event.name} className="event-preview-image" />
+      </div>
 
-        <div className="event-details">
-          <h3>Descrição do Evento</h3>
-          <p className="event-description">{event.description}</p>
+      <div className="event-details">
+        <h3>Descrição do Evento</h3>
+        <p className="event-description">{event.description}</p>
 
-          <h3>Conduta</h3>
-          <p>
-            O respeito e a boa convivência são fundamentais. Todos devem agir com cordialidade, ouvindo e interagindo de forma harmoniosa. Valorizar o momento e manter uma energia positiva contribui para uma experiência mais enriquecedora para todos.
-          </p>
+        <h3>Conduta</h3>
+        <p>
+          O respeito e a boa convivência são fundamentais. Todos devem agir com cordialidade, ouvindo e interagindo de forma harmoniosa. Valorizar o momento e manter uma energia positiva contribui para uma experiência mais enriquecedora para todos.
+        </p>
 
-          <h3>O que pode fazer</h3>
-          <p>
-            Você pode interagir, compartilhar histórias e vivenciar a experiência de forma aberta e respeitosa. Aproveite o momento para se conectar com as pessoas ao seu redor, sempre mantendo uma postura amigável e receptiva.
-          </p>
+        <h3>O que pode fazer</h3>
+        <p>
+          Você pode interagir, compartilhar histórias e vivenciar a experiência de forma aberta e respeitosa. Aproveite o momento para se conectar com as pessoas ao seu redor, sempre mantendo uma postura amigável e receptiva.
+        </p>
 
-          <h3>O que não pode fazer</h3>
-          <p>
-            Evite qualquer comportamento que possa desrespeitar os demais participantes ou prejudicar a experiência coletiva. O uso de linguagem ofensiva, atitudes desrespeitosas ou qualquer conduta que vá contra o espírito do evento não serão aceitos.
-          </p>
-        </div>
-      </EventRegisterContainer>
-    </LayoutWithHeader >
+        <h3>O que não pode fazer</h3>
+        <p>
+          Evite qualquer comportamento que possa desrespeitar os demais participantes ou prejudicar a experiência coletiva. O uso de linguagem ofensiva, atitudes desrespeitosas ou qualquer conduta que vá contra o espírito do evento não serão aceitos.
+        </p>
+      </div>
+    </EventRegisterContainer>
   );
 };

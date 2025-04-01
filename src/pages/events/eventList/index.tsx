@@ -2,13 +2,12 @@ import { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import { FiPlus } from "react-icons/fi";
-import { Button } from "antd";
 
-import imagem from "@/assets/logo.png";
-import { LayoutWithHeader } from "@/shared/components/templates/LayoutWithHeader";
 import { api } from "@/shared/infra/api";
-import { EventsContainer } from "./styles";
+import { EventContent, EventHeader, EventsContainer, EventsList } from "./styles";
 import { UserContext } from "@/shared/context/UserContext";
+import { DateTime } from "luxon";
+import { SunHorizon } from "@/assets/icons/SunHorizon";
 
 type Event = {
   id: string;
@@ -48,45 +47,44 @@ export const EventList = () => {
   };
 
   return (
-    <LayoutWithHeader>
-      <EventsContainer>
-        <Helmet title="Eventos" />
-        <section className="title">
-          <h1>Eventos Disponíveis</h1>
+    <EventsContainer>
+      <Helmet title="Eventos" />
+
+      <EventContent>
+        <EventHeader>
+          <div>
+            <h1>Eventos Disponíveis</h1>
+            <p>Cerimônias programadas</p>
+          </div>
 
           {userProfile.role === "ADMIN" && (
-            <Button onClick={handleNavigateToCreateEvent}><FiPlus /> Criar Evento</Button>
+            <button onClick={handleNavigateToCreateEvent}>Criar Evento <FiPlus /></button>
           )}
-        </section>
+        </EventHeader>
 
-        <div className="events-grid">
-          {events?.map((event) => (
-            <div
-              key={event.id}
-              className="event-card"
-              onClick={() => handleNavigateToEvent(event.id)}
-            >
-              <img src={imagem} alt={event.name} className="event-image" />
-              <div className="event-details">
-                <section>
-                  <h2 className="event-title">{event.name}</h2>
-                  <p className="event-description">{event.description}</p>
-                </section>
-
-                <section>
-                  <p className="event-date">
-                    <strong>Data:</strong>{" "}
-                    {new Date(event.date).toLocaleDateString()}
-                  </p>
-                  <p className="event-availability">
-                    <strong>Vagas Disponíveis:</strong> {event.availability}
-                  </p>
-                </section>
+        <EventsList>
+          {events?.map(event => (
+            <div className="card" onClick={() => handleNavigateToEvent(event.id)}>
+              <div className="tag">
+                {DateTime.fromISO(event.date).toFormat("dd/MM/yyyy")}
               </div>
+
+              <div className="time">
+                <SunHorizon />
+
+                <span>
+                  ás {DateTime.fromISO(event.date).toFormat("hh:mm")}
+                </span>
+              </div>
+
+              <h2>{event.name}</h2>
+
+              <p>{event.description}</p>
             </div>
           ))}
-        </div>
-      </EventsContainer>
-    </LayoutWithHeader>
+        </EventsList>
+      </EventContent>
+
+    </EventsContainer>
   );
 };

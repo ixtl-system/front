@@ -1,12 +1,11 @@
 import { useEffect } from 'react'
 import { LoadingOutlined } from '@ant-design/icons';
-import { useParams } from 'react-router-dom'
-
-import { LayoutWithHeader } from '@/shared/components/templates/LayoutWithHeader'
-import { useEvent } from '@/shared/hooks/useEvent'
-import { EventUsersContainer } from './styles'
 import { Button, notification, Spin } from 'antd';
 import { FiCheck, FiX } from 'react-icons/fi';
+import { useParams } from 'react-router-dom';
+
+import { useEvent } from '@/shared/hooks/useEvent';
+import { EventUsersContainer } from './styles'
 
 export const EventUsers = () => {
   const params = useParams();
@@ -34,45 +33,41 @@ export const EventUsers = () => {
   }
 
   if (!event) return (
-    <LayoutWithHeader>
-      <Spin indicator={<LoadingOutlined spin />} size="large" />
-    </LayoutWithHeader>
+    <Spin indicator={<LoadingOutlined spin />} size="large" />
   )
 
   return (
-    <LayoutWithHeader>
-      <EventUsersContainer>
-        <section className="content">
-          <h2>{event.name}</h2>
+    <EventUsersContainer>
+      <section className="content">
+        <h2>{event.name}</h2>
 
-          <h4>Usuários Registrados</h4>
+        <h4>Usuários Registrados</h4>
 
-          <ul>
-            {eventRegistrations?.length
-              ? eventRegistrations.map(user => (
-                <li>
-                  <span>
-                    <b>Usuário:</b> {user.userId}
-                    <br />
-                    <b>Status:</b> {event_status[user.status]}
-                  </span>
+        <ul>
+          {eventRegistrations?.length
+            ? eventRegistrations.map(user => (
+              <li>
+                <span>
+                  <b>Usuário:</b> {user.userId}
+                  <br />
+                  <b>Status:</b> {event_status[user.status]}
+                </span>
 
-                  <section className="options">
-                    <Button className='reject' onClick={handleReject} danger type='primary' disabled={user.status === "CANCELED"}>
-                      <FiX />
-                    </Button>
+                <section className="options">
+                  <Button className='reject' onClick={handleReject} danger type='primary' disabled={user.status === "CANCELED"}>
+                    <FiX />
+                  </Button>
 
-                    <Button className='approve' onClick={handleApprove} type='primary' disabled={user.status !== "RESERVED"}>
-                      <FiCheck />
-                    </Button>
-                  </section>
-                </li>
-              ))
-              : "Não há registros"
-            }
-          </ul>
-        </section>
-      </EventUsersContainer>
-    </LayoutWithHeader>
+                  <Button className='approve' onClick={handleApprove} type='primary' disabled={user.status !== "RESERVED"}>
+                    <FiCheck />
+                  </Button>
+                </section>
+              </li>
+            ))
+            : "Não há registros"
+          }
+        </ul>
+      </section>
+    </EventUsersContainer>
   )
 }
