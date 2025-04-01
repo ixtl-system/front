@@ -4,6 +4,7 @@ import { AuthContextProvider } from "./AuthContext";
 import { ProfileContextProvider } from "./Profile";
 import { UserContextProvider } from "./UserContext";
 import { EventProvider } from "./EventContext";
+import { DiseasesProvider } from "./DiseasesContext";
 
 interface IContextProps {
   children: React.ReactNode;
@@ -15,7 +16,9 @@ export const ContextProvider = ({ children }: IContextProps) => {
       <ProfileContextProvider>
         <UserContextProvider>
           <EventProvider>
-            {children}
+            <DiseasesProvider>
+              {children}
+            </DiseasesProvider>
           </EventProvider>
         </UserContextProvider>
       </ProfileContextProvider>
