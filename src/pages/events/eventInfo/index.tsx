@@ -1,6 +1,6 @@
 import { PiArrowLeftLight, PiUsers } from "react-icons/pi";
 import { LoadingOutlined } from '@ant-design/icons';
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { notification, Spin } from "antd";
 import { DateTime } from "luxon";
@@ -23,13 +23,16 @@ import {
   RequestButton,
   StyledButton
 } from "./styles";
+import { Helmet } from "react-helmet-async";
+import { RegisterUsersModal } from "../components/RegisteredUsersModal";
 
-export const EventRegister = () => {
+export const EventInfo = () => {
   const params = useParams();
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const { fetchUserProfile } = useContext(UserContext);
   const { event, fetchEvent, registerUserInEvent } = useEvent();
+  const [isModalVisible, setIsModalVisible] = useState(false)
 
   const event_status = {
     OPEN: "Registrar-se no Evento",
@@ -44,6 +47,10 @@ export const EventRegister = () => {
     if (!success) return notification.error({ message: message?.title, description: message?.description });
     notification.success({ message: message?.title, description: message?.description });
     fetchEvent(String(params.id));
+  };
+
+  const toggleModalVisibility = () => {
+    setIsModalVisible(!isModalVisible);
   };
 
   useEffect(() => {
@@ -64,12 +71,16 @@ export const EventRegister = () => {
 
   return (
     <EventRegisterContainer>
+      <Helmet title={`Evento - ${event.name}`} />
+
+      <RegisterUsersModal visible={isModalVisible} onClose={toggleModalVisibility} />
+
       <HeaderContainer>
         <StyledButton onClick={() => navigate("/events")}>
           <PiArrowLeftLight />
           Voltar
         </StyledButton>
-        <StyledButton onClick={() => navigate(`/events/users/${params.id}`)}>
+        <StyledButton onClick={toggleModalVisibility}>
           Ver clientes cadastrados
           <PiUsers />
         </StyledButton>
@@ -84,7 +95,6 @@ export const EventRegister = () => {
           <InfoText>ás {DateTime.fromISO(event.date).toFormat("hh:mm")}</InfoText>
           <DateBadge>{DateTime.fromISO(event.date).toFormat("dd/MM/yyyy")}</DateBadge>
           <InfoText>{event.availability} Vagas disponíveis</InfoText>
-          <InfoText>10 Clientes cadastrados</InfoText>
         </EventInfoContainer>
 
         <RequestButton onClick={handleRegister} disabled={event.userStatus !== "OPEN"}>

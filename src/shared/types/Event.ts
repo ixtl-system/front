@@ -15,11 +15,14 @@ export type Event = {
   userStatus: "OPEN" | "RESERVED" | "CONFIRMED" | "CANCELED";
 };
 
+export type EventStatus = "CANCELED" | "RESERVED" | "CONFIRMED";
+
 export type EventRegistration = {
   id: string;
   userId: string;
   eventId: string;
-  status: "CANCELED" | "RESERVED" | "CONFIRMED";
+  status: EventStatus;
+  userName: string;
   createdAt: string;
   updatedAt: string;
 };

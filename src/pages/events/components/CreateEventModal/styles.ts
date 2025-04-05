@@ -1,5 +1,5 @@
 
-import { DefaultButton } from "@/shared/components/DefaultButton";
+import { DefaultButton } from "@/shared/components/CustomStyled";
 import { Modal, DatePicker } from "antd";
 import styled from "styled-components";
 
@@ -26,26 +26,6 @@ export const StyledModal = styled(Modal)`
     max-width: 426px;
   }
 `
-
-export const Title = styled.h2`
-  font-family: Montserrat;
-  font-weight: 700;
-  font-size: 32px;
-  line-height: 140%;
-  letter-spacing: 0%;
-  margin-bottom: 10px;
-`
-
-export const Subtitle = styled.p`
-  font-family: Montserrat;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 140%;
-  letter-spacing: 0%;
-  margin-bottom: 30px;
-  color: #7D7C83;
-`
-
 export const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;

@@ -1,6 +1,6 @@
 import React, { createContext, useState } from 'react';
 import { api } from '../infra/api';
-import { Event, EventData, EventRegistration } from '../types/Event';
+import { Event, EventData, EventRegistration, EventStatus } from '../types/Event';
 
 type ReturnType = {
   success: boolean;
@@ -8,6 +8,12 @@ type ReturnType = {
     title: string;
     description?: string;
   }
+}
+
+type UpdateUserRegistrationStatusProps = {
+  userId: string;
+  status: EventStatus;
+  eventId: string;
 }
 
 type EventContextType = {
@@ -20,6 +26,7 @@ type EventContextType = {
   createEvent: (eventData: EventData) => Promise<ReturnType>;
   updateEvent: (eventId: string, eventData: EventData) => Promise<ReturnType>;
   listEventRegistrations: (eventId: string) => Promise<[] | ReturnType>;
+  updateUserRegistration: (props: UpdateUserRegistrationStatusProps) => Promise<ReturnType>;
 };
 
 export const EventContext = createContext<EventContextType | undefined>(undefined);
@@ -55,6 +62,19 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       return {
         success: false,
         message: { title: "Erro ao buscar eventos!" },
+      };
+    }
+  }
+
+  const updateUserRegistration = async ({ eventId, userId, status }: UpdateUserRegistrationStatusProps) => {
+    try {
+      await api.patch(`/events/registrations/${eventId}`, { userId, status });
+
+      return { success: true }
+    } catch (error: any) {
+      return {
+        success: false,
+        message: { title: "Erro ao solicitar mudança de status!" },
       };
     }
   }
@@ -152,6 +172,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       event,
       events,
       eventRegistrations,
+      updateUserRegistration,
       listEventRegistrations,
       registerUserInEvent,
       fetchEvent,

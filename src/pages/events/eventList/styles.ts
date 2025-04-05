@@ -18,6 +18,8 @@ export const EventContent = styled.div`
 export const EventHeader = styled.div`
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
   margin: 20px 0 40px;
   width: 100%;
   

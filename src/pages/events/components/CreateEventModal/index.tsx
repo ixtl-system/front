@@ -12,7 +12,8 @@ import { CustomInput } from "@/shared/components/CustomInput"
 import { CustomTextArea } from "@/shared/components/CustomTextArea"
 
 import { EventFormData, eventSchema } from "./schema";
-import { StyledModal, Title, Subtitle, ButtonContainer, BackButton, SaveButton, StyledDatePicker } from "./styles"
+import { StyledModal, ButtonContainer, BackButton, SaveButton, StyledDatePicker } from "./styles"
+import { CustomSubtitle, CustomTitle } from "@/shared/components/CustomStyled"
 
 interface CreateEventModalProps {
   visible: boolean
@@ -62,8 +63,8 @@ export const CreateEventModal = ({ visible, onClose }: CreateEventModalProps) =>
       centered
       footer={null}
     >
-      <Title>{"Criar um evento"}</Title>
-      <Subtitle>Preencha todas as informações</Subtitle>
+      <CustomTitle>{"Criar um evento"}</CustomTitle>
+      <CustomSubtitle>Preencha todas as informações</CustomSubtitle>
 
       <form onSubmit={handleSubmit(handleCreateEvent)}>
         <Form.Item validateStatus={errors.name ? "error" : ""} help={errors.name?.message}>

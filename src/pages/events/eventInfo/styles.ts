@@ -1,5 +1,5 @@
 "use client"
-import { DefaultButton } from "@/shared/components/DefaultButton"
+import { DefaultButton } from "@/shared/components/CustomStyled"
 import { Typography } from "antd"
 import styled from "styled-components"
 
@@ -21,6 +21,8 @@ export const EventRegisterContainer = styled.div`
 export const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 30px;
   align-items: center;
   margin-bottom: 32px;
 `
@@ -93,6 +95,7 @@ export const EventSubtitle = styled.p`
 export const EventInfoContainer = styled.div`
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 24px;
   margin-bottom: 20px;
 `
