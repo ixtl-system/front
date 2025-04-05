@@ -1,155 +1,140 @@
-import styled from "styled-components";
-import image from "@/assets/logo.png";
+"use client"
+import { DefaultButton } from "@/shared/components/DefaultButton"
+import { Typography } from "antd"
+import styled from "styled-components"
+
+const {  Text } = Typography
 
 export const EventRegisterContainer = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
+  max-width: calc(100% - 64px);
+  background-color: #f9f5eb;
+  min-height: 100vh;
+  margin: 32px;
+  padding: 24px;
+  border-radius: 32px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+`
+
+export const HeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  background-color: #f9f9f9;
+  margin-bottom: 32px;
+`
 
-  .event-cover {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 48px;
+export const ContentContainer = styled.div`
+`
 
-    width: 100%;
-    height: 340px;
-    padding: 0 30px;
-    overflow: hidden;
-    position: relative;
-    background: url(${image}) center;
-    
+export const StyledButton = styled(DefaultButton)`
+  background: none;
+  color: #96AE8E;
+  padding: 10px 32px;
+  gap: 5px;
 
-    &:before {
-      content: "";
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      backdrop-filter: blur(12px);
-      background-color: rgba(0, 0, 0, 0.5);
-    }
-
-    section.event-info {
-      display: flex;
-      flex-direction: column;
-
-      width: 100%;
-      min-width: 300px;
-      max-width: 400px;
-      z-index: 2;
-
-      h2 {
-        position: relative;
-        font-weight: 700;
-        font-size: 28px;
-        margin: 0 0 16px;
-      }
-
-      h2, h4 {
-        color: #FFF;
-        text-transform: capitalize;
-      }
-
-      h4 {
-        display: flex;
-        align-items: center;
-
-        font-size: 14px;
-        font-weight: 500;
-        margin: 0 0 10px;
-
-        svg {
-          width: 20px;
-          height: 20px;
-
-          margin-right: 10px;
-        }
-      }
-
-      .register-button {
-        background-color: #2a9d8f;
-      }
-
-      .settings-button {
-        color: #2a9d8f;
-      }
-
-      button {
-        padding: 15px 25px;
-        margin: 10px 0 0;
-        color: white;
-        font-size: 1rem;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-
-        &:hover {
-          color: #fff;
-          background-color: #264653;
-        }
-
-        &[disabled] {
-          cursor: not-allowed;
-          filter: grayscale(1);
-
-          &:hover {
-            background-color: #2a9d8f;
-          }
-        }
-      }
-    }
-    
-    img.event-preview-image {
-      position: relative;
-      display: flex;
-      align-items: flex-end;
-      -webkit-box-pack: center;
-      justify-content: center;
-      height: 100%;
-      width: 100%;
-      max-width: 400px;
-      max-height: 240px;
-      border-radius: 12px;
-      background-position: 50% 50%;
-      background-size: cover;
-      background-repeat: no-repeat;
-      box-shadow: rgba(25, 31, 40, 0.2) 0px 20px 36px 0px;
-    }
-
+  svg {
+    font-size: 30px;
   }
 
-  .event-cover-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  &:hover {
+    background-color: #96AE8E;
+    color: #FAFAFA
+  }
+`
+
+export const RequestButton = styled(DefaultButton)`
+  background-color: #96AE8E;
+  color: #FAFAFA;
+  gap: 10px;
+
+  font-size: 16px;
+  padding: 5px 10px 3px;
+
+  &:hover {
+    background-color: #fff;
+    color: #96AE8E
   }
 
-  .event-details {
-    width: 100%;
-    max-width: 900px;
-    text-align: center;
-    padding: 0 30px 40px;
-  }
+  &[disabled] {
+    filter: grayscale(1);
+    cursor: not-allowed;
 
-  h3, p {
-    text-align: start;
-  }
-
-  h3 {
-    margin: 20px 0 5px;
-    font-size: 20px;
-  }
-
-  p {
-    font-size: 16px;
-  }
-
-  @media (max-width: 900px) {
-    .event-cover img.event-preview-image  {
-      display: none;
+    &:hover {
+      background-color: #96AE8E;
+      color: #FAFAFA
     }
   }
+  
+`
 
-`;
+export const EventTitle = styled.h2`
+  font-family: Montserrat;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 140%;
+  letter-spacing: 0%;
+  color: #0C120C;
+
+  margin-bottom: 10px;
+`
+
+export const EventSubtitle = styled.p`
+  font-family: Montserrat;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 140%;
+  letter-spacing: 0%;
+  color: #7D7C83;
+  margin-bottom: 30px;
+`
+
+export const EventInfoContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 20px;
+`
+
+export const SunIcon = styled.div`
+  font-size: 24px;
+  margin-right: 15px;
+`
+
+export const DateBadge = styled.span`
+  background-color: #8baa88;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 15px;
+`
+
+export const InfoText = styled(Text)`
+  font-family: Montserrat;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 140%;
+  letter-spacing: 0%;
+  color: #7D7C83;
+`
+
+export const DescriptionTitle = styled.h4`
+  font-family: Montserrat;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 140%;
+  letter-spacing: 0%;
+  color: #0C120C;
+  margin: 60px 0 20px;
+
+`
+
+export const DescriptionText = styled.p`
+  font-family: Montserrat;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 140%;
+  letter-spacing: 0%;
+  text-decoration-style: solid;
+  color: #7D7C83;
+`

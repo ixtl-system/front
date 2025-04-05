@@ -15,7 +15,8 @@ export const SidebarContainer = styled.div`
 
 export const SidebarContent = styled.section`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  padding: 55px 16px 0;
   flex-direction: column;
   position: fixed;
 
@@ -25,8 +26,25 @@ export const SidebarContent = styled.section`
   width: 100%;
   max-width: 80px;
   min-height: 100vh;
-  padding: 55px 0 0;
   background-color: #FFF8ED;
+
+  ul li span  {
+    display: none;
+    font-family: Montserrat;
+
+  }
+
+  &, ul li span  {
+    transition: 0.4s all;
+  }
+
+  &:hover {
+    max-width: 200px;
+
+    ul li span {
+      display: flex;
+    }
+  }
 `;
 
 export const SidebarList = styled.ul`
@@ -36,26 +54,37 @@ export const SidebarList = styled.ul`
   padding: 0;
   gap: 24px;
   margin: 24px 0 0;
+  padding: 0 4px;
 `;
 
 export const SidebarListItem = styled.li`
   display: flex;
-  justify-content: center;
   align-items: center;
   cursor: pointer;
+  position: relative;
+  gap: 10px;
 
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  transition: 0.4s all;
 
-  svg {
-    width: 18px;
-    height: 18px;
+  div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    transition: 0.4s all;
+
+    width: 40px;
+    height: 40px;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
   }
 
   &:is(:hover, :active, :focus) {
-    background-color: #96AE8E;
+    div {
+      background-color: #96AE8E;
+    }
 
     svg {
       color: #FFF !important;

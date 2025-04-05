@@ -22,19 +22,35 @@ export const Sidebar = () => {
 
         <SidebarList>
           <SidebarListItem onClick={() => navigate("/profile")}>
-            <PiUser color="#96AE8E" />
+            <div>
+              <PiUser color="#96AE8E" />
+            </div>
+
+            <span>Perfil</span>
           </SidebarListItem>
 
           <SidebarListItem onClick={() => navigate("/events")} >
-            <PiCalendarDots color="#96AE8E" />
+            <div>
+              <PiCalendarDots color="#96AE8E" />
+            </div>
+
+            <span>Eventos</span>
           </SidebarListItem>
 
           <SidebarListItem>
-            <PiClipboardTextLight color="#96AE8E" />
+            <div>
+              <PiClipboardTextLight color="#96AE8E" />
+            </div>
+
+            <span>Indisponível</span>
           </SidebarListItem>
 
           <SidebarListItem onClick={handleLogOut}>
-            <PiSignOut color="#96AE8E" />
+            <div>
+              <PiSignOut color="#96AE8E" />
+            </div>
+
+            <span>Sair</span>
           </SidebarListItem>
         </SidebarList>
       </SidebarContent>

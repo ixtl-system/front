@@ -1,63 +1,112 @@
-import { Form, Input } from "antd"
+import { Controller, useForm } from "react-hook-form"
 import { CalendarIcon } from "lucide-react"
-import { ArrowLeftOutlined, SaveOutlined } from "@ant-design/icons"
-import { BackButton, ButtonContainer, SaveButton, StyledDatePicker, StyledModal, Subtitle, TextArea, Title } from "./styles"
+import { notification } from "antd"
+import { Form } from "antd"
+import dayjs from "dayjs"
 
-export const CreateEventModal = ({ visible, onClose }: any) => {
-  const [form] = Form.useForm()
+import { ArrowLeftOutlined, SaveOutlined } from "@ant-design/icons"
+import { zodResolver } from "@hookform/resolvers/zod"
+
+import { useEvent } from "@/shared/hooks/useEvent"
+import { CustomInput } from "@/shared/components/CustomInput"
+import { CustomTextArea } from "@/shared/components/CustomTextArea"
+
+import { EventFormData, eventSchema } from "./schema";
+import { StyledModal, Title, Subtitle, ButtonContainer, BackButton, SaveButton, StyledDatePicker } from "./styles"
+
+interface CreateEventModalProps {
+  visible: boolean
+  onClose: () => void
+}
+
+export const CreateEventModal = ({ visible, onClose }: CreateEventModalProps) => {
+  const { createEvent, fetchEvents } = useEvent();
+
+  const {
+    control,
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors },
+  } = useForm<EventFormData>({
+    resolver: zodResolver(eventSchema),
+  })
 
   const handleCancel = () => {
-    form.resetFields()
+    reset()
     onClose()
   }
 
-  const handleSubmit = () => {
-    form.validateFields().then((values) => {
-      console.log("Form values:", values)
-      form.resetFields()
-      onClose()
-    })
+  async function handleCreateEvent(data: EventFormData) {
+    const request = {
+      ...data,
+      availability: Number(data.availability),
+      date: data.date,
+    }
+
+    const { success, message } = await createEvent(request);
+    if (!success) return notification.error({ message: message?.title, description: message?.description });
+
+    notification.success({ message: message?.title, description: message?.description });
+    onClose();
+    fetchEvents();
   }
 
   return (
-    <StyledModal open={visible} onCancel={handleCancel} footer={null} width={500} centered closable={false}>
-      <Title>Criar um evento</Title>
+    <StyledModal
+      open={visible}
+      onCancel={handleCancel}
+      closable={false}
+      width={900}
+      height={600}
+      centered
+      footer={null}
+    >
+      <Title>{"Criar um evento"}</Title>
       <Subtitle>Preencha todas as informações</Subtitle>
 
-      <Form form={form} layout="vertical">
-        <Form.Item name="name" rules={[{ required: true, message: "Por favor, insira o nome do evento" }]}>
-          <Input placeholder="Nome" size="large" />
+      <form onSubmit={handleSubmit(handleCreateEvent)}>
+        <Form.Item validateStatus={errors.name ? "error" : ""} help={errors.name?.message}>
+          <CustomInput placeholder="Nome" register={register} name={"name"} />
         </Form.Item>
 
-        <Form.Item name="description" rules={[{ required: true, message: "Por favor, insira a descrição do evento" }]}>
-          <TextArea placeholder="Descrição" rows={4} size="large" />
+        <Form.Item validateStatus={errors.description ? "error" : ""} help={errors.description?.message}>
+          <CustomTextArea placeholder="Descrição" rows={6} register={register} name="description" />
         </Form.Item>
 
-        <Form.Item name="spots" rules={[{ required: true, message: "Por favor, insira a quantidade de lugares" }]}>
-          <Input placeholder="Quantidade de lugares disponíveis" type="number" size="large" />
+        <Form.Item validateStatus={errors.availability ? "error" : ""} help={errors.availability?.message}>
+          <CustomInput type="number" placeholder="Quantidade de lugares disponíveis" register={register} name={"availability"} />
         </Form.Item>
 
-        <Form.Item name="date" rules={[{ required: true, message: "Por favor, selecione a data do evento" }]}>
-          <StyledDatePicker
-            placeholder="Data do evento"
-            format="DD/MM/YYYY"
-            size="large"
-            suffixIcon={<CalendarIcon size={16} />}
+        <Form.Item validateStatus={errors.date ? "error" : ""} help={errors.date?.message}>
+          <Controller
+            name="date"
+            control={control}
+            render={({ field }) => (
+              <StyledDatePicker
+                placeholder="Data do evento"
+                format="DD/MM/YYYY"
+                size="large"
+                suffixIcon={<CalendarIcon size={16} />}
+                value={field.value ? dayjs(field.value) : null}
+                onChange={(date) => date ? field.onChange(String(date).toString()) : field.onChange("")}
+              />
+            )}
           />
         </Form.Item>
 
         <ButtonContainer>
-          <BackButton onClick={handleCancel}>
+          <BackButton type="button" onClick={handleCancel}>
             <ArrowLeftOutlined style={{ marginRight: 8 }} />
             Voltar
           </BackButton>
 
-          <SaveButton type="primary" onClick={handleSubmit}>
+          <SaveButton type="submit">
             Salvar evento
             <SaveOutlined style={{ marginLeft: 8 }} />
           </SaveButton>
         </ButtonContainer>
-      </Form>
+      </form>
     </StyledModal>
   )
 }

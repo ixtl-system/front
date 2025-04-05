@@ -6,14 +6,16 @@ type ReturnType = {
   success: boolean;
   message?: {
     title: string;
-    description: string;
+    description?: string;
   }
 }
 
 type EventContextType = {
-  event: Event | null;
+  event: Event;
+  events: Event[];
   eventRegistrations: EventRegistration[] | null;
   fetchEvent: (id: string) => Promise<ReturnType>;
+  fetchEvents: () => Promise<ReturnType>;
   registerUserInEvent: (id: string) => Promise<ReturnType>;
   createEvent: (eventData: EventData) => Promise<ReturnType>;
   updateEvent: (eventId: string, eventData: EventData) => Promise<ReturnType>;
@@ -23,8 +25,9 @@ type EventContextType = {
 export const EventContext = createContext<EventContextType | undefined>(undefined);
 
 export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [event, setEvent] = useState<Event | null>(null);
-  const [eventRegistrations, setEventRegistrations] = useState<EventRegistration[] | null>(null);
+  const [event, setEvent] = useState<Event>({} as Event);
+  const [events, setEvents] = useState<Event[]>([]);
+  const [eventRegistrations, setEventRegistrations] = useState<EventRegistration[]>([]);
 
   const fetchEvent = async (id: string) => {
     try {
@@ -41,6 +44,20 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       }
     }
   };
+
+  const fetchEvents = async () => {
+    try {
+      const response = await api.get("/events");
+      setEvents(response.data.reverse());
+
+      return { success: true }
+    } catch (error: any) {
+      return {
+        success: false,
+        message: { title: "Erro ao buscar eventos!" },
+      };
+    }
+  }
 
   const registerUserInEvent = async (id: string) => {
     try {
@@ -120,11 +137,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   };
 
-  const updateEvent = async (
-    eventId: string,
-    eventData: EventData
-  ) => {
-    console.log({ eventId, eventData })
+  const updateEvent = async () => {
     return {
       success: false,
       message: {
@@ -137,10 +150,12 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   return (
     <EventContext.Provider value={{
       event,
+      events,
       eventRegistrations,
       listEventRegistrations,
       registerUserInEvent,
       fetchEvent,
+      fetchEvents,
       createEvent,
       updateEvent
     }}>

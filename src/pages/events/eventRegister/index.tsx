@@ -1,22 +1,35 @@
-import { useNavigate, useParams } from "react-router-dom";
-import { FiCalendar, FiUsers } from "react-icons/fi";
+import { PiArrowLeftLight, PiUsers } from "react-icons/pi";
 import { LoadingOutlined } from '@ant-design/icons';
 import { useContext, useEffect } from "react";
-import { Helmet } from "react-helmet-async";
+import { useNavigate, useParams } from "react-router-dom";
 import { notification, Spin } from "antd";
 import { DateTime } from "luxon";
 
-import image from "@/assets/logo.png";
 import { useEvent } from "@/shared/hooks/useEvent";
+import { SunHorizon } from "@/assets/icons/SunHorizon";
 import { UserContext } from "@/shared/context/UserContext";
 
-import { EventRegisterContainer } from "./styles";
+import {
+  ContentContainer,
+  DateBadge,
+  DescriptionText,
+  DescriptionTitle,
+  EventInfoContainer,
+  EventRegisterContainer,
+  EventSubtitle,
+  EventTitle,
+  HeaderContainer,
+  InfoText,
+  RequestButton,
+  StyledButton
+} from "./styles";
 
 export const EventRegister = () => {
-  const { id } = useParams<{ id: string }>();
-  const { fetchUserProfile, userProfile } = useContext(UserContext);
-  const { event, fetchEvent, registerUserInEvent } = useEvent();
+  const params = useParams();
   const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
+  const { fetchUserProfile } = useContext(UserContext);
+  const { event, fetchEvent, registerUserInEvent } = useEvent();
 
   const event_status = {
     OPEN: "Registrar-se no Evento",
@@ -24,6 +37,14 @@ export const EventRegister = () => {
     CONFIRMED: "Confirmado",
     CANCELED: "Solicitado",
   }
+
+  const handleRegister = async () => {
+    const { success, message } = await registerUserInEvent(String(id));
+
+    if (!success) return notification.error({ message: message?.title, description: message?.description });
+    notification.success({ message: message?.title, description: message?.description });
+    fetchEvent(String(params.id));
+  };
 
   useEffect(() => {
     async function fetchEventDetails(id: string) {
@@ -37,71 +58,45 @@ export const EventRegister = () => {
     }
   }, []);
 
-  const handleRegister = async () => {
-    const { success, message } = await registerUserInEvent(String(id));
-
-    if (success) return notification.success({ message: message?.title, description: message?.description })
-    return notification.error({ message: message?.title, description: message?.description })
-  };
-
-  const handleNavigateToConfig = () => {
-    navigate(`/events/config/${id}`);
-  };
-
   if (!event) return (
     <Spin indicator={<LoadingOutlined spin />} size="large" />
   )
 
   return (
     <EventRegisterContainer>
-      <Helmet title="Register" />
+      <HeaderContainer>
+        <StyledButton onClick={() => navigate("/events")}>
+          <PiArrowLeftLight />
+          Voltar
+        </StyledButton>
+        <StyledButton onClick={() => navigate(`/events/users/${params.id}`)}>
+          Ver clientes cadastrados
+          <PiUsers />
+        </StyledButton>
+      </HeaderContainer>
 
-      <div className="event-cover">
-        <section className="event-info">
-          <h2>{event.name}</h2>
+      <ContentContainer>
+        <EventTitle>{event.name}</EventTitle>
+        <EventSubtitle>Cerimônias programadas</EventSubtitle>
 
-          <h4>
-            <FiCalendar />
-            {DateTime.fromISO(event.date).toFormat("dd MMM yyyy - hh:mm")}
-          </h4>
+        <EventInfoContainer>
+          <SunHorizon />
+          <InfoText>ás {DateTime.fromISO(event.date).toFormat("hh:mm")}</InfoText>
+          <DateBadge>{DateTime.fromISO(event.date).toFormat("dd/MM/yyyy")}</DateBadge>
+          <InfoText>{event.availability} Vagas disponíveis</InfoText>
+          <InfoText>10 Clientes cadastrados</InfoText>
+        </EventInfoContainer>
 
-          <h4>
-            <FiUsers />
-            Vagas disponíveis: {event.availability}
-          </h4>
+        <RequestButton onClick={handleRegister} disabled={event.userStatus !== "OPEN"}>
+          {event_status[event.userStatus]}
+        </RequestButton>
 
-          {userProfile.role === "ADMIN" && (
-            <button className="settings-button" onClick={handleNavigateToConfig}>
-              Configurar
-            </button>
-          )}
-          <button onClick={handleRegister} className="register-button" disabled={event.userStatus !== "OPEN"}>
-            {event_status[event.userStatus]}
-          </button>
-        </section>
+        <DescriptionTitle>Descrição do evento:</DescriptionTitle>
 
-        <img src={image} alt={event.name} className="event-preview-image" />
-      </div>
-
-      <div className="event-details">
-        <h3>Descrição do Evento</h3>
-        <p className="event-description">{event.description}</p>
-
-        <h3>Conduta</h3>
-        <p>
-          O respeito e a boa convivência são fundamentais. Todos devem agir com cordialidade, ouvindo e interagindo de forma harmoniosa. Valorizar o momento e manter uma energia positiva contribui para uma experiência mais enriquecedora para todos.
-        </p>
-
-        <h3>O que pode fazer</h3>
-        <p>
-          Você pode interagir, compartilhar histórias e vivenciar a experiência de forma aberta e respeitosa. Aproveite o momento para se conectar com as pessoas ao seu redor, sempre mantendo uma postura amigável e receptiva.
-        </p>
-
-        <h3>O que não pode fazer</h3>
-        <p>
-          Evite qualquer comportamento que possa desrespeitar os demais participantes ou prejudicar a experiência coletiva. O uso de linguagem ofensiva, atitudes desrespeitosas ou qualquer conduta que vá contra o espírito do evento não serão aceitos.
-        </p>
-      </div>
+        <DescriptionText>
+          {event.description}
+        </DescriptionText>
+      </ContentContainer>
     </EventRegisterContainer>
   );
 };

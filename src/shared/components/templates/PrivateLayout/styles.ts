@@ -15,7 +15,7 @@ export const MainLayout = styled.div`
 
 export const Content = styled.div`
   width: 100%;
-  max-width: calc(100vw - 95px);
+  max-width: calc(100vw - 80px);
 
   @media (max-width: 900px){
     width: 100vw;

@@ -19,6 +19,7 @@ export const EventCreate = () => {
     navigate("/events");
     return notification.success({ message: message?.title, description: message?.description });
   }
+
   return (
     <EventCreateContainer>
       <CreateAndUpdateEventForm title={"Criar Evento"} onSubmit={handleCreateEvent} />

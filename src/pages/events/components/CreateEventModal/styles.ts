@@ -1,8 +1,7 @@
 
-import { Modal, Input, DatePicker, Button } from "antd";
+import { DefaultButton } from "@/shared/components/DefaultButton";
+import { Modal, DatePicker } from "antd";
 import styled from "styled-components";
-
-export const { TextArea } = Input;
 
 export const StyledModal = styled(Modal)`
   .ant-modal-content {
@@ -22,57 +21,76 @@ export const StyledModal = styled(Modal)`
     border-top: none;
     padding: 16px 0 0;
   }
+
+  form input[name="availability"] {
+    max-width: 426px;
+  }
 `
 
 export const Title = styled.h2`
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 4px;
+  font-family: Montserrat;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 140%;
+  letter-spacing: 0%;
+  margin-bottom: 10px;
 `
 
 export const Subtitle = styled.p`
-  color: #8c8c8c;
+  font-family: Montserrat;
+  font-weight: 400;
   font-size: 14px;
-  margin-bottom: 24px;
+  line-height: 140%;
+  letter-spacing: 0%;
+  margin-bottom: 30px;
+  color: #7D7C83;
 `
 
 export const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-top: 24px;
+  margin-top: 80px;
 `
 
-export const BackButton = styled(Button)`
-  display: flex;
-  align-items: center;
-  border-radius: 20px;
-  border: 1px solid #d9d9d9;
-  padding: 0 16px;
-  height: 40px;
-  
+export const BackButton = styled(DefaultButton)`
+  background: none;
+  color: #96AE8E;
+  padding: 10px 32px;
+  gap: 5px;
+
   &:hover {
-    border-color: #d9d9d9;
-    color: #595959;
+    background-color: #96AE8E;
+    color: #FAFAFA
   }
 `
 
-export const SaveButton = styled(Button)`
-  display: flex;
-  align-items: center;
-  border-radius: 20px;
-  background-color: #8bc34a;
-  border: none;
-  padding: 0 16px;
-  height: 40px;
+export const SaveButton = styled(DefaultButton)`
+  background-color: #96AE8E;
+  color: #FAFAFA;
+  gap: 10px;
   
   &:hover {
-    background-color: #7cb342;
+    background-color: #fff;
+    color: #96AE8E
   }
 `
 
 export const StyledDatePicker = styled(DatePicker)`
   width: 100%;
-  
+  max-width: 426px;
+  padding: 13px;
+  border-radius: 16px;
+  border: 2px solid #0C120C33;
+
+  .ant-picker-input input {
+    font-family: Montserrat;
+    font-weight: 500;
+    font-size: 14px !important;
+    line-height: 140%;
+    letter-spacing: 0%;
+    outline: none;
+  }
+
   .ant-picker-suffix {
     color: #8c8c8c;
   }
