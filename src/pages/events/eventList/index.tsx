@@ -8,6 +8,7 @@ import { EventContent, EventHeader, EventsContainer, EventsList } from "./styles
 import { UserContext } from "@/shared/context/UserContext";
 import { DateTime } from "luxon";
 import { SunHorizon } from "@/assets/icons/SunHorizon";
+import { CreateEventModal } from "../components/CreateEventModal";
 
 type Event = {
   id: string;
@@ -21,6 +22,7 @@ type Event = {
 
 export const EventList = () => {
   const [events, setEvents] = useState<Event[] | null>(null);
+  const [isModalVisible, setIsModalVisible] = useState(false)
   const { fetchUserProfile, userProfile } = useContext(UserContext)
   const navigate = useNavigate();
 
@@ -46,9 +48,15 @@ export const EventList = () => {
     navigate("/events/create");
   };
 
+  const toggleEventModalVisibility = () => {
+    setIsModalVisible(!isModalVisible);
+  };
+
   return (
     <EventsContainer>
       <Helmet title="Eventos" />
+
+      <CreateEventModal visible={isModalVisible} onClose={toggleEventModalVisibility} />
 
       <EventContent>
         <EventHeader>
