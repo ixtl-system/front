@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { FiMinus, FiPlus } from "react-icons/fi";
 import { Button, Select, Space, Tag } from "antd";
-import { IDisease, IUserDiseases } from "@/shared/context/DiseasesContext";
+import { IDisease } from "@/shared/context/DiseasesContext";
 import { useDiseases } from "@/shared/hooks/useDiseases";
 import { DiseasesHistoryContainer } from "./styles";
 

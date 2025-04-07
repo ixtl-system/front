@@ -4,7 +4,6 @@ import { useContext, useEffect, useState } from "react";
 
 import { DrugHistory } from "@/pages/user/profile/DrugHistory";
 import { PersonalInformation } from "@/pages/user/profile/PersonalInformation";
-import { LayoutWithHeader } from "@/shared/components/templates/LayoutWithHeader";
 import { UserContext } from "@/shared/context/UserContext";
 import { DiseasesHistory } from "./DiseasesHistory";
 import { useDiseases } from "@/shared/hooks/useDiseases";
