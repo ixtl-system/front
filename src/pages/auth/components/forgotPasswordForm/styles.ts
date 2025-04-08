@@ -21,7 +21,10 @@ export const ForgotPasswordFormContainer = styled.div`
 
   .login-options {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
+    width: 100%;
+    gap: 5px;
   }
 
   .login-options button {
@@ -29,8 +32,7 @@ export const ForgotPasswordFormContainer = styled.div`
   }
 
   @media screen and (max-width: 1000px) {
-    .forgot-password-form-container {
-      width: 100%;
-    }
+    width: 100%;
+    padding: 0 30px;
   }
 `

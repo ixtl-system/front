@@ -22,7 +22,10 @@ export const SignUpFormContainer = styled.div`
 
   .login-options {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
+    width: 100%;
+    gap: 5px;
   }
 
   .login-options button {
@@ -30,9 +33,8 @@ export const SignUpFormContainer = styled.div`
   }
 
   @media screen and (max-width: 1000px) {
-    .sign-in-form-container {
-      width: 100%;
-    }
+    width: 100%;
+    padding: 0 30px;
   }
 `
 

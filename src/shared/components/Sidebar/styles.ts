@@ -1,16 +1,21 @@
 import styled from "styled-components";
 
-export const SidebarContainer = styled.div`
+interface ISidebarProps {
+  $isCollapsed?:boolean;
+}
+
+export const SidebarContainer = styled.div<ISidebarProps>`
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
 
   z-index: 99;
-  width: 100%;
-  max-width: 80px;
-  min-height: calc(100vh - 40px);
   height: max-content;
+  min-height: calc(100vh - 40px);
+  width: ${({ $isCollapsed }) => $isCollapsed ? '250px' : '80px'};
+
+  transition: 0.4s width;
 `;
 
 export const SidebarContent = styled.section`
@@ -18,33 +23,10 @@ export const SidebarContent = styled.section`
   align-items: flex-start;
   padding: 55px 16px 0;
   flex-direction: column;
-  position: fixed;
-
-  left: 0;
-  top: 0;
 
   width: 100%;
-  max-width: 80px;
   min-height: 100vh;
   background-color: #FFF8ED;
-
-  ul li span  {
-    display: none;
-    font-family: Montserrat;
-
-  }
-
-  &, ul li span  {
-    transition: 0.4s all;
-  }
-
-  &:hover {
-    max-width: 200px;
-
-    ul li span {
-      display: flex;
-    }
-  }
 `;
 
 export const SidebarList = styled.ul`
@@ -57,20 +39,18 @@ export const SidebarList = styled.ul`
   padding: 0 4px;
 `;
 
-export const SidebarListItem = styled.li`
+export const SidebarListItem = styled.li<ISidebarProps>`
   display: flex;
   align-items: center;
   cursor: pointer;
   position: relative;
   gap: 10px;
 
-
   div {
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    transition: 0.4s all;
 
     width: 40px;
     height: 40px;
@@ -81,6 +61,15 @@ export const SidebarListItem = styled.li`
     }
   }
 
+  width: ${({ $isCollapsed }) => $isCollapsed ? '100%' : 'fit-content'};
+  transition: 0.4s all;
+
+  span {
+    font-family: Montserrat;
+    opacity: ${({ $isCollapsed }) => $isCollapsed ? '1' : '0'};    
+    animation: appears 0.6s forwards;
+  }
+
   &:is(:hover, :active, :focus) {
     div {
       background-color: #96AE8E;
@@ -88,6 +77,16 @@ export const SidebarListItem = styled.li`
 
     svg {
       color: #FFF !important;
+    }
+  }
+
+  @keyframes appears {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
     }
   }
 `;

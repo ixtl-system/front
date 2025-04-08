@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PiCalendarDots, PiClipboardTextLight, PiSignOut, PiUser } from "react-icons/pi";
 
@@ -9,48 +9,54 @@ import { SidebarContainer, SidebarContent, SidebarList, SidebarListItem } from '
 export const Sidebar = () => {
   const navigate = useNavigate();
   const { LogOut } = useContext(AuthContext);
+  const [sidebarIsCollapsed, setSidebarIsCollapsed] = useState(false);
 
   const handleLogOut = () => {
     LogOut();
     navigate("/");
   };
 
+  const toggleSidebarIsCollapsed = () => {
+    setSidebarIsCollapsed(!sidebarIsCollapsed);
+  }
+
   return (
-    <SidebarContainer id="sidebar">
+    <SidebarContainer id="sidebar" onMouseEnter={() => setSidebarIsCollapsed(true)} onMouseLeave={() => setSidebarIsCollapsed(false)} $isCollapsed={sidebarIsCollapsed}>
+
       <SidebarContent>
         <img src={LogoItem} alt="logo" onClick={() => navigate("/")} />
 
         <SidebarList>
-          <SidebarListItem onClick={() => navigate("/profile")}>
+          <SidebarListItem onClick={() => navigate("/profile")} $isCollapsed={sidebarIsCollapsed}>
             <div>
               <PiUser color="#96AE8E" />
             </div>
 
-            <span>Perfil</span>
+            {sidebarIsCollapsed && <span>Perfil</span>}
           </SidebarListItem>
 
-          <SidebarListItem onClick={() => navigate("/events")} >
+          <SidebarListItem onClick={() => navigate("/events")} $isCollapsed={sidebarIsCollapsed}>
             <div>
               <PiCalendarDots color="#96AE8E" />
             </div>
 
-            <span>Eventos</span>
+            {sidebarIsCollapsed && <span>Eventos</span>}
           </SidebarListItem>
 
-          <SidebarListItem>
+          <SidebarListItem $isCollapsed={sidebarIsCollapsed}>
             <div>
               <PiClipboardTextLight color="#96AE8E" />
             </div>
 
-            <span>Indisponível</span>
+            {sidebarIsCollapsed && <span>Indisponível</span>}
           </SidebarListItem>
 
-          <SidebarListItem onClick={handleLogOut}>
+          <SidebarListItem onClick={handleLogOut} $isCollapsed={sidebarIsCollapsed}>
             <div>
               <PiSignOut color="#96AE8E" />
             </div>
 
-            <span>Sair</span>
+            {sidebarIsCollapsed && <span>Sair</span>}
           </SidebarListItem>
         </SidebarList>
       </SidebarContent>

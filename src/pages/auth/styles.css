@@ -10,7 +10,7 @@
 
 @media (max-width: 500px) {
   .sign-container {
-    padding: 0;
+    padding: 0 30px;
   }
 }
 
