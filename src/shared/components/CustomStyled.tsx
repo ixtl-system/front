@@ -7,6 +7,10 @@ export const CustomTitle = styled.h2`
   line-height: 140%;
   letter-spacing: 0%;
   margin-bottom: 10px;
+
+  @media (max-width: 600px) {
+    font-size: 24px;
+  }
 `
 
 export const CustomSubtitle = styled.p`

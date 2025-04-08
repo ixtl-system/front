@@ -4,7 +4,7 @@ export const MainLayout = styled.div`
   display: flex;
 
   @media (max-width: 900px){
-    grid-template-columns: 1fr;
+    flex-direction: column;
   
     #sidebar {
       display: none;

@@ -74,6 +74,16 @@ export const EventHeader = styled.div`
 
   }
 
+  @media (max-width: 600px) {
+    div h1 {
+      font-size: 24px;
+    }
+
+    button {
+      font-size: 16px;
+    }
+  }
+
 `
 
 export const EventsList = styled.div`

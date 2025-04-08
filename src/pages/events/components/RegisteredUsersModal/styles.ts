@@ -29,6 +29,10 @@ export const RegisterUsersModalContainer = styled(Modal)`
   .ant-empty-image {
     margin: 80px 0 0;
   }
+
+  @media (max-width: 600px) {
+    top: 0;
+  }
 `
 
 export const ModalContent = styled.div``

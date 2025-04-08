@@ -16,13 +16,8 @@ export const Sidebar = () => {
     navigate("/");
   };
 
-  const toggleSidebarIsCollapsed = () => {
-    setSidebarIsCollapsed(!sidebarIsCollapsed);
-  }
-
   return (
     <SidebarContainer id="sidebar" onMouseEnter={() => setSidebarIsCollapsed(true)} onMouseLeave={() => setSidebarIsCollapsed(false)} $isCollapsed={sidebarIsCollapsed}>
-
       <SidebarContent>
         <img src={LogoItem} alt="logo" onClick={() => navigate("/")} />
 

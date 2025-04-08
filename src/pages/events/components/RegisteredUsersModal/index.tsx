@@ -58,7 +58,6 @@ export const RegisterUsersModal = ({ visible, onClose }: RegisterUsersModalProps
     <RegisterUsersModalContainer
       open={visible}
       onCancel={handleCancel}
-      closable={false}
       width={900}
       height={600}
       footer={null}

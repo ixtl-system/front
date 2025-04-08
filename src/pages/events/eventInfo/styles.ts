@@ -22,7 +22,7 @@ export const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 30px;
+  gap: 10px;
   align-items: center;
   margin-bottom: 32px;
 `

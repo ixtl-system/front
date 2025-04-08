@@ -1,5 +1,6 @@
 import { Content, MainLayout } from "./styles";
 import { Sidebar } from "../../Sidebar";
+import { Topbar } from "../../Topbar";
 
 interface ILayoutProps {
   children: React.ReactNode;
@@ -8,6 +9,7 @@ interface ILayoutProps {
 export const PrivateLayout = ({ children }: ILayoutProps) => {
   return (
     <MainLayout>
+      <Topbar />
       <Sidebar />
 
       <Content>
