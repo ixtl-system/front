@@ -1,5 +1,20 @@
 import styled from "styled-components";
 
+export const StyledInputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  span {
+    font-family: Montserrat;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0%;
+    color: #7D7C8380;
+    margin: 0 0 10px;
+  }
+`;
+
 export const StyledInput = styled.input`
   display: flex;
   padding: 13px;
@@ -13,7 +28,6 @@ export const StyledInput = styled.input`
   font-family: Montserrat;
   font-weight: 500;
   font-size: 14px;
-  line-height: 140%;
   letter-spacing: 0%;
   outline: none;
 

@@ -18,6 +18,6 @@ export const Content = styled.div`
 
   @media (max-width: 900px){
     width: 100vw;
-    max-width: 100vw;
+    max-width: calc(100vw - 16px);;
   }
 `;

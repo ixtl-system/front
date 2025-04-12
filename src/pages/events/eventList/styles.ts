@@ -62,7 +62,6 @@ export const EventHeader = styled.div`
     font-family: Montserrat;
     font-weight: 700;
     font-size: 20px;
-    line-height: 140%;
     letter-spacing: 0%;
     color: #FAFAFA;
 

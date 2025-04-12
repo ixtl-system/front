@@ -43,3 +43,19 @@ export function validatePhone(phone_number: string) {
 
   return fixed.length == 11;
 }
+
+export function validateResidentialPhone(phone_number: string) {
+  const cleanNumber = cleanString(phone_number); 
+  const exp = 
+    /^(?:(?:\+|00)?(55)[\s-]?)?(?:\(?([1-9][0-9])\)?[\s-]?)?([2-5][0-9]{3}[\s-]?[0-9]{4})$/;
+  
+  const match = exp.exec(cleanNumber);
+
+  if (!match) {
+    return false;
+  }
+
+  const fullNumber = (match[2] || '') + (match[3] || '');
+
+  return fullNumber.length === 10;
+}

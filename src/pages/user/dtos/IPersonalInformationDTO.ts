@@ -1,7 +1,7 @@
 export interface IPersonalInformation {
   name: string;
   email: string;
-  gender: string;
+  gender: "MASCULINE" | "FEMININE" | "OTHER";
   rg: string;
   cpf: string;
   street: string;

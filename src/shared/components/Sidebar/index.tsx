@@ -17,8 +17,8 @@ export const Sidebar = () => {
   };
 
   return (
-    <SidebarContainer id="sidebar" onMouseEnter={() => setSidebarIsCollapsed(true)} onMouseLeave={() => setSidebarIsCollapsed(false)} $isCollapsed={sidebarIsCollapsed}>
-      <SidebarContent>
+    <SidebarContainer id="sidebar" $isCollapsed={sidebarIsCollapsed}>
+      <SidebarContent onMouseEnter={() => setSidebarIsCollapsed(true)} onMouseLeave={() => setSidebarIsCollapsed(false)} $isCollapsed={sidebarIsCollapsed}>
         <img src={LogoItem} alt="logo" onClick={() => navigate("/")} />
 
         <SidebarList>

@@ -11,14 +11,11 @@ export const SidebarContainer = styled.div<ISidebarProps>`
   position: relative;
 
   z-index: 99;
-  height: max-content;
-  min-height: calc(100vh - 40px);
-  width: ${({ $isCollapsed }) => $isCollapsed ? '250px' : '80px'};
-
+  width: ${({ $isCollapsed }) => $isCollapsed ? '280px' : '80px'};
   transition: 0.4s width;
 `;
 
-export const SidebarContent = styled.section`
+export const SidebarContent = styled.section<ISidebarProps>`
   display: flex;
   align-items: flex-start;
   padding: 55px 16px 0;
@@ -27,6 +24,14 @@ export const SidebarContent = styled.section`
   width: 100%;
   min-height: 100vh;
   background-color: #FFF8ED;
+
+  height: max-content;
+  min-height: 100vh;
+  width: ${({ $isCollapsed }) => $isCollapsed ? '250px' : '80px'};
+
+  transition: 0.4s width;
+  position: fixed;
+  left: 0;
 `;
 
 export const SidebarList = styled.ul`

@@ -4,7 +4,6 @@ export const CustomTitle = styled.h2`
   font-family: Montserrat;
   font-weight: 700;
   font-size: 32px;
-  line-height: 140%;
   letter-spacing: 0%;
   margin-bottom: 10px;
 
@@ -17,7 +16,6 @@ export const CustomSubtitle = styled.p`
   font-family: Montserrat;
   font-weight: 400;
   font-size: 14px;
-  line-height: 140%;
   letter-spacing: 0%;
   margin-bottom: 30px;
   color: #7D7C83;
@@ -33,7 +31,6 @@ export const DefaultButton = styled.button`
   font-family: Montserrat;
   font-weight: 700;
   font-size: 20px;
-  line-height: 140%;
   letter-spacing: 0%;
 
   @media (max-width: 600px) {

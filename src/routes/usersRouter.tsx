@@ -1,4 +1,4 @@
-import { Profile } from "@/pages/user/profile";
+import { Profile } from "@/pages/user/newProfile";
 
 export const usersRouter = [
   {

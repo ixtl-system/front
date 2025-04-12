@@ -1,4 +1,6 @@
 import React from "react";
+import ptBR from "antd/es/locale/pt_BR";
+import { ConfigProvider } from "antd";
 
 import { AuthContextProvider } from "./AuthContext";
 import { ProfileContextProvider } from "./Profile";
@@ -12,12 +14,15 @@ interface IContextProps {
 
 export const ContextProvider = ({ children }: IContextProps) => {
   return (
+
     <AuthContextProvider>
       <ProfileContextProvider>
         <UserContextProvider>
           <EventProvider>
             <DiseasesProvider>
-              {children}
+              <ConfigProvider locale={ptBR}>
+                {children}
+              </ConfigProvider>
             </DiseasesProvider>
           </EventProvider>
         </UserContextProvider>

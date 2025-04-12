@@ -66,7 +66,6 @@ export const StyledDatePicker = styled(DatePicker)`
     font-family: Montserrat;
     font-weight: 500;
     font-size: 14px !important;
-    line-height: 140%;
     letter-spacing: 0%;
     outline: none;
   }
