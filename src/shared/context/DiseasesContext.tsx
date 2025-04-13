@@ -19,6 +19,7 @@ export interface IUserMedication {
 
 export interface IUserDiseases extends Omit<IDisease, "name"> {
   diseaseName: string;
+  diseaseId: string;
 }
 
 // Nova interface para cruzamento de doenças com medicações
@@ -130,7 +131,7 @@ export const DiseasesProvider = ({ children }: { children: React.ReactNode }) =>
       const combinedData: IUserDiseasesAndMedications[] = diseasesData.map(disease => ({
         id: disease.id,
         diseaseName: disease.diseaseName,
-        medications: medicationsData.filter(med => med.diseaseId === disease.id)
+        medications: medicationsData.filter(med => med.diseaseId === disease.diseaseId)
       }));
 
       setUserDiseasesAndMedications(combinedData);

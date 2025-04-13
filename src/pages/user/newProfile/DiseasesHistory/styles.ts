@@ -59,14 +59,12 @@ export const AddButton = styled(DefaultButton)`
 export const DiseaseItem = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 16px;
   flex-wrap: wrap;
   gap: 16px;
-  border-bottom: 1px solid #f0f0f0;
-  
-  &:last-child {
-    border-bottom: none;
-  }
+  padding: 16px;
+  border-radius: 16px;
+  border: 2px solid #FFF8ED;
+  margin: 0 0 20px;
 
   div {
     display: flex;
@@ -127,6 +125,7 @@ export const ActionButtons = styled.div`
     background: none;
     border: none;
     color: #e57373;
+    padding: 0;
     font-size: 14px;
     cursor: pointer;
     font-family: 'Montserrat', sans-serif;

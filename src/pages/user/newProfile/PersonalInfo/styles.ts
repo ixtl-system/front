@@ -20,7 +20,6 @@ export const PersonalInfoContainer = styled.form`
 
   section {
     display: flex;
-    flex-wrap: wrap;
     gap: 32px;
 
     > div {
@@ -68,6 +67,10 @@ export const PersonalInfoContainer = styled.form`
           text-align: center;
         }
       }
+    }
+
+    @media (max-width: 800px) {
+      flex-direction: column;
     }
   }
 `;

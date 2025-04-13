@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Select, Button } from "antd";
 import { PiPlusCircle, PiXCircle } from "react-icons/pi";
 import { Controller, useForm } from "react-hook-form";
 import { ActionButtons, AddButton, DiseaseItem, DiseasesContainer, FormColumn, FormRow, StyledSelect } from "./styles";
@@ -13,7 +12,7 @@ export const DiseasesHistory = () => {
   const [selectedDisease, setSelectedDisease] = useState<IDisease>({} as IDisease);
   const { control, handleSubmit, register, reset } = useForm();
 
-  const onSubmit = ({ name, medication }: { name?: string, medication?: string }) => {
+  const onSubmit = async ({ name, medication }: { name?: string, medication?: string }) => {
     if (!name) return;
 
     const diseaseData = allDiseases.find(disease => disease.name === name);
@@ -22,20 +21,20 @@ export const DiseasesHistory = () => {
     const diseaseExists = userDiseasesAndMedications.find(userDisease => userDisease.diseaseName === name);
 
     if (!diseaseExists?.id) {
-      createUserDisease(diseaseData.id);
+      await createUserDisease(diseaseData.id);
     } else {
       if (medication && medication.trim() !== '') {
         const medicationExists = diseaseExists.medications.find(med => med.diseaseId === diseaseData.id && med.name === medication);
         if (!medicationExists?.id) {
           const startUsing = new Date().toISOString();
-          createUserMedication({ diseaseId: diseaseData.id, name: medication, startUsing });
+          await createUserMedication({ diseaseId: diseaseData.id, name: medication, startUsing });
         }
       }
     }
 
     reset();
+    getUserDiseasesAndMedications();
     setSelectedDisease({} as IDisease);
-    getUserDiseasesAndMedications()
   };
 
 
