@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { PiFloppyDiskLight } from "react-icons/pi";
-import { DatePicker, DatePickerProps, message, Select } from "antd";
+import { DatePicker, message, Select } from "antd";
 import { ChangeEvent, useContext, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 
@@ -20,7 +20,6 @@ import { IPersonalInformation } from "../../dtos";
 export const PersonalInfo = () => {
   const { userProfile: user, updateUserProfile } = useContext(UserContext);
 
-  // Incluímos o setValue para atualizações manuais dos campos
   const {
     control,
     formState: { errors },
@@ -30,7 +29,6 @@ export const PersonalInfo = () => {
   } = useForm<profileFormData>({
     resolver: zodResolver(profileSchema)
   });
-  console.log(errors, user)
 
   const handleFormattedChange = (e: ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;

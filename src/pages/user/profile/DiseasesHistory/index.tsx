@@ -7,14 +7,14 @@ import { useDiseases } from "@/shared/hooks/useDiseases";
 import { DiseasesHistoryContainer } from "./styles";
 
 export const DiseasesHistory = () => {
-  const { allDiseases, userDiseases, registerUserDisease } = useDiseases();
+  const { allDiseases, userDiseases, createUserDisease } = useDiseases();
   const [showHistory, setShowHistory] = useState(false);
   const [showRegisterFields, setShowRegisterFields] = useState(false);
   const [selectedDiseaseId, setSelectedDiseaseId] = useState<string>("");
 
   const handleRegisterDisease = async () => {
     if (!selectedDiseaseId) return;
-    await registerUserDisease(selectedDiseaseId);
+    await createUserDisease(selectedDiseaseId);
     setSelectedDiseaseId("");
     setShowRegisterFields(false);
   };
