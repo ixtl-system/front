@@ -3,15 +3,8 @@ export default class Rg {
 
   public validate(rg: string) {
     rg = this.clean(rg);
-    console.log(this.isValidLength(rg));
-    console.log(this.hasAllDigitEquals(rg));
     if (!this.isValidLength(rg)) return false;
     if (this.hasAllDigitEquals(rg)) return false;
-
-    console.log(
-      this.calculateDigit(rg),
-      this.extractCheckDigit(rg)
-    )
 
     const calculatedDigit = this.calculateDigit(rg);
     return this.extractCheckDigit(rg) === calculatedDigit;

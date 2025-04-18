@@ -12,7 +12,7 @@ import { useEvent } from "@/shared/hooks/useEvent";
 
 export const EventList = () => {
   const navigate = useNavigate();
-  const { events, fetchEvents } = useEvent();
+  const { events, fetchEvents, fetchEventTypes } = useEvent();
   const { fetchUserProfile, userProfile } = useContext(UserContext)
 
   const [isModalVisible, setIsModalVisible] = useState(false)
@@ -27,7 +27,8 @@ export const EventList = () => {
 
   useEffect(() => {
     fetchEvents();
-    fetchUserProfile()
+    fetchUserProfile();
+    fetchEventTypes()
   }, []);
 
   return (

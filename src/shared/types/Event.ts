@@ -26,3 +26,9 @@ export type EventRegistration = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type EventType = {
+  id: string;
+  name: string;
+};
+

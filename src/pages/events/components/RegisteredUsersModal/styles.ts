@@ -72,29 +72,28 @@ export const UserListItem = styled.li<IUserListItemProps>`
     letter-spacing: 0%;
     color: #7D7C83;
 
+    width: 250px;
+
     svg {
       font-size: 20px;
+      min-width: 20px;
     }
+  }
+
+  section {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 380px;
+    gap: 20px;
   }
 
   ${({ $status }) => $status === "CANCELED" ? css`
     background-color: #E469621A;
     border: none;
-    
-    .status span {
-      font-weight: 700;
-      color: #E46962;
-    }
   ` : $status === "CONFIRMED" ? css`
-    background-color: #FFF8ED;
+    background-color: #96AE8E26;
     border: none;
-    
-    .status span {
-
-
-      font-weight: 700;
-      color: #96AE8E;
-    }
   ` : css`
     border: 2px solid #FFF8ED;
   ` };
@@ -102,7 +101,7 @@ export const UserListItem = styled.li<IUserListItemProps>`
   .status {
     display: flex;
     align-items: center;
-    gap: 18px;
+    gap: 8px;
 
     span {
       font-family: Montserrat;
@@ -117,21 +116,25 @@ export const UserListItem = styled.li<IUserListItemProps>`
   }
 
   .approve-control {
+    display: flex;
+    gap: 20px;
+
+    .approve {
+      color: #96AE8E;
+    }
+
+    .reject {
+      color: #E46962;
+    }
+
     button {
       font-family: Montserrat;
       font-size: 14px;
       font-weight: 500;
-      color: #FFFFFF;
-      letter-spacing: 0%;
+      
       border: none;
-      background: #96AE8E;
-      border-radius: 16px;
-      padding: 5px 10px;
-
-      & + button {
-        background: #E46962;
-        margin-left: 10px;
-      }
+      background: none;
+      padding: 0;
     }
   }
 

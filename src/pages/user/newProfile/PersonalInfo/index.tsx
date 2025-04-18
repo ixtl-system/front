@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { PiFloppyDiskLight } from "react-icons/pi";
-import { DatePicker, message, Select } from "antd";
+import { DatePicker, message } from "antd";
 import { ChangeEvent, useContext, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 
@@ -16,6 +16,7 @@ import { formatCep } from "@/shared/utils/formatCep";
 import { SaveButton } from "../styles";
 import cleanString from "@/shared/utils/cleanString";
 import { IPersonalInformation } from "../../dtos";
+import { CustomSelect } from "@/shared/components/CustomSelect";
 
 export const PersonalInfo = () => {
   const { userProfile: user, updateUserProfile } = useContext(UserContext);
@@ -39,8 +40,6 @@ export const PersonalInfo = () => {
     if (name === "zipCode") return setValue(name, formatCep(value));
     if (name === "cpf") return setValue(name, formatCpf(value));
     if (name === "rg") return setValue(name, formatRg(value));
-
-    console.log(name, value, formatCep(value))
   }
 
   const onSubmit = async (form: profileFormData) => {
@@ -99,20 +98,16 @@ export const PersonalInfo = () => {
       </section>
 
       <section>
-        <Controller
+        <CustomSelect
           name="gender"
           control={control}
-          render={({ field }) => (
-            <div>
-              <p>Gênero</p>
-              <Select {...field} style={{ width: "100%" }}>
-                <Select.Option value="MASCULINE">Masculino</Select.Option>
-                <Select.Option value="FEMININE">Feminino</Select.Option>
-                <Select.Option value="OTHER">Outro</Select.Option>
-              </Select>
-              {errors.gender && <span className="error">{errors.gender.message}</span>}
-            </div>
-          )}
+          label="Gênero"
+          options={[
+            { label: "Masculino", value: "MASCULINE" },
+            { label: "Feminino", value: "FEMININE" },
+            { label: "Outro", value: "OTHER" },
+          ]}
+          error={errors.gender}
         />
 
         <Controller

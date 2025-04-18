@@ -21,7 +21,8 @@ export const StyledModal = styled(Modal)`
     border-top: none;
     padding: 16px 0 0;
   }
-
+  
+  .ant-select,
   form input[name="availability"] {
     max-width: 426px;
   }

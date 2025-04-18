@@ -8,8 +8,6 @@ interface IDrugProps {
 }
 
 export const DrugItem = ({ drug, updateDrug }: IDrugProps) => {
-
-  console.log({ drug })
   return (
     <DrugContainer>
       <h2>{drug.drugName}</h2>

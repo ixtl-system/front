@@ -11,8 +11,7 @@ export function validateCpf(value: string) {
 
 export function validateRg(value: string) {
   if (!value) return false;
-  console.log({value})
-
+  
   const rg = new Rg();
   return rg.validate(value);
 }

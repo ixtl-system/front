@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 
 import { useEvent } from "@/shared/hooks/useEvent"
 import { CustomInput } from "@/shared/components/CustomInput"
+import { CustomSelect } from "@/shared/components/CustomSelect"
 import { CustomTextArea } from "@/shared/components/CustomTextArea"
 
 import { EventFormData, eventSchema } from "./schema";
@@ -21,7 +22,7 @@ interface CreateEventModalProps {
 }
 
 export const CreateEventModal = ({ visible, onClose }: CreateEventModalProps) => {
-  const { createEvent, fetchEvents } = useEvent();
+  const { eventTypes, createEvent, fetchEvents } = useEvent();
 
   const {
     control,
@@ -77,6 +78,18 @@ export const CreateEventModal = ({ visible, onClose }: CreateEventModalProps) =>
 
         <Form.Item validateStatus={errors.availability ? "error" : ""} help={errors.availability?.message}>
           <CustomInput type="number" placeholder="Quantidade de lugares disponíveis" register={register} name={"availability"} />
+        </Form.Item>
+
+        <Form.Item validateStatus={errors.eventTypeId ? "error" : ""} help={errors.eventTypeId?.message}>
+          <CustomSelect
+            name="eventTypeId"
+            control={control}
+            placeholder="Selecione o tipo de evento"
+            options={eventTypes.map((type) => ({
+              label: type.name,
+              value: type.id,
+            }))}
+          />
         </Form.Item>
 
         <Form.Item validateStatus={errors.date ? "error" : ""} help={errors.date?.message}>

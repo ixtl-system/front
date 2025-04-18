@@ -56,10 +56,10 @@ export const DiseasesHistory = () => {
                 value={selectedDiseaseId || undefined}
               />
               <Button onClick={handleRegisterDisease} disabled={!selectedDiseaseId}>
-                Salvar
+                Aprovar
               </Button>
               <Button danger onClick={toggleRegisterFieldsVisibility}>
-                Cancelar
+                Remover
               </Button>
 
             </section>

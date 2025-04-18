@@ -1,6 +1,6 @@
 import React, { createContext, useState } from 'react';
 import { api } from '../infra/api';
-import { Event, EventData, EventRegistration, EventStatus } from '../types/Event';
+import { Event, EventData, EventRegistration, EventStatus, EventType } from '../types/Event';
 
 type ReturnType = {
   success: boolean;
@@ -20,6 +20,8 @@ type EventContextType = {
   event: Event;
   events: Event[];
   eventRegistrations: EventRegistration[] | null;
+  eventTypes: EventType[];
+  fetchEventTypes: () => Promise<ReturnType>;
   fetchEvent: (id: string) => Promise<ReturnType>;
   fetchEvents: () => Promise<ReturnType>;
   registerUserInEvent: (id: string) => Promise<ReturnType>;
@@ -34,6 +36,7 @@ export const EventContext = createContext<EventContextType | undefined>(undefine
 export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [event, setEvent] = useState<Event>({} as Event);
   const [events, setEvents] = useState<Event[]>([]);
+  const [eventTypes, setEventTypes] = useState<EventType[]>([]);
   const [eventRegistrations, setEventRegistrations] = useState<EventRegistration[]>([]);
 
   const fetchEvent = async (id: string) => {
@@ -137,7 +140,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const createEvent = async (eventData: EventData) => {
     try {
-      await api.post("/events", { ...eventData, eventTypeId: "68279336-1f8a-4d21-b8cc-fd55a5c4854d" });
+      await api.post("/events", { ...eventData });
 
       return {
         success: true,
@@ -167,6 +170,23 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     };
   };
 
+  const fetchEventTypes = async () => {
+    try {
+      const response = await api.get("/events-types");
+      setEventTypes(response.data);
+      return { success: true };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: {
+          title: "Erro ao buscar tipos de evento!",
+          description: error.response?.data?.message,
+        },
+      };
+    }
+  };
+
+
   return (
     <EventContext.Provider value={{
       event,
@@ -178,7 +198,9 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       fetchEvent,
       fetchEvents,
       createEvent,
-      updateEvent
+      updateEvent,
+      eventTypes,
+      fetchEventTypes,
     }}>
       {children}
     </EventContext.Provider>

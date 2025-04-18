@@ -22,7 +22,6 @@ export interface IUserDiseases extends Omit<IDisease, "name"> {
   diseaseId: string;
 }
 
-// Nova interface para cruzamento de doenças com medicações
 export interface IUserDiseasesAndMedications {
   id: string;
   diseaseName: string;
@@ -109,10 +108,8 @@ export const DiseasesProvider = ({ children }: { children: React.ReactNode }) =>
     }
   };
 
-  // Função para cruzar as doenças com as medicações
   const getUserDiseasesAndMedications = async () => {
     try {
-      // Busca as doenças e medicações em paralelo
       const [diseasesResponse, medicationsResponse] = await Promise.all([
         api.get("/profiles/diseases"),
         api.get("/profiles/medications")
@@ -121,13 +118,9 @@ export const DiseasesProvider = ({ children }: { children: React.ReactNode }) =>
       const diseasesData: IUserDiseases[] = diseasesResponse.data;
       const medicationsData: IUserMedication[] = medicationsResponse.data;
 
-      // Atualiza os estados individuais
       setUserDiseases(diseasesData);
       setUserMedications(medicationsData);
 
-      console.log({ diseasesData, medicationsData })
-
-      // Cria o estado combinado, associando as medicações à doença correta
       const combinedData: IUserDiseasesAndMedications[] = diseasesData.map(disease => ({
         id: disease.id,
         diseaseName: disease.diseaseName,

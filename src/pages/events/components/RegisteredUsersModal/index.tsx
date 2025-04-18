@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { useParams } from "react-router-dom"
-import { PiCheckCircleFill, PiUser, PiXCircleFill } from "react-icons/pi"
+import { PiCheckCircleFill, PiCircleLight, PiUser, PiXCircleFill } from "react-icons/pi"
 import { ArrowLeftOutlined } from "@ant-design/icons"
 
 import { BackButton, FooterContainer, RegisterUsersModalContainer, UserListItem, UsersList } from "./styles"
@@ -29,6 +29,10 @@ export const RegisterUsersModal = ({ visible, onClose }: RegisterUsersModalProps
     CONFIRMED: {
       icon: <PiCheckCircleFill color="#96AE8E" />,
       label: "Confirmado"
+    },
+    RESERVED: {
+      icon: <PiCircleLight color="#7D7C83" />,
+      label: "Reservado"
     }
   }
 
@@ -69,33 +73,44 @@ export const RegisterUsersModal = ({ visible, onClose }: RegisterUsersModalProps
         <UsersList>
           {eventRegistrations.map(user => (
             <UserListItem $status={user.status}>
-              <h5>
-                <PiUser color="#7D7C83" />
+              <section>
+                <h5>
+                  <PiUser color="#7D7C83" />
 
-                {user.userName}
-              </h5>
+                  {user.userName}
+                </h5>
 
-              {user.status === "RESERVED" ? (
-                <div className="approve-control">
-                  <button onClick={() => handleApprove(user.userId, user.eventId)}>
-                    Aprovar
-                  </button>
-
-                  <button onClick={() => handleReject(user.userId, user.eventId)}>
-                    Reprovar
-                  </button>
-                </div>
-              ) : (
                 <div className="status">
                   <span>{eventStatus[user.status].label}</span>
 
                   {eventStatus[user.status].icon}
                 </div>
-              )}
+              </section>
+
+              {user.status === "CONFIRMED" ? (
+                <div className="approve-control">
+                  <button onClick={() => handleReject(user.userId, user.eventId)} className="reject">
+                    Desconfirmar
+                  </button>
+                </div>
+              ) : null}
+
+              {user.status === "RESERVED" ? (
+                <div className="approve-control">
+                  <button onClick={() => handleApprove(user.userId, user.eventId)} className="approve">
+                    Aprovar
+                  </button>
+
+                  <button onClick={() => handleReject(user.userId, user.eventId)} className="reject">
+                    Reprovar
+                  </button>
+                </div>
+              ) : null}
             </UserListItem>
           ))}
         </UsersList>
-      ) : <Empty description="Não há usuários registrados." />}
+      ) : <Empty description="Não há usuários registrados." />
+      }
 
 
       <FooterContainer>
@@ -104,6 +119,6 @@ export const RegisterUsersModal = ({ visible, onClose }: RegisterUsersModalProps
           Voltar
         </BackButton>
       </FooterContainer>
-    </RegisterUsersModalContainer>
+    </RegisterUsersModalContainer >
   )
 }
