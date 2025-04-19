@@ -1,42 +1,21 @@
 import React, { createContext, useState } from "react";
 import { message } from "antd";
 import { api } from "@/shared/infra/api";
+import { IDisease, IUserDiseases, IUserDiseasesAndMedications } from "../types/Diseases";
+import { IMedication, IUserMedication } from "../types/Medication";
 
-export interface IDisease {
-  id: string;
-  name: string;
-  medicalSpeciality: string;
-  createdAt: string;
-}
-
-export interface IUserMedication {
-  id: string;
-  diseaseId: string;
-  name: string;
-  startUsing: string;
-  createdAt: string;
-}
-
-export interface IUserDiseases extends Omit<IDisease, "name"> {
-  diseaseName: string;
-  diseaseId: string;
-}
-
-export interface IUserDiseasesAndMedications {
-  id: string;
-  diseaseName: string;
-  medications: IUserMedication[];
-}
 
 interface DiseasesContextProps {
   allDiseases: IDisease[];
   userDiseases: IUserDiseases[];
   userMedications: IUserMedication[];
   userDiseasesAndMedications: IUserDiseasesAndMedications[];
+  medicationsList: IMedication[];
+  fetchMedicationsList: () => Promise<void>;
   fetchAllDiseases: () => Promise<void>;
   fetchUserDiseases: () => Promise<void>;
   fetchUserMedications: () => Promise<void>;
-  createUserDisease: (diseaseId: string) => Promise<void>;
+  createUserDisease: (diseaseId: string, customName?: string) => Promise<void>;
   createUserMedication: (data: CreateUserMedicationProps) => Promise<void>;
   getUserDiseasesAndMedications: () => Promise<void>;
 }
@@ -52,8 +31,18 @@ export const DiseasesContext = createContext<DiseasesContextProps>({} as Disease
 export const DiseasesProvider = ({ children }: { children: React.ReactNode }) => {
   const [allDiseases, setAllDiseases] = useState<IDisease[]>([]);
   const [userDiseases, setUserDiseases] = useState<IUserDiseases[]>([]);
+  const [medicationsList, setMedicationsList] = useState<IMedication[]>([]);
   const [userMedications, setUserMedications] = useState<IUserMedication[]>([]);
   const [userDiseasesAndMedications, setUserDiseasesAndMedications] = useState<IUserDiseasesAndMedications[]>([]);
+
+  const fetchMedicationsList = async () => {
+    try {
+      const { data } = await api.get("/medications");
+      setMedicationsList(data);
+    } catch (error) {
+      console.error("Erro ao buscar lista de medicações", error);
+    }
+  };
 
   const fetchAllDiseases = async () => {
     try {
@@ -73,14 +62,17 @@ export const DiseasesProvider = ({ children }: { children: React.ReactNode }) =>
     }
   };
 
-  const createUserDisease = async (diseaseId: string) => {
-    if (userDiseases.some(disease => disease.id === diseaseId)) {
+  const createUserDisease = async (diseaseId: string, customName?: string) => {
+    if (userDiseases.some(d => d.id === diseaseId) && !customName) {
       message.warning("Essa doença já foi cadastrada");
       return;
     }
 
     try {
-      await api.post(`/users/disease/${diseaseId}`);
+      await api.post(
+        `/users/disease/${diseaseId}`,
+        customName ? { customName } : {}
+      );
       message.success("Doença registrada com sucesso!");
       await fetchUserDiseases();
     } catch (error) {
@@ -124,6 +116,7 @@ export const DiseasesProvider = ({ children }: { children: React.ReactNode }) =>
       const combinedData: IUserDiseasesAndMedications[] = diseasesData.map(disease => ({
         id: disease.id,
         diseaseName: disease.diseaseName,
+        customName: disease.customName,
         medications: medicationsData.filter(med => med.diseaseId === disease.diseaseId)
       }));
 
@@ -140,6 +133,8 @@ export const DiseasesProvider = ({ children }: { children: React.ReactNode }) =>
         userDiseases,
         userMedications,
         userDiseasesAndMedications,
+        medicationsList,
+        fetchMedicationsList,
         fetchAllDiseases,
         fetchUserDiseases,
         createUserDisease,

@@ -14,6 +14,7 @@ interface CustomSelectProps {
   error?: FieldError;
   disabled?: boolean;
   placeholder?: string;
+  onSelect?: (value: string) => void;
 }
 
 export function CustomSelect({
@@ -24,13 +25,14 @@ export function CustomSelect({
   error,
   disabled = false,
   placeholder,
+  onSelect
 }: CustomSelectProps) {
   return (
     <Controller
       name={name}
       control={control}
       render={({ field }) => (
-        <div style={{ marginBottom: "16px" }}>
+        <div>
           {label && <p>{label}</p>}
           <Select
             {...field}
@@ -40,6 +42,7 @@ export function CustomSelect({
             options={options}
             value={field.value}
             onChange={field.onChange}
+            onSelect={onSelect}
           />
           {error && <span className="error">{error.message}</span>}
         </div>

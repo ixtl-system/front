@@ -10,15 +10,18 @@ export const DiseasesContainer = styled.div`
     font-weight: 700;
     font-size: 16px;
     color: #000;
-    margin: 0 0 16px;
   }
 
   form {
     margin: 0 0 60px;
   }
+
+  .ant-select-selection-item {
+    text-transform: capitalize;
+  }
 `
 
-export const FormRow = styled.div`
+export const FormRow = styled.form`
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
@@ -31,6 +34,10 @@ export const FormRow = styled.div`
     color: #7D7C8380;
     margin: 0 0 12px;
   }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `
 
 export const FormColumn = styled.div`
@@ -38,6 +45,8 @@ export const FormColumn = styled.div`
   flex-direction: column;
   width: 100%;
   max-width: 288px;
+
+  margin: 20px 0 0;
 `
 
 export const CharacterCount = styled.div`
@@ -50,7 +59,7 @@ export const CharacterCount = styled.div`
 export const AddButton = styled(DefaultButton)`
   max-width: max-content;
   height: max-content;
-  align-self: flex-end;
+  margin: 50px 0 0;
   gap: 20px;
   background-color: #96AE8E;
   color: #FAFAFA;
@@ -64,10 +73,11 @@ export const DiseaseItem = styled.div`
   padding: 16px;
   border-radius: 16px;
   border: 2px solid #FFF8ED;
-  margin: 0 0 20px;
+  margin: 20px 0 0;
 
   div {
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
   }
 

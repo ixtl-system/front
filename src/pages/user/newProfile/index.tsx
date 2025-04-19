@@ -11,7 +11,7 @@ import { DrugHistory } from "./DrugHistory";
 import { DiseasesHistory } from "./DiseasesHistory";
 
 export function Profile() {
-  const { fetchAllDiseases, getUserDiseasesAndMedications } = useDiseases();
+  const { fetchAllDiseases, getUserDiseasesAndMedications, fetchMedicationsList } = useDiseases();
   const { fetchUserProfile } = useContext(UserContext);
   const { fetchDrugs } = useContext(ProfileContext);
   const [loading, setLoading] = useState(true);
@@ -27,6 +27,7 @@ export function Profile() {
         fetchUserProfile(),
         fetchDrugs(),
         getUserDiseasesAndMedications(),
+        fetchMedicationsList()
       ]);
 
       setLoading(false);
@@ -34,6 +35,9 @@ export function Profile() {
 
     getUserProfile();
   }, []);
+
+
+
 
   if (loading) return (
     <ProfileContainer>
