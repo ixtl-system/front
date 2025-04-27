@@ -1,14 +1,16 @@
-import { PiArrowLeftLight, PiUsers } from "react-icons/pi";
 import { LoadingOutlined } from '@ant-design/icons';
-import { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import { notification, Spin } from "antd";
 import { DateTime } from "luxon";
+import { useContext, useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
+import { PiArrowLeftLight, PiUsers } from "react-icons/pi";
+import { useNavigate, useParams } from "react-router-dom";
 
-import { useEvent } from "@/shared/hooks/useEvent";
 import { SunHorizon } from "@/assets/icons/SunHorizon";
 import { UserContext } from "@/shared/context/UserContext";
+import { useEvent } from "@/shared/hooks/useEvent";
 
+import { RegisterUsersModal } from "../components/RegisteredUsersModal";
 import {
   ContentContainer,
   DateBadge,
@@ -23,17 +25,17 @@ import {
   RequestButton,
   StyledButton
 } from "./styles";
-import { Helmet } from "react-helmet-async";
-import { RegisterUsersModal } from "../components/RegisteredUsersModal";
 
 export const EventInfo = () => {
   const params = useParams();
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  const { fetchUserProfile } = useContext(UserContext);
+  const { fetchUserProfile, userProfile } = useContext(UserContext);
   const { event, fetchEvent, registerUserInEvent } = useEvent();
   const [isModalVisible, setIsModalVisible] = useState(false)
 
+  const isSoldOut = event.userStatus === "OPEN" && event.availability === 0;
+  
   const event_status = {
     OPEN: "Registrar-se no Evento",
     RESERVED: "Reservado",
@@ -73,17 +75,22 @@ export const EventInfo = () => {
     <EventRegisterContainer>
       <Helmet title={`Evento - ${event.name}`} />
 
-      <RegisterUsersModal visible={isModalVisible} onClose={toggleModalVisibility} />
+      {userProfile.role === "ADMIN" ? (
+        <RegisterUsersModal visible={isModalVisible} onClose={toggleModalVisibility} />
+      ) : null}
 
       <HeaderContainer>
         <StyledButton onClick={() => navigate("/events")}>
           <PiArrowLeftLight />
           Voltar
         </StyledButton>
-        <StyledButton onClick={toggleModalVisibility}>
-          Ver clientes cadastrados
-          <PiUsers />
-        </StyledButton>
+
+        {userProfile.role === "ADMIN" ? (
+          <StyledButton onClick={toggleModalVisibility}>
+            Ver clientes cadastrados
+            <PiUsers />
+          </StyledButton>
+        ) : null}
       </HeaderContainer>
 
       <ContentContainer>
@@ -97,8 +104,8 @@ export const EventInfo = () => {
           <InfoText>{event.availability} Vagas disponíveis</InfoText>
         </EventInfoContainer>
 
-        <RequestButton onClick={handleRegister} disabled={event.userStatus !== "OPEN"}>
-          {event_status[event.userStatus]}
+        <RequestButton onClick={handleRegister} disabled={isSoldOut || event.userStatus !== "OPEN"}>
+          {isSoldOut ? "Esgotado" : event_status[event.userStatus] }
         </RequestButton>
 
         <DescriptionTitle>Descrição do evento:</DescriptionTitle>

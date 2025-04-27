@@ -5,10 +5,10 @@ export const errorInterceptor = (error: AxiosError) => {
   const status = error.response?.status;
   const isUserAuthenticated = localStorage.getItem("token")
 
-  if (status && unAuthRoutes.includes(status) && isUserAuthenticated) {
-    localStorage.clear();
-    window.open("/", "_self");
-  }
+  // if (status && unAuthRoutes.includes(status) && isUserAuthenticated) {
+  //   localStorage.clear();
+  //   window.open("/", "_self");
+  // }
 
   return Promise.reject(error);
 };

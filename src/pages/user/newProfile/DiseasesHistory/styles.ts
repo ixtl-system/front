@@ -32,7 +32,6 @@ export const FormRow = styled.form`
     font-weight: 500;
     font-size: 14px;
     color: #7D7C8380;
-    margin: 0 0 12px;
   }
 
   @media (max-width: 768px) {
@@ -59,7 +58,7 @@ export const CharacterCount = styled.div`
 export const AddButton = styled(DefaultButton)`
   max-width: max-content;
   height: max-content;
-  margin: 50px 0 0;
+  margin: 40px 0 0;
   gap: 20px;
   background-color: #96AE8E;
   color: #FAFAFA;
@@ -155,3 +154,8 @@ export const StyledSelect = styled(Select)`
   }
 `
 
+export const FrequencyLabel = styled.p`
+  font-size: 14px;
+  color: #888;
+  margin: 0 0 5px 0;
+`

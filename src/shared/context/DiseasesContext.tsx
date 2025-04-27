@@ -1,6 +1,6 @@
-import React, { createContext, useState } from "react";
-import { message } from "antd";
 import { api } from "@/shared/infra/api";
+import { message } from "antd";
+import React, { createContext, useState } from "react";
 import { IDisease, IUserDiseases, IUserDiseasesAndMedications } from "../types/Diseases";
 import { IMedication, IUserMedication } from "../types/Medication";
 
@@ -15,15 +15,18 @@ interface DiseasesContextProps {
   fetchAllDiseases: () => Promise<void>;
   fetchUserDiseases: () => Promise<void>;
   fetchUserMedications: () => Promise<void>;
-  createUserDisease: (diseaseId: string, customName?: string) => Promise<void>;
+  createUserDisease: (diseaseId: string, diseaseName: string) => Promise<void>;
   createUserMedication: (data: CreateUserMedicationProps) => Promise<void>;
   getUserDiseasesAndMedications: () => Promise<void>;
 }
 
 interface CreateUserMedicationProps {
+  medicationId: string;
   diseaseId: string;
+  startUsing?:string,
+  endUsing?: string,
   name: string;
-  startUsing: string;
+  isDaimeHelp?: boolean;
 }
 
 export const DiseasesContext = createContext<DiseasesContextProps>({} as DiseasesContextProps);
@@ -62,16 +65,16 @@ export const DiseasesProvider = ({ children }: { children: React.ReactNode }) =>
     }
   };
 
-  const createUserDisease = async (diseaseId: string, customName?: string) => {
-    if (userDiseases.some(d => d.id === diseaseId) && !customName) {
-      message.warning("Essa doença já foi cadastrada");
-      return;
-    }
+  const createUserDisease = async (diseaseId: string, diseaseName: string) => {
+    const params = { 
+      diseaseId, 
+      diseaseName
+    };
 
     try {
       await api.post(
-        `/users/disease/${diseaseId}`,
-        customName ? { customName } : {}
+        `/medical-history/disease`,
+        params
       );
       message.success("Doença registrada com sucesso!");
       await fetchUserDiseases();
@@ -91,7 +94,7 @@ export const DiseasesProvider = ({ children }: { children: React.ReactNode }) =>
 
   const createUserMedication = async (medication: CreateUserMedicationProps) => {
     try {
-      await api.post("/users/medications", medication);
+      await api.post("/medical-history/medications", { ...medication, startUsing: "SIX_MONTH", isDaimeHelp: false});
       message.success("Medicação registrada com sucesso!");
       await fetchUserMedications();
     } catch (error) {
@@ -115,8 +118,7 @@ export const DiseasesProvider = ({ children }: { children: React.ReactNode }) =>
 
       const combinedData: IUserDiseasesAndMedications[] = diseasesData.map(disease => ({
         id: disease.id,
-        diseaseName: disease.diseaseName,
-        customName: disease.customName,
+        name: disease.name,
         medications: medicationsData.filter(med => med.diseaseId === disease.diseaseId)
       }));
 

@@ -1,12 +1,12 @@
-import { useEffect } from "react"
-import { useParams } from "react-router-dom"
-import { PiCheckCircleFill, PiCircleLight, PiUser, PiXCircleFill } from "react-icons/pi"
 import { ArrowLeftOutlined } from "@ant-design/icons"
+import { PiCheckCircleFill, PiCircleLight, PiUser, PiXCircleFill } from "react-icons/pi"
+import { useParams } from "react-router-dom"
 
-import { BackButton, FooterContainer, RegisterUsersModalContainer, UserListItem, UsersList } from "./styles"
 import { CustomSubtitle, CustomTitle } from "@/shared/components/CustomStyled"
 import { useEvent } from "@/shared/hooks/useEvent"
 import { Empty, notification } from "antd"
+import { useEffect } from "react"
+import { BackButton, FooterContainer, RegisterUsersModalContainer, UserListItem, UsersList } from "./styles"
 
 interface RegisterUsersModalProps {
   visible: boolean

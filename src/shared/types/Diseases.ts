@@ -7,15 +7,12 @@ export interface IDisease {
   createdAt: string;
 }
 
-export interface IUserDiseases extends Omit<IDisease, "name"> {
-  customName: string;
-  diseaseName: string;
+export interface IUserDiseases extends IDisease {
   diseaseId: string;
 }
 
 export interface IUserDiseasesAndMedications {
   id: string;
-  diseaseName: string;
-  customName: string;
+  name: string;
   medications: IUserMedication[];
 }

@@ -21,7 +21,7 @@ export function ProfileContextProvider({ children }: ProfileContextData) {
 
   async function updateDrugHistory(params: IDrug[]) {
     try {
-      await api.post("/users/drugs/history", params);
+      await api.post("/medical-history/drugs", params);
     } catch (error: any) {
       console.log(error?.message);
     }
@@ -29,8 +29,14 @@ export function ProfileContextProvider({ children }: ProfileContextData) {
 
   async function fetchDrugs() {
     try {
-      const response = await api.get<IDrug[]>("/profiles/drugs");
-      setDrugs(response.data);
+      const response = await api.get<IDrug[]>("/medical-history/drugs");
+      const sortedDrugs = response.data.sort((a, b) => {
+        const nameA = (a.drugName || "").toLowerCase();
+        const nameB = (b.drugName || "").toLowerCase();
+        return nameA.localeCompare(nameB);
+      });
+
+      setDrugs(sortedDrugs);
     } catch (error) {
       console.error("Erro ao buscar histórico de drogas:", error);
     }

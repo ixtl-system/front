@@ -1,27 +1,42 @@
-import { PiPlusCircle, PiXCircle } from "react-icons/pi";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { PiPlusCircle } from "react-icons/pi";
 
+import { CustomInput } from "@/shared/components/CustomInput";
+import { CustomSelect } from "@/shared/components/CustomSelect";
+import { useDiseases } from "@/shared/hooks/useDiseases";
+import { IDisease } from "@/shared/types/Diseases";
+import { IFrequency } from "@/shared/types/Drug";
+import { IMedication } from "@/shared/types/Medication";
+import { findDiseaseName, findMedicationName } from "@/shared/utils/findDiseaseName";
+import { useState } from "react";
+import { DiseasesAndMedications } from "./DiseasesAndMedications";
+import { DynamicFields } from "./MedicationFrequency";
 import {
-  ActionButtons,
   AddButton,
-  DiseaseItem,
   DiseasesContainer,
   FormColumn,
   FormRow,
+  FrequencyLabel
 } from "./styles";
-import { useDiseases } from "@/shared/hooks/useDiseases";
-import { IDisease } from "@/shared/types/Diseases";
-import { IMedication } from "@/shared/types/Medication";
-import { CustomInput } from "@/shared/components/CustomInput";
-import { CustomSelect } from "@/shared/components/CustomSelect";
 
-interface FormData {
+export interface FormData {
   diseaseId: string;
   customName?: string;
-  medication?: string;
-  medication_description?: string;
+  medicationId?: string;
+  medicationDescription?: string;
+  frequency?: IFrequency;
+  startUsing?: string;
+  endUsing?: string;
+  isDaimeHelp?: boolean;
 }
+
+type MedicationFrequency = Exclude<IFrequency, "NEVER" | "SOMETIMES">;
+const frequencyOptions = (
+  Object.entries({
+    ALWAYS: "Usa com frequência",
+    STOPPED: "Parou de usar",
+  }) as [MedicationFrequency, string][]
+).map(([value, label]) => ({ value, label }));
 
 export const DiseasesHistory = () => {
   const {
@@ -34,46 +49,42 @@ export const DiseasesHistory = () => {
   } = useDiseases();
 
   const { control, handleSubmit, register, reset } = useForm<FormData>();
-  const [showCustomDisease, setShowCustomDisease] = useState(false);
   const [showCustomMedication, setShowCustomMedication] = useState(false);
+  const [showCustomDisease, setShowCustomDisease] = useState(false);
+  const [showMedicationFrequency, setShowMedicationFrequency] = useState(false);
 
-  const findDiseaseName = (id: string): string => {
-    const disease = allDiseases.find((d) => d.id === id);
-    return disease ? disease.name : "";
-  }
-
-  const onSubmit = async (data: FormData) => {
-    const { diseaseId, customName, medication, medication_description } = data;
-    console.log(data)
+  const onSubmit = async ({
+    diseaseId, 
+    customName, 
+    medicationId, 
+    medicationDescription, 
+    endUsing, 
+    startUsing, 
+    isDaimeHelp, 
+    frequency
+  }: FormData) => {
     if (!diseaseId) return;
-    if (medication?.toLowerCase() === "outra" && !medication_description) return;
 
-    const diseaseName = findDiseaseName(diseaseId);
-    const diseaseIsNotRegistered = String(diseaseName).toLowerCase() === "outra";
-
+    const diseaseName = findDiseaseName(diseaseId, allDiseases);
     const exists = userDiseasesAndMedications.some((ud) => ud.id === diseaseId);
     if (!exists) {
-      await createUserDisease(
-        diseaseId,
-        diseaseIsNotRegistered ? customName : ""
-      );
+      await createUserDisease(diseaseId, customName || diseaseName);
     }
 
-    if (medication) {
-      const medsForDisease = userDiseasesAndMedications.find(
-        (ud) => ud.id === diseaseId
-      )?.medications;
+    if (medicationId) {
+      const medicationName = findMedicationName(medicationId, medicationsList);
+      const medsForDisease = userDiseasesAndMedications.find((ud) => ud.id === diseaseId)
+        ?.medications;
 
-      const hasMed = medsForDisease?.some(
-        (med) => med.name === medication
-      );
-
+      const hasMed = medsForDisease?.some((med) => med.name === medicationName);
       if (!hasMed) {
-        const name = medication?.toLowerCase() === "outra" ? medication_description : medication;
         await createUserMedication({
           diseaseId,
-          name: String(name),
-          startUsing: new Date().toISOString(),
+          medicationId,
+          name: medicationDescription || medicationName,
+          ...(frequency === "ALWAYS" && startUsing ? { startUsing } : {}),
+          ...(frequency === "STOPPED" && endUsing ? { endUsing } : {}),
+          ...(frequency === "STOPPED" && isDaimeHelp ? { isDaimeHelp } : {})
         });
       }
     }
@@ -82,64 +93,79 @@ export const DiseasesHistory = () => {
     getUserDiseasesAndMedications();
   };
 
-  const handleSelectDisease = (value: string) => {
-    const selectedDisease = allDiseases.find((d) => d.id === value);
-    setShowCustomDisease(selectedDisease?.name.toLowerCase() === "outra");
-  };
-
   const handleSelectMedication = (value: string) => {
-    const selectedMedication = medicationsList.find((m) => m.name === value);
+    setShowMedicationFrequency(value !== "");
+    const selectedMedication = medicationsList.find((m) => m.id === value);
     setShowCustomMedication(selectedMedication?.name.toLowerCase() === "outra");
   }
 
-  const handleRemoveDisease = (id: string) => console.log(id);
-  const handleRemoveMedication = (dId: string, med: string) => console.log(dId, med);
+  const handleSelectDisease = (value: string) => {
+    const selectedDisease = allDiseases.find((m) => m.id === value);
+    setShowCustomDisease(selectedDisease?.name.toLowerCase() === "outra");
+  }
 
   return (
     <DiseasesContainer>
       <h3>Adicionar doença e medicação:</h3>
       <FormRow onSubmit={handleSubmit(onSubmit)}>
         <FormColumn>
-          <p>Doença:</p>
+          <FrequencyLabel>Doença:</FrequencyLabel>
+
           <CustomSelect
+            control={control}
             name="diseaseId"
             placeholder="Selecione uma doença"
             options={allDiseases.map((d: IDisease) => ({ value: d.id, label: d.name }))}
             onSelect={handleSelectDisease}
-            control={control}
           />
 
           {showCustomDisease && (
             <FormColumn>
-              <p>Descreva a doença:</p>
+              <FrequencyLabel>Outra doença:</FrequencyLabel>
               <CustomInput
                 name="customName"
                 register={register}
-                placeholder="Digite o nome da doença"
+                placeholder="Descreva a doença"
               />
             </FormColumn>
           )}
         </FormColumn>
 
         <FormColumn>
-          <p>Medicação:</p>
+          <FrequencyLabel>Medicação:</FrequencyLabel>
           <CustomSelect
-            name="medication"
-            placeholder="Selecione uma medicação"
-            options={medicationsList.map((m: IMedication) => ({ value: m.name, label: m.name }))}
+            name="medicationId"
             control={control}
+            placeholder="Selecione uma medicação"
+            options={[{ value: '', label: 'Nenhuma' }, ...medicationsList.map((m: IMedication) => ({ value: m.id, label: m.name }))]}
             onSelect={handleSelectMedication}
           />
 
           {showCustomMedication && (
             <FormColumn>
-              <p>Descreva o medicamento:</p>
+              <FrequencyLabel>Outra medicação:</FrequencyLabel>
               <CustomInput
-                name="medication_description"
+                name="medicationDescription"
                 register={register}
-                placeholder="Digite o nome do medicamento"
+                placeholder="Descreva o medicamento"
               />
             </FormColumn>
+          )}
+
+          {showMedicationFrequency && (
+            <>
+              <FormColumn>
+                <FrequencyLabel>Frequência de uso</FrequencyLabel>
+                <CustomSelect
+                  name="frequency"
+                  control={control}
+                  placeholder="Selecione a frequência"
+                  options={frequencyOptions}
+                />
+                
+              </FormColumn>
+              <DynamicFields control={control} />
+            </>
           )}
         </FormColumn>
 
@@ -148,40 +174,7 @@ export const DiseasesHistory = () => {
         </AddButton>
       </FormRow>
 
-      {userDiseasesAndMedications.length > 0 && (
-        <>
-          <h3>Lista adicionada:</h3>
-          {userDiseasesAndMedications.map((d) => (
-            <DiseaseItem key={d.id}>
-              <div>
-                <strong>{d.customName || d.diseaseName}</strong>
-                {d.medications?.length > 0 && (
-                  <div>
-                    <p>Remédio:</p>
-                    <ul>
-                      {d.medications.map((med, i) => (
-                        <li key={i}>
-                          <button
-                            type="button"
-                            onClick={() => handleRemoveMedication(d.id, med.name)}
-                          >
-                            {med.name} <PiXCircle />
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-              <ActionButtons>
-                <button onClick={() => handleRemoveDisease(d.id)}>
-                  Remover
-                </button>
-              </ActionButtons>
-            </DiseaseItem>
-          ))}
-        </>
-      )}
+      {userDiseasesAndMedications.length > 0 && <DiseasesAndMedications />}
     </DiseasesContainer>
   );
 };
