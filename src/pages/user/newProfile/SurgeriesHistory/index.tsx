@@ -7,7 +7,10 @@ import { PiPlusCircle } from "react-icons/pi";
 import { CustomInput } from "@/shared/components/CustomInput";
 import { CustomSelect } from "@/shared/components/CustomSelect";
 import { useDiseases } from "@/shared/hooks/useDiseases";
+import { useSurgery } from "@/shared/hooks/useSurgery";
 import { IMedication } from "@/shared/types/Medication";
+import { ICreateSurgeryParams } from "@/shared/types/Surgery";
+
 import {
   AddButton,
   FormColumn,
@@ -15,38 +18,41 @@ import {
   FrequencyLabel,
   SurgeriesContainer
 } from "./styles";
-
-export interface FormData {
-  name: string;
-  surgeryDate: string;
-  medicine?: string;
-  observation?: string;
-}
+import { SurgeriesAndMedications } from "./SurgeriesAndMedications";
 
 export const SurgeriesHistory = () => {
-  const {medicationsList} = useDiseases();
-  const { control, handleSubmit, register, reset, formState: { errors } } = useForm<FormData>();
+  const { medicationsList } = useDiseases();
+  const { createUserSurgery, fetchUserSurgeries } = useSurgery();
+  const { control, handleSubmit, register, reset, formState: { errors } } = useForm<ICreateSurgeryParams>();
   const [showCustomMedication, setShowCustomMedication] = useState(false);
 
-  const onSubmit = async (data: FormData) => {
-    console.log(data)
+  const onSubmit = async (data: ICreateSurgeryParams) => {
+    const params = { 
+      name: data.name, 
+      surgeryDate: data.surgeryDate,
+      ...(data.observation && { observation: data.observation }),
+      ...(data.medicine && { medicine: data.medicine.toLowerCase() === "outra" ? data.medicineDescription : data.medicine })
+    }
+
+    await createUserSurgery(params);
+    await fetchUserSurgeries();
     reset();
   };
 
   const handleSelectMedication = (value: string) => {
-    const selectedMedication = medicationsList.find((m) => m.id === value);
-    setShowCustomMedication(selectedMedication?.name.toLowerCase() === "outra");
+    setShowCustomMedication(value?.toLowerCase() === "outra");
   }
 
   return (
-    <SurgeriesContainer>
+    <SurgeriesContainer onSubmit={handleSubmit(onSubmit)}>
       <h3>Adicionar doença e medicação:</h3>
-      <FormRow onSubmit={handleSubmit(onSubmit)}>
+      <FormRow>
         <FormColumn>
           <FrequencyLabel>Cirurgia:</FrequencyLabel>
           <CustomInput
             register={register}
             name="name"
+            placeholder="Ex: Colecistectomia"
           />
         </FormColumn>
 
@@ -73,10 +79,10 @@ export const SurgeriesHistory = () => {
         <FormColumn>
           <FrequencyLabel>Medicação:</FrequencyLabel>
           <CustomSelect
-            name="medicationId"
+            name="medicine"
             control={control}
             placeholder="Selecione uma medicação"
-            options={[{ value: '', label: 'Nenhuma' }, ...medicationsList.map((m: IMedication) => ({ value: m.id, label: m.name }))]}
+            options={[{ value: '', label: 'Nenhuma' }, ...medicationsList.map((m: IMedication) => ({ value: m.name, label: m.name }))]}
             onSelect={handleSelectMedication}
           />
 
@@ -84,7 +90,7 @@ export const SurgeriesHistory = () => {
             <FormColumn>
               <FrequencyLabel>Outra medicação:</FrequencyLabel>
               <CustomInput
-                name="medicationDescription"
+                name="medicineDescription"
                 register={register}
                 placeholder="Descreva o medicamento"
               />
@@ -93,17 +99,20 @@ export const SurgeriesHistory = () => {
         </FormColumn>
 
         <FormColumn>
-          <FrequencyLabel>Cirurgia:</FrequencyLabel>
+          <FrequencyLabel>Observação:</FrequencyLabel>
           <CustomInput
             register={register}
-            name="name"
+            name="observation"
+            placeholder="Detalhes adicionais sobre a cirurgia"
           />
         </FormColumn>
-
-        <AddButton type="submit">
-          Adicionar <PiPlusCircle />
-        </AddButton>
       </FormRow>
+      
+      <SurgeriesAndMedications />
+
+      <AddButton type="submit">
+        Adicionar <PiPlusCircle />
+      </AddButton>
     </SurgeriesContainer>
   );
 };

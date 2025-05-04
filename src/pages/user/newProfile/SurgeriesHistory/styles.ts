@@ -2,8 +2,21 @@ import { DefaultButton } from "@/shared/components/CustomStyled"
 import { Select } from "antd"
 import styled from "styled-components"
 
-export const SurgeriesContainer = styled.div`
+export const SurgeriesContainer = styled.form`
   font-family: 'Montserrat', sans-serif;
+
+  .ant-picker {
+    padding: 11px 13px;
+    width: 100%;
+    border-radius: 16px;
+    border: 2px solid #0C120C33;
+
+    input {
+      font-family: Montserrat;
+      font-weight: 500;
+      font-size: 14px;
+    }
+  }
 
   h3 {
     font-family: Montserrat;
@@ -21,7 +34,7 @@ export const SurgeriesContainer = styled.div`
   }
 `
 
-export const FormRow = styled.form`
+export const FormRow = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 16px;

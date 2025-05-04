@@ -5,6 +5,7 @@ import { useDiseases } from "@/shared/hooks/useDiseases";
 import { useContext, useEffect, useState } from "react";
 import { PiHospitalLight, PiPill, PiPlus, PiUser } from "react-icons/pi";
 
+import { useSurgery } from "@/shared/hooks/useSurgery";
 import { DiseasesHistory } from "./DiseasesHistory";
 import { DrugHistory } from "./DrugHistory";
 import { PersonalInfo } from "./PersonalInfo";
@@ -12,6 +13,7 @@ import { Header, ProfileContainer, Subtitle, Tab, TabContainer, Title } from "./
 import { SurgeriesHistory } from "./SurgeriesHistory";
 
 export function Profile() {
+  const { fetchUserSurgeries } = useSurgery();
   const { fetchAllDiseases, getUserDiseasesAndMedications, fetchMedicationsList } = useDiseases();
   const { fetchUserProfile } = useContext(UserContext);
   const { fetchDrugs } = useContext(ProfileContext);
@@ -28,7 +30,8 @@ export function Profile() {
         fetchUserProfile(),
         fetchDrugs(),
         getUserDiseasesAndMedications(),
-        fetchMedicationsList()
+        fetchMedicationsList(),
+        fetchUserSurgeries()
       ]);
 
       setLoading(false);
@@ -36,9 +39,6 @@ export function Profile() {
 
     getUserProfile();
   }, []);
-
-
-
 
   if (loading) return (
     <ProfileContainer>

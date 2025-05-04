@@ -39,6 +39,12 @@ export const TabContainer = styled.div`
   gap: 16px;
   margin-bottom: 60px;
   flex-wrap: wrap;
+
+  @media (max-width: 470px) {
+    button {
+      width: 100%;
+    }
+  }
 `
 
 export const Tab = styled.button<{ active: boolean }>`
