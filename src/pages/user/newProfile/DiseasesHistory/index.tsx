@@ -5,12 +5,11 @@ import { CustomInput } from "@/shared/components/CustomInput";
 import { CustomSelect } from "@/shared/components/CustomSelect";
 import { useDiseases } from "@/shared/hooks/useDiseases";
 import { IDisease } from "@/shared/types/Diseases";
-import { IFrequency } from "@/shared/types/Drug";
+import { IUsingTime } from "@/shared/types/Drug";
 import { IMedication } from "@/shared/types/Medication";
 import { findDiseaseName, findMedicationName } from "@/shared/utils/findDiseaseName";
 import { useState } from "react";
 import { DiseasesAndMedications } from "./DiseasesAndMedications";
-import { DynamicFields } from "./MedicationFrequency";
 import {
   AddButton,
   DiseasesContainer,
@@ -24,18 +23,17 @@ export interface FormData {
   customName?: string;
   medicationId?: string;
   medicationDescription?: string;
-  frequency?: IFrequency;
   startUsing?: string;
-  endUsing?: string;
-  isDaimeHelp?: boolean;
 }
 
-type MedicationFrequency = Exclude<IFrequency, "NEVER" | "SOMETIMES">;
-const frequencyOptions = (
+const timeOptions = (
   Object.entries({
-    ALWAYS: "Usa com frequência",
-    STOPPED: "Parou de usar",
-  }) as [MedicationFrequency, string][]
+    SIX_MONTH: "6 meses",
+    ONE_YEAR: "1 ano",
+    TWO_YEARS: "2 anos",
+    THREE_YEARS: "3 anos",
+    MORE_THAN_THREE_YEARS: "Mais de 3 anos",
+  }) as [IUsingTime, string][]
 ).map(([value, label]) => ({ value, label }));
 
 export const DiseasesHistory = () => {
@@ -58,10 +56,7 @@ export const DiseasesHistory = () => {
     customName, 
     medicationId, 
     medicationDescription, 
-    endUsing, 
     startUsing, 
-    isDaimeHelp, 
-    frequency
   }: FormData) => {
     if (!diseaseId) return;
 
@@ -82,9 +77,7 @@ export const DiseasesHistory = () => {
           diseaseId,
           medicationId,
           name: medicationDescription || medicationName,
-          ...(frequency === "ALWAYS" && startUsing ? { startUsing } : {}),
-          ...(frequency === "STOPPED" && endUsing ? { endUsing } : {}),
-          ...(frequency === "STOPPED" && isDaimeHelp ? { isDaimeHelp } : {})
+          ...(startUsing ? { startUsing } : {}),
         });
       }
     }
@@ -153,19 +146,15 @@ export const DiseasesHistory = () => {
           )}
 
           {showMedicationFrequency && (
-            <>
-              <FormColumn>
-                <FrequencyLabel>Frequência de uso</FrequencyLabel>
-                <CustomSelect
-                  name="frequency"
-                  control={control}
-                  placeholder="Selecione a frequência"
-                  options={frequencyOptions}
-                />
-                
-              </FormColumn>
-              <DynamicFields control={control} />
-            </>
+            <FormColumn>
+              <FrequencyLabel>{"Usa há quanto tempo?"}</FrequencyLabel>
+              <CustomSelect
+                name="startUsing"
+                control={control}
+                placeholder="Selecione duração"
+                options={timeOptions}
+              />
+            </FormColumn>
           )}
         </FormColumn>
 

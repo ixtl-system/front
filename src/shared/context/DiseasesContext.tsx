@@ -15,6 +15,8 @@ interface DiseasesContextProps {
   fetchAllDiseases: () => Promise<void>;
   fetchUserDiseases: () => Promise<void>;
   fetchUserMedications: () => Promise<void>;
+  removeUserDisease: (id: string) => Promise<{ success:boolean, message?: string }>;
+  removeUserMedication: (id: string) => Promise<{ success:boolean, message?: string }>;
   createUserDisease: (diseaseId: string, diseaseName: string) => Promise<void>;
   createUserMedication: (data: CreateUserMedicationProps) => Promise<void>;
   getUserDiseasesAndMedications: () => Promise<void>;
@@ -119,7 +121,7 @@ export const DiseasesProvider = ({ children }: { children: React.ReactNode }) =>
       const combinedData: IUserDiseasesAndMedications[] = diseasesData.map(disease => ({
         id: disease.id,
         name: disease.name,
-        medications: medicationsData.filter(med => med.diseaseId === disease.diseaseId)
+        medications: medicationsData.filter(med => med.userDiseaseId === disease.id)
       }));
 
       setUserDiseasesAndMedications(combinedData);
@@ -127,6 +129,28 @@ export const DiseasesProvider = ({ children }: { children: React.ReactNode }) =>
       console.error("Erro ao buscar doenças e medicações do usuário", error);
     }
   };
+
+  const removeUserDisease = async (id: string) => {
+    try {
+      await api.delete(`/medical-history/diseases/${id}`);
+      getUserDiseasesAndMedications();
+
+      return { success: true }
+    } catch {
+      return { success: false, message: "Falha ao remover medicação!" }
+    }
+  }
+
+  const removeUserMedication = async (id: string) => {
+    try {
+      await api.delete(`/medical-history/medications/${id}`);
+      getUserDiseasesAndMedications();
+      
+      return { success: true }
+    } catch {
+      return { success: false, message: "Falha ao remover medicação!" }
+    }
+  }
 
   return (
     <DiseasesContext.Provider
@@ -136,6 +160,8 @@ export const DiseasesProvider = ({ children }: { children: React.ReactNode }) =>
         userMedications,
         userDiseasesAndMedications,
         medicationsList,
+        removeUserDisease,
+        removeUserMedication,
         fetchMedicationsList,
         fetchAllDiseases,
         fetchUserDiseases,

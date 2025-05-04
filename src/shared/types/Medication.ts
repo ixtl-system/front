@@ -5,8 +5,10 @@ export interface IMedication {
 
 export interface IUserMedication {
   id: string;
-  diseaseId: string;
   name: string;
   startUsing: string;
   createdAt: string;
+  userDiseaseId: string;
+  userId: string;
+  userSurgeryId: string;
 }

@@ -3,8 +3,8 @@ import { PiXCircle } from 'react-icons/pi';
 import { ActionButtons, DiseaseItem } from '../styles';
 
 export const DiseasesAndMedications = () => {
-  const { userDiseasesAndMedications } = useDiseases();
-
+  const { userDiseasesAndMedications, removeUserDisease, removeUserMedication } = useDiseases();
+  console.log({userDiseasesAndMedications})
   return (
     <>
       <h3>Lista adicionada:</h3>
@@ -16,7 +16,7 @@ export const DiseasesAndMedications = () => {
               <ul>
                 {d.medications.map((med, i) => (
                   <li key={i}>
-                    <button type="button" onClick={() => console.log(d.id, med.name)}>
+                    <button type="button" onClick={() => removeUserMedication(med.id)}>
                       {med.name} <PiXCircle />
                     </button>
                   </li>
@@ -25,7 +25,7 @@ export const DiseasesAndMedications = () => {
             )}
           </div>
           <ActionButtons>
-            <button onClick={() => console.log(d.id)}>Remover</button>
+            <button onClick={() => removeUserDisease(d.id)}>Remover</button>
           </ActionButtons>
         </DiseaseItem>
       ))}
