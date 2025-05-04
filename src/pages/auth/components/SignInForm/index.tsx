@@ -1,9 +1,16 @@
-import { useContext, useState } from "react";
+import { message } from "antd";
+import { useContext } from "react";
+import { Helmet } from "react-helmet-async";
+import { useForm } from "react-hook-form";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 import { IPage } from "@/pages/auth";
+import { CustomInput } from "@/shared/components/CustomInput";
 import { AuthContext } from "@/shared/context/AuthContext";
-import { Button, Input, message } from "antd";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { ErrorMessage, OptionsButton, SignInButton, Subtitle, Title } from "../../styles";
+import { SignInFormData, signInSchema } from "./schema";
 import { SignInFormContainer } from "./styles";
 
 interface ISignInProps {
@@ -11,55 +18,68 @@ interface ISignInProps {
 }
 
 export const SignInForm = ({ onNavigate }: ISignInProps) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
   const { SignIn, isLoggedIn } = useContext(AuthContext);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<SignInFormData>({
+    resolver: zodResolver(signInSchema),
+    mode: "onSubmit",
+    reValidateMode: "onChange"
+  });
 
   const location = useLocation();
   const navigate = useNavigate();
   const from = location.state?.from?.pathname || "/events";
 
-  async function handleSignIn() {
-    if (email && password) {
-      try {
-        await SignIn({ email, password });
-        navigate("/events");
-      } catch (error) {
-        message.error("Faltando credenciais");
-      }
+  async function onSubmit({ email, password }: SignInFormData) {
+    console.log({email, password})
+    if (!email && !password) return;
+    try {
+      await SignIn({ email, password });
+      navigate("/events");
+    } catch (error) {
+      message.error("Houve uma falha! Tente novamente ou contate o administrador!");
     }
   }
 
   if (!isLoggedIn) {
     return (
       <SignInFormContainer>
-        <h1>IXTL</h1>
-        <h4>Faça login para continuar</h4>
+        <Helmet title="Login" />
 
-        <section className="form">
-          <Input
-            type="email"
+        <Title>Olá, acesse sua jornada!</Title>
+        <Subtitle className="subtitle">Faça login para continuar</Subtitle>
+
+        <form className="form" onSubmit={handleSubmit(onSubmit)}>
+          <CustomInput
+            name="email"
             placeholder="Email"
-            onChange={(e) => setEmail(e.target.value)}
+            register={register}
           />
-          <Input
+          {errors.email?.message ? <ErrorMessage>{errors.email?.message}</ErrorMessage> : null}
+
+          <CustomInput
             type="password"
+            name="password"
             placeholder="Senha"
-            onChange={(e) => setPassword(e.target.value)}
+            register={register}
           />
-          <Button type="primary" onClick={handleSignIn}>Entrar</Button>
+          {errors.password?.message ? <ErrorMessage>{errors.password?.message}</ErrorMessage> : null}
 
+          <SignInButton type="submit">Entrar</SignInButton>
           <section className="login-options">
-            <Button onClick={() => onNavigate("forgotPassword")}>
+            <OptionsButton onClick={() => onNavigate("signUp")}>
+              Criar nova conta
+            </OptionsButton>
+            
+            <OptionsButton onClick={() => onNavigate("forgotPassword")}>
               Esqueceu a senha?
-            </Button>
-
-            <Button onClick={() => onNavigate("signUp")}>
-              Criar uma nova conta
-            </Button>
+            </OptionsButton>
           </section>
-        </section>
+        </form>
       </SignInFormContainer>
     );
   } else {

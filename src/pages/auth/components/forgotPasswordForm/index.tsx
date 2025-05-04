@@ -1,7 +1,13 @@
-import { useState } from "react";
-import { Button, Input } from "antd";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { message } from "antd";
+import { Helmet } from "react-helmet-async";
+import { useForm } from "react-hook-form";
 
 import { IPage } from "@/pages/auth";
+import { CustomInput } from "@/shared/components/CustomInput";
+
+import { ErrorMessage, OptionsButton, SignInButton, Subtitle, Title } from "../../styles";
+import { ForgotPasswordFormData, forgotPasswordSchema } from "./schema";
 import { ForgotPasswordFormContainer } from "./styles";
 
 interface IForgotPasswordProps {
@@ -9,40 +15,52 @@ interface IForgotPasswordProps {
 }
 
 export const ForgotPasswordForm = ({ onNavigate }: IForgotPasswordProps) => {
-  const [email, setEmail] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<ForgotPasswordFormData>({
+    resolver: zodResolver(forgotPasswordSchema),
+    mode: "onSubmit",
+    reValidateMode: "onChange"
+  });
 
-  function handleForgotPassword() {
+  function onSubmit({ email }: ForgotPasswordFormData) {
     if (email) {
       console.log("email: ", email);
-      console.log("Enviando email");
+      message.success("Verifique sua caixa de entrada!");
     } else {
-      console.log("Email não registrado");
+      message.error("Informe um email válido.");
     }
   }
 
   return (
     <ForgotPasswordFormContainer>
-      <h1>IXTL</h1>
-      <h4>Recuperar Senha</h4>
+      <Helmet title="Recuperar Senha" />
 
-      <section className="form">
-        <Input
-          type="email"
+      <Title>Esqueceu sua senha?</Title>
+      <Subtitle className="subtitle">Informe seu email e enviaremos instruções</Subtitle>
+
+      <form className="form" onSubmit={handleSubmit(onSubmit)}>
+        <CustomInput
+          name="email"
           placeholder="Email"
-          onChange={(e) => setEmail(e.target.value)}
+          register={register}
         />
+        {errors.email?.message ? <ErrorMessage>{errors.email?.message}</ErrorMessage> : null}
 
-        <Button type="primary" onClick={handleForgotPassword}>Recuperar Senha</Button>
+        <SignInButton type="submit">Recuperar senha</SignInButton>
 
         <section className="login-options">
-          <Button onClick={() => onNavigate("signIn")}>
+          <OptionsButton onClick={() => onNavigate("signIn")}>
             Já tem uma conta?
-          </Button>
-          <Button onClick={() => onNavigate("signUp")}>
+          </OptionsButton>
+
+          <OptionsButton onClick={() => onNavigate("signUp")}>
             Criar uma nova conta
-          </Button>
+          </OptionsButton>
         </section>
-      </section>
+      </form>
     </ForgotPasswordFormContainer>
   );
 };

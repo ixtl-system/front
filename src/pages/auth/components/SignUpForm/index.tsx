@@ -1,8 +1,14 @@
-import { useState } from "react";
-import { Button, Input, message } from "antd";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useContext } from "react";
+import { Helmet } from "react-helmet-async";
+import { useForm } from "react-hook-form";
 
 import { IPage } from "@/pages/auth";
-import { api } from "@/shared/infra/api";
+import { CustomInput } from "@/shared/components/CustomInput";
+import { AuthContext } from "@/shared/context/AuthContext";
+
+import { ErrorMessage, OptionsButton, SignInButton, Subtitle, Title } from "../../styles";
+import { SignUpFormData, signUpSchema } from "./schema";
 import { SignUpFormContainer } from "./styles";
 
 interface ISignUpProps {
@@ -10,54 +16,57 @@ interface ISignUpProps {
 }
 
 export const SignUpForm = ({ onNavigate }: ISignUpProps) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { SignUp } = useContext(AuthContext);
 
-  async function handleSignUp() {
-    if (email && password) {
-      try {
-        await api.post("/users", { email, password });
-        message.success("Criando conta");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<SignUpFormData>({
+    resolver: zodResolver(signUpSchema),
+    mode: "onSubmit",
+    reValidateMode: "onChange"
+  });
 
-        setTimeout(() => {
-          onNavigate("signIn");
-        }, 1000)
-      } catch (error: any) {
-        message.error(error.response.data.message);
-      }
-    } else {
-      console.log("Falta coisa");
-    }
+  async function onSubmit({ email, password }: SignUpFormData) {
+    await SignUp({ email, password });
   }
 
   return (
     <SignUpFormContainer>
-      <h1>IXTL</h1>
-      <h4>Cadastre-se agora</h4>
+      <Helmet title="Cadastro" />
 
-      <section className="form">
-        <Input
-          type="email"
+      <Title>Olá, pronto para começar?</Title>
+      <Subtitle>Crie sua conta e inicie sua jornada!</Subtitle>
+
+      <form className="form" onSubmit={handleSubmit(onSubmit)}>
+        <CustomInput
+          name="email"
           placeholder="Email"
-          onChange={(e) => setEmail(e.target.value)}
+          register={register}
         />
-        <Input
+        {errors.email?.message ? <ErrorMessage>{errors.email?.message}</ErrorMessage> : null}
+
+        <CustomInput
           type="password"
+          name="password"
           placeholder="Senha"
-          onChange={(e) => setPassword(e.target.value)}
+          register={register}
         />
-        <Button type="primary" onClick={handleSignUp}>Cadastre-se</Button>
+        {errors.password?.message ? <ErrorMessage>{errors.password?.message}</ErrorMessage> : null}
+
+        <SignInButton type="submit">Cadastre-se</SignInButton>
 
         <section className="login-options">
-          <Button onClick={() => onNavigate("forgotPassword")}>
+          <OptionsButton onClick={() => onNavigate("forgotPassword")}>
             Esqueceu a senha?
-          </Button>
+          </OptionsButton>
 
-          <Button onClick={() => onNavigate("signIn")}>
+          <OptionsButton onClick={() => onNavigate("signIn")}>
             Já tem uma conta?
-          </Button>
+          </OptionsButton>
         </section>
-      </section>
+      </form>
     </SignUpFormContainer>
   );
 };

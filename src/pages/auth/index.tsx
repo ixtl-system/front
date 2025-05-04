@@ -1,11 +1,10 @@
-import "./styles.css";
-
 import { useState } from "react";
-import { Helmet } from "react-helmet-async";
 
+import IxtlLogoMd from "@/assets/logo-md.png";
 import { ForgotPasswordForm } from "@/pages/auth/components/forgotPasswordForm";
 import { SignInForm } from "@/pages/auth/components/SignInForm";
 import { SignUpForm } from "@/pages/auth/components/SignUpForm";
+import { SignContainer } from "./styles";
 
 export type IPage = "signIn" | "signUp" | "forgotPassword";
 
@@ -19,13 +18,11 @@ export function SignIn() {
   };
 
   return (
-    <div className="sign-container">
-      <Helmet title="Login" />
+    <SignContainer>
       <div className="content">
-        <section className="background" />
-
+        <img src={IxtlLogoMd} alt="logo-md" />
         {pages[page]}
       </div>
-    </div>
+    </SignContainer>
   );
 }

@@ -20,6 +20,7 @@ export const CustomSubtitle = styled.p`
   margin-bottom: 30px;
   color: #7D7C83;
 `
+
 export const DefaultButton = styled.button`
   display: flex;
   align-items: center;

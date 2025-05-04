@@ -13,7 +13,8 @@ type ISignInProps = {
 
 type AuthContextProps = {
   isLoggedIn: boolean;
-  SignIn: (props: ISignInProps) => void;
+  SignIn: (props: ISignInProps) => Promise<void>;
+  SignUp: (props: ISignInProps) => Promise<void>;
   LogOut: any;
 };
 
@@ -43,13 +44,22 @@ export function AuthContextProvider({ children }: AuthContextData) {
     }
   };
 
+  const SignUp = async ({email, password}: ISignInProps) => {
+    try {
+      await api.post("/users", { email, password });
+      message.success("Conta criada com sucesso!");
+    } catch (error) {
+      message.error("Erro ao criar conta.");
+    }
+  };
+
   const LogOut = () => {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, SignIn, LogOut }}>
+    <AuthContext.Provider value={{ isLoggedIn, SignIn, SignUp, LogOut }}>
       {children}
     </AuthContext.Provider>
   );

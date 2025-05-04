@@ -5,35 +5,42 @@ export const SignInFormContainer = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  width: 50%;
 
-  .form {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 400px;
-    gap: 10px;
-    margin: 20px 0 0;
+  h1 {
+    font-family: Montserrat;
+    font-weight: 700;
+    font-size: 28px;
+    color: #96AE8E;
+    margin: 45px 0 10px;
+    text-align: center;
   }
 
-  button, .login-options {
-    margin: 10px 0 0;
+  p {
+    font-family: Montserrat;
+    font-weight: 500;
+    font-size: 14px;
+  }
+
+  p.subtitle {
+    color: #7D7C83;
+    margin: 0 0 40px;
+  }
+
+  form p {
+    color: var(--red-500);
+    margin: 5px 5px 10px;
   }
 
   .login-options {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: space-around;
     width: 100%;
     gap: 5px;
   }
 
-  .login-options button {
-    background: none;
-  }
-
   @media screen and (max-width: 1000px) {
     width: 100%;
-    padding: 0 30px;
   }
-`
+`;
+
