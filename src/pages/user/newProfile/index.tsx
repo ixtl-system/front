@@ -1,14 +1,15 @@
-import { useContext, useEffect, useState } from "react";
-import { PiPill, PiPlus, PiUser } from "react-icons/pi";
+import Loader from "@/shared/components/Loader";
+import { ProfileContext } from "@/shared/context/Profile";
 import { UserContext } from "@/shared/context/UserContext";
 import { useDiseases } from "@/shared/hooks/useDiseases";
-import { ProfileContext } from "@/shared/context/Profile";
-import Loader from "@/shared/components/Loader";
+import { useContext, useEffect, useState } from "react";
+import { PiHospitalLight, PiPill, PiPlus, PiUser } from "react-icons/pi";
 
-import { Header, ProfileContainer, Subtitle, Tab, TabContainer, Title } from "./styles";
-import { PersonalInfo } from "./PersonalInfo";
-import { DrugHistory } from "./DrugHistory";
 import { DiseasesHistory } from "./DiseasesHistory";
+import { DrugHistory } from "./DrugHistory";
+import { PersonalInfo } from "./PersonalInfo";
+import { Header, ProfileContainer, Subtitle, Tab, TabContainer, Title } from "./styles";
+import { SurgeriesHistory } from "./SurgeriesHistory";
 
 export function Profile() {
   const { fetchAllDiseases, getUserDiseasesAndMedications, fetchMedicationsList } = useDiseases();
@@ -16,7 +17,7 @@ export function Profile() {
   const { fetchDrugs } = useContext(ProfileContext);
   const [loading, setLoading] = useState(true);
 
-  const [activeTab, setActiveTab] = useState<"dados" | "historico" | "diseases">("dados");
+  const [activeTab, setActiveTab] = useState<"dados" | "historico" | "diseases" | "surgeries">("dados");
 
   useEffect(() => {
     async function getUserProfile() {
@@ -56,6 +57,9 @@ export function Profile() {
         <Tab active={activeTab === "diseases"} onClick={() => setActiveTab("diseases")}>
           <PiPlus /> Histórico Médico
         </Tab>
+        <Tab active={activeTab === "surgeries"} onClick={() => setActiveTab("surgeries")}>
+          <PiHospitalLight /> Histórico de Cirurgias
+        </Tab>
       </TabContainer>
 
       <Loader />
@@ -79,14 +83,19 @@ export function Profile() {
         <Tab active={activeTab === "diseases"} onClick={() => setActiveTab("diseases")}>
           <PiPlus /> Histórico Médico
         </Tab>
+        <Tab active={activeTab === "surgeries"} onClick={() => setActiveTab("surgeries")}>
+          <PiHospitalLight /> Histórico de Cirurgias
+        </Tab>
       </TabContainer>
 
       {activeTab === "dados" ? (
         <PersonalInfo />
       ) : activeTab === "historico" ? (
         <DrugHistory />
-      ) : (
+      ) : activeTab === "diseases" ? (
         <DiseasesHistory />
+      ) : (
+        <SurgeriesHistory />
       )}
     </ProfileContainer>
   );

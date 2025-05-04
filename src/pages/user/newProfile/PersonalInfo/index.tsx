@@ -1,22 +1,22 @@
-import dayjs from "dayjs";
-import { PiFloppyDiskLight } from "react-icons/pi";
 import { DatePicker, message } from "antd";
+import dayjs from "dayjs";
 import { ChangeEvent, useContext, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { PiFloppyDiskLight } from "react-icons/pi";
 
 import { CustomInput } from "@/shared/components/CustomInput";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { profileFormData, profileSchema } from "./schema";
-import { formatCpf } from "@/shared/utils/formatCpf";
-import { formatRg } from "@/shared/utils/formatRG";
-import { formatPhoneNumber, formatResidentialPhoneNumber } from "@/shared/utils/formatPhoneNumber";
-import { PersonalInfoContainer } from "./styles";
-import { UserContext } from "@/shared/context/UserContext";
-import { formatCep } from "@/shared/utils/formatCep";
-import { SaveButton } from "../styles";
-import cleanString from "@/shared/utils/cleanString";
-import { IPersonalInformation } from "../../dtos";
 import { CustomSelect } from "@/shared/components/CustomSelect";
+import { UserContext } from "@/shared/context/UserContext";
+import cleanString from "@/shared/utils/cleanString";
+import { formatCep } from "@/shared/utils/formatCep";
+import { formatCpf } from "@/shared/utils/formatCpf";
+import { formatPhoneNumber, formatResidentialPhoneNumber } from "@/shared/utils/formatPhoneNumber";
+import { formatRg } from "@/shared/utils/formatRG";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { IPersonalInformation } from "../../dtos";
+import { SaveButton } from "../styles";
+import { profileFormData, profileSchema } from "./schema";
+import { PersonalInfoContainer } from "./styles";
 
 export const PersonalInfo = () => {
   const { userProfile: user, updateUserProfile } = useContext(UserContext);
