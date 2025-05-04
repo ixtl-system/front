@@ -7,6 +7,7 @@ export const SignContainer = styled.div`
   width: 100vw;
   min-height: 100vh;
   padding: 0 60px;
+  background-color: #FFF8ED;
 
   .content {
     display: flex;
