@@ -36,11 +36,9 @@ export function AuthContextProvider({ children }: AuthContextData) {
       localStorage.setItem("token", token);
       setIsLoggedIn(!!token);
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    } catch (error) {
-      localStorage.removeItem("token");
+    } catch (error: any) {
+      message.error(error.response.data.message || "Houve uma falha! Tente novamente ou contate o administrador!");
       setIsLoggedIn(false);
-      message.error("Falha no login");
-      api.defaults.headers.common["Authorization"] = null;
     }
   };
 

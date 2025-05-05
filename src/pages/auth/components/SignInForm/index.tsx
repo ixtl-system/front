@@ -1,4 +1,3 @@
-import { message } from "antd";
 import { useContext } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
@@ -35,14 +34,10 @@ export const SignInForm = ({ onNavigate }: ISignInProps) => {
   const from = location.state?.from?.pathname || "/events";
 
   async function onSubmit({ email, password }: SignInFormData) {
-    console.log({email, password})
     if (!email && !password) return;
-    try {
-      await SignIn({ email, password });
-      navigate("/events");
-    } catch (error) {
-      message.error("Houve uma falha! Tente novamente ou contate o administrador!");
-    }
+    
+    await SignIn({ email, password });
+    navigate("/events");
   }
 
   if (!isLoggedIn) {
