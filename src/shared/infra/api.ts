@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import { errorInterceptor } from "./interceptors/errorInterceptor";
 
 export const api = axios.create({
