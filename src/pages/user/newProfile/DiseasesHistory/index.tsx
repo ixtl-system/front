@@ -62,6 +62,7 @@ export const DiseasesHistory = () => {
 
     const diseaseName = findDiseaseName(diseaseId, allDiseases);
     const exists = userDiseasesAndMedications.some((ud) => ud.id === diseaseId);
+    console.log({exists, userDiseasesAndMedications, diseaseId})
     if (!exists) {
       await createUserDisease(diseaseId, customName || diseaseName);
     }

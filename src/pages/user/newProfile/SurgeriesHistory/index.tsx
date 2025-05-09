@@ -1,13 +1,12 @@
-import { DatePicker } from "antd";
-import dayjs from "dayjs";
 import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { PiPlusCircle } from "react-icons/pi";
 
 import { CustomInput } from "@/shared/components/CustomInput";
 import { CustomSelect } from "@/shared/components/CustomSelect";
 import { useDiseases } from "@/shared/hooks/useDiseases";
 import { useSurgery } from "@/shared/hooks/useSurgery";
+import { IUsingTime } from "@/shared/types/Drug";
 import { IMedication } from "@/shared/types/Medication";
 import { ICreateSurgeryParams } from "@/shared/types/Surgery";
 
@@ -20,10 +19,20 @@ import {
 } from "./styles";
 import { SurgeriesAndMedications } from "./SurgeriesAndMedications";
 
+const timeOptions = (
+  Object.entries({
+    SIX_MONTH: "6 meses",
+    ONE_YEAR: "1 ano",
+    TWO_YEARS: "2 anos",
+    THREE_YEARS: "3 anos",
+    MORE_THAN_THREE_YEARS: "Mais de 3 anos",
+  }) as [IUsingTime, string][]
+).map(([value, label]) => ({ value, label }));
+
 export const SurgeriesHistory = () => {
   const { medicationsList } = useDiseases();
   const { createUserSurgery, fetchUserSurgeries } = useSurgery();
-  const { control, handleSubmit, register, reset, formState: { errors } } = useForm<ICreateSurgeryParams>();
+  const { control, handleSubmit, register, reset } = useForm<ICreateSurgeryParams>();
   const [showCustomMedication, setShowCustomMedication] = useState(false);
 
   const onSubmit = async (data: ICreateSurgeryParams) => {
@@ -57,23 +66,13 @@ export const SurgeriesHistory = () => {
         </FormColumn>
 
         <FormColumn>
-          <Controller
+          <FrequencyLabel>Data da Cirurgia:</FrequencyLabel>
+          <CustomSelect
             name="surgeryDate"
             control={control}
-            render={({ field }) => (
-              <div>
-                <FrequencyLabel>Data da Cirurgia:</FrequencyLabel>
-                <DatePicker
-                  format="DD/MM/YYYY"
-                  placeholder="DD/MM/YYYY"
-                  style={{ width: "100%" }}
-                  value={field.value ? dayjs(field.value) : null}
-                  onChange={(date) => field.onChange(date ? date.toISOString() : "")}
-                />
-                {errors.surgeryDate && <span className="error">{errors.surgeryDate.message}</span>}
-              </div>
-            )}
-            />
+            placeholder="Selecione uma data"
+            options={timeOptions}
+          />
         </FormColumn>
 
         <FormColumn>

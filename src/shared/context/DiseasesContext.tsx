@@ -60,7 +60,7 @@ export const DiseasesProvider = ({ children }: { children: React.ReactNode }) =>
 
   const fetchUserDiseases = async () => {
     try {
-      const { data } = await api.get("/profiles/diseases");
+      const { data } = await api.get("/medical-history/diseases");
       setUserDiseases(data);
     } catch (error) {
       console.error("Erro ao buscar doenças do usuário", error);
@@ -87,7 +87,7 @@ export const DiseasesProvider = ({ children }: { children: React.ReactNode }) =>
 
   const fetchUserMedications = async () => {
     try {
-      const { data } = await api.get("/profiles/medications");
+      const { data } = await api.get("/medical-history/medications");
       setUserMedications(data);
     } catch (error) {
       console.error("Erro ao buscar medicações do usuário", error);
@@ -108,8 +108,8 @@ export const DiseasesProvider = ({ children }: { children: React.ReactNode }) =>
   const getUserDiseasesAndMedications = async () => {
     try {
       const [diseasesResponse, medicationsResponse] = await Promise.all([
-        api.get("/profiles/diseases"),
-        api.get("/profiles/medications")
+        api.get("/medical-history/diseases"),
+        api.get("/medical-history/medications")
       ]);
 
       const diseasesData: IUserDiseases[] = diseasesResponse.data;
@@ -119,7 +119,7 @@ export const DiseasesProvider = ({ children }: { children: React.ReactNode }) =>
       setUserMedications(medicationsData);
 
       const combinedData: IUserDiseasesAndMedications[] = diseasesData.map(disease => ({
-        id: disease.id,
+        id: disease.diseaseId,
         name: disease.name,
         medications: medicationsData.filter(med => med.userDiseaseId === disease.id)
       }));

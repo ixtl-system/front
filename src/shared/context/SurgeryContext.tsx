@@ -17,7 +17,7 @@ export const SurgeryProvider = ({ children }: { children: React.ReactNode }) => 
 
   const fetchUserSurgeries = async () => {
     try {
-      const { data } = await api.get("/profiles/surgeries");
+      const { data } = await api.get("/medical-history/surgeries");
       setUserSurgeries(data);
     } catch (error) {
       message.error("Erro ao buscar lista de cirurgias");

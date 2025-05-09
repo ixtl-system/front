@@ -5,7 +5,9 @@ export const SignInFormContainer = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-
+  width: 100%;
+  max-width: 350px;
+  
   h1 {
     font-family: Montserrat;
     font-weight: 700;

@@ -4,7 +4,6 @@ import { ActionButtons, DiseaseItem } from '../styles';
 
 export const DiseasesAndMedications = () => {
   const { userDiseasesAndMedications, removeUserDisease, removeUserMedication } = useDiseases();
-  console.log({userDiseasesAndMedications})
   return (
     <>
       <h3>Lista adicionada:</h3>

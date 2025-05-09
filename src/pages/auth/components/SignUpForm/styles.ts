@@ -5,6 +5,8 @@ export const SignUpFormContainer = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  width: 100%;
+  max-width: 350px;
 
   .login-options {
     display: flex;
