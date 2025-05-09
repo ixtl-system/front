@@ -6,7 +6,6 @@ import { ActionButtons, DiseaseItem } from '../styles';
 
 export const SurgeriesAndMedications = () => {
   const { userSurgeries } = useSurgery();
-  console.log({userSurgeries})
 
   return (
     <>
