@@ -6,6 +6,7 @@ export const signUpSchema = z.object({
   .min(1, "E-mail é obrigatório!")
   .regex(/\S+@\S+\.\S+/, "Informe um endereço de e-mail valido!"),
   password: z.string().min(6, 'Informe a senha para fazer Login!'),
+  confirmPassword: z.string().min(6)
 });
 
 export type SignUpFormData = z.infer<typeof signUpSchema>;
