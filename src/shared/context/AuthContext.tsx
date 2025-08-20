@@ -53,7 +53,6 @@ export function AuthContextProvider({ children }: AuthContextData) {
       message.success("Conta criada com sucesso!");
     } catch (error) {
       message.error("Erro ao criar conta.");
-      console.log("error: ", error);
     }
   };
 
