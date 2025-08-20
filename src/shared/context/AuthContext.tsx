@@ -10,11 +10,16 @@ type ISignInProps = {
   email: string;
   password: string;
 };
+type ISignUpProps = {
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
 
 type AuthContextProps = {
   isLoggedIn: boolean;
   SignIn: (props: ISignInProps) => Promise<void>;
-  SignUp: (props: ISignInProps) => Promise<void>;
+  SignUp: (props: ISignUpProps) => Promise<void>;
   LogOut: any;
 };
 
@@ -42,9 +47,9 @@ export function AuthContextProvider({ children }: AuthContextData) {
     }
   };
 
-  const SignUp = async ({email, password}: ISignInProps) => {
+  const SignUp = async ({email, password, confirmPassword}: ISignUpProps) => {
     try {
-      await api.post("/users", { email, password });
+      await api.post("/users", { email, password, confirmPassword });
       message.success("Conta criada com sucesso!");
     } catch (error) {
       message.error("Erro ao criar conta.");
