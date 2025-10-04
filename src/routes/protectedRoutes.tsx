@@ -13,6 +13,6 @@ export function ProtectedRoutes() {
       <Outlet />
     </PrivateLayout>
   ) : (
-    <Navigate to="/" state={{ from: location }} />
+    <Navigate to="/login" state={{ from: location }} />
   );
 }
