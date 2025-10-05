@@ -28,8 +28,8 @@ export const SignUpForm = ({ onNavigate }: ISignUpProps) => {
     reValidateMode: "onChange"
   });
 
-  async function onSubmit({ email, password }: SignUpFormData) {
-    await SignUp({ email, password });
+  async function onSubmit({ email, password, confirmPassword }: SignUpFormData) {
+    await SignUp({ email, password, confirmPassword });
   }
 
   return (
@@ -54,6 +54,14 @@ export const SignUpForm = ({ onNavigate }: ISignUpProps) => {
           register={register}
         />
         {errors.password?.message ? <ErrorMessage>{errors.password?.message}</ErrorMessage> : null}
+
+        <CustomInput
+          type="password"
+          name="confirmPassword"
+          placeholder="Confirmação de Senha"
+          register={register}
+        />
+        {errors.confirmPassword?.message ? <ErrorMessage>{errors.confirmPassword?.message}</ErrorMessage> : null}
 
         <SignInButton type="submit">Cadastre-se</SignInButton>
 
