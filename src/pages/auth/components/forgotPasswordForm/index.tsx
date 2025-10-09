@@ -27,7 +27,6 @@ export const ForgotPasswordForm = ({ onNavigate }: IForgotPasswordProps) => {
 
   function onSubmit({ email }: ForgotPasswordFormData) {
     if (email) {
-      console.log("email: ", email);
       message.success("Verifique sua caixa de entrada!");
     } else {
       message.error("Informe um email válido.");

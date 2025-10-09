@@ -1,11 +1,12 @@
 import { ArrowLeftOutlined } from "@ant-design/icons"
+import { Empty, notification } from "antd"
+import { useEffect } from "react"
 import { PiCheckCircleFill, PiCircleLight, PiUser, PiXCircleFill } from "react-icons/pi"
 import { useParams } from "react-router-dom"
 
 import { CustomSubtitle, CustomTitle } from "@/shared/components/CustomStyled"
 import { useEvent } from "@/shared/hooks/useEvent"
-import { Empty, notification } from "antd"
-import { useEffect } from "react"
+
 import { BackButton, FooterContainer, RegisterUsersModalContainer, UserListItem, UsersList } from "./styles"
 
 interface RegisterUsersModalProps {
@@ -89,20 +90,20 @@ export const RegisterUsersModal = ({ visible, onClose }: RegisterUsersModalProps
 
               {user.status === "CONFIRMED" ? (
                 <div className="approve-control">
-                  <button onClick={() => handleReject(user.userId, user.eventId)} className="reject">
-                    Desconfirmar
+                  <button onClick={() => handleReject(user.id, user.eventId)} className="reject">
+                    Cancelar
                   </button>
                 </div>
               ) : null}
 
               {user.status === "RESERVED" ? (
                 <div className="approve-control">
-                  <button onClick={() => handleApprove(user.userId, user.eventId)} className="approve">
-                    Aprovar
+                  <button onClick={() => handleApprove(user.id, user.eventId)} className="approve">
+                    Confirmar
                   </button>
 
-                  <button onClick={() => handleReject(user.userId, user.eventId)} className="reject">
-                    Reprovar
+                  <button onClick={() => handleReject(user.id, user.eventId)} className="reject">
+                    Cancelar
                   </button>
                 </div>
               ) : null}
