@@ -58,10 +58,10 @@ export const SignUpForm = ({ onNavigate }: ISignUpProps) => {
         <CustomInput
           type="password"
           name="confirmPassword"
-          placeholder="Confirmação de Senha"
+          placeholder="Confirme Sua Senha"
           register={register}
         />
-        {errors.confirmPassword?.message ? <ErrorMessage>{errors.confirmPassword?.message}</ErrorMessage> : null}
+        {errors.password?.message ? <ErrorMessage>{errors.password?.message}</ErrorMessage> : null}
 
         <SignInButton type="submit">Cadastre-se</SignInButton>
 

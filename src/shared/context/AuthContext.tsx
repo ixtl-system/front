@@ -11,11 +11,16 @@ type ISignInProps = {
   password: string;
   confirmPassword: string;
 };
+type ISignUpProps = {
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
 
 type AuthContextProps = {
   isLoggedIn: boolean;
   SignIn: (props: ISignInProps) => Promise<void>;
-  SignUp: (props: ISignInProps) => Promise<void>;
+  SignUp: (props: ISignUpProps) => Promise<void>;
   LogOut: any;
 };
 
