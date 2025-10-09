@@ -90,7 +90,7 @@ export const RegisterUsersModal = ({ visible, onClose }: RegisterUsersModalProps
 
               {user.status === "CONFIRMED" ? (
                 <div className="approve-control">
-                  <button onClick={() => handleReject(user.userId, user.eventId)} className="reject">
+                  <button onClick={() => handleReject(user.id, user.eventId)} className="reject">
                     Cancelar
                   </button>
                 </div>
@@ -98,11 +98,11 @@ export const RegisterUsersModal = ({ visible, onClose }: RegisterUsersModalProps
 
               {user.status === "RESERVED" ? (
                 <div className="approve-control">
-                  <button onClick={() => handleApprove(user.userId, user.eventId)} className="approve">
+                  <button onClick={() => handleApprove(user.id, user.eventId)} className="approve">
                     Confirmar
                   </button>
 
-                  <button onClick={() => handleReject(user.userId, user.eventId)} className="reject">
+                  <button onClick={() => handleReject(user.id, user.eventId)} className="reject">
                     Cancelar
                   </button>
                 </div>

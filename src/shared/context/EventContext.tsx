@@ -1,4 +1,5 @@
 import React, { createContext, useState } from 'react';
+
 import { api } from '../infra/api';
 import { Event, EventData, EventRegistration, EventStatus, EventType } from '../types/Event';
 
@@ -123,8 +124,10 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const listEventRegistrations = async (eventId: string) => {
     try {
+
       const response = await api.get<EventRegistration[]>(`/events/registrations/${eventId}`);
-      setEventRegistrations(response.data);
+      const guestList = await api.get<any>(`/events/guests/${eventId}`);
+      setEventRegistrations([...response.data, ...guestList.data]);
 
       return { success: true }
     } catch (error: any) {
