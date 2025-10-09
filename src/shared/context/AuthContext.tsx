@@ -1,7 +1,7 @@
+import { message } from "antd";
 import { createContext, ReactNode, useEffect, useState } from "react";
 
 import { api } from "@/shared/infra/api";
-import { message } from "antd";
 
 export type AuthContextData = {
   children: ReactNode;
@@ -9,12 +9,18 @@ export type AuthContextData = {
 type ISignInProps = {
   email: string;
   password: string;
+  confirmPassword: string;
+};
+type ISignUpProps = {
+  email: string;
+  password: string;
+  confirmPassword: string;
 };
 
 type AuthContextProps = {
   isLoggedIn: boolean;
   SignIn: (props: ISignInProps) => Promise<void>;
-  SignUp: (props: ISignInProps) => Promise<void>;
+  SignUp: (props: ISignUpProps) => Promise<void>;
   LogOut: any;
 };
 
@@ -42,9 +48,9 @@ export function AuthContextProvider({ children }: AuthContextData) {
     }
   };
 
-  const SignUp = async ({email, password}: ISignInProps) => {
+  const SignUp = async ({ email, password, confirmPassword }: ISignInProps) => {
     try {
-      await api.post("/users", { email, password });
+      await api.post("/users", { email, password, confirmPassword });
       message.success("Conta criada com sucesso!");
     } catch (error) {
       message.error("Erro ao criar conta.");
