@@ -23,6 +23,8 @@ export type EventRegistration = {
   eventId: string;
   status: EventStatus;
   userName: string;
+  paid: boolean;
+  firstTime: boolean;
   createdAt: string;
   updatedAt: string;
 };
