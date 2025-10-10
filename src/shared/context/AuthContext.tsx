@@ -9,7 +9,6 @@ export type AuthContextData = {
 type ISignInProps = {
   email: string;
   password: string;
-  confirmPassword: string;
 };
 type ISignUpProps = {
   email: string;
@@ -48,7 +47,7 @@ export function AuthContextProvider({ children }: AuthContextData) {
     }
   };
 
-  const SignUp = async ({ email, password, confirmPassword }: ISignInProps) => {
+  const SignUp = async ({ email, password, confirmPassword }: ISignUpProps) => {
     try {
       await api.post("/users", { email, password, confirmPassword });
       message.success("Conta criada com sucesso!");
