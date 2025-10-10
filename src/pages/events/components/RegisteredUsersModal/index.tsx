@@ -76,9 +76,9 @@ export const RegisterUsersModal = ({ visible, onClose }: RegisterUsersModalProps
             <UserListItem $status={user.status}>
               <section>
                 <h5>
-                  <PiUser color="#7D7C83" />
-
+                  {user.firstTime ? <PiUser color="#0d9c14" /> : <PiUser color="#7D7C83" /> }
                   {user.userName}
+                  {user.status === "RESERVED" && user.paid ? " - PAGO": ""}
                 </h5>
 
                 <div className="status">
