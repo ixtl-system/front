@@ -3,7 +3,7 @@ export type EventData = {
   description: string;
   availability: number;
   date: string;
-}
+};
 
 export type Event = {
   id: string;
@@ -12,19 +12,28 @@ export type Event = {
   availability: number;
   date: string;
   cover: string;
-  userStatus: "OPEN" | "RESERVED" | "CONFIRMED" | "CANCELED";
+  userStatus: EventStatus | "OPEN";
 };
 
-export type EventStatus = "CANCELED" | "RESERVED" | "CONFIRMED";
+export type EventStatus =
+  | "RESERVED"
+  | "CONFIRMED"
+  | "CANCELED"
+  | "CHECKED_IN"
+  | "NO_SHOW";
 
 export type EventRegistration = {
   id: string;
-  userId: string;
   eventId: string;
+  userId: string;
+  invitedByUserId: string;
   status: EventStatus;
-  userName: string;
-  paid: boolean;
-  firstTime: boolean;
+  name: string;
+  email: string;
+  gender: string;
+  firstTimer: boolean;
+  hasPaid: boolean;
+  checkedInAt: string;
   createdAt: string;
   updatedAt: string;
 };
@@ -33,4 +42,3 @@ export type EventType = {
   id: string;
   name: string;
 };
-
