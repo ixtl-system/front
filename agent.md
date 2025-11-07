@@ -2,8 +2,7 @@
 
 ## Tooling & Commands
 - This project runs on **Vite + React + TypeScript**. Keep Node.js 18+ in mind when adding tooling.
-- Use **npm scripts** declared in `package.json` (e.g., `npm run dev`, `npm run build`, `npm run lint`). Do not introduce Yarn- or pnpm-specific instructions.
-- Run `npm run lint` before delivering code that touches TypeScript/TSX files.
+- Use **yarn scripts**
 
 ## Project Structure
 - `src/pages` contains page-level features grouped by domain (authentication, events, user, etc.). New routes should live inside the appropriate domain folder and expose an `index.tsx` entry plus co-located helpers.
