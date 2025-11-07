@@ -87,8 +87,8 @@ All API calls must use this shared Axios client to ensure authentication and glo
 ## Documentation & Versioning
 - Each time a change or fix is implemented, create a new Markdown file under the root-level `documents/` directory.
 - The file name must follow the pattern:  
-  **`<date>-<doc_name>.md`**  
-  Example: `11-07-25-listParticipantsCorrection.md`
+  **`<date>_<br-time(UTC-03:00)>-<doc_name>.md`**  
+  Example: `25-11-07_20:22-listParticipantsCorrection.md`
 - Inside the document, include:
   1. A summary of what was changed or fixed.
   2. A short explanation of *why* the change was necessary.

@@ -22,7 +22,7 @@ export default defineConfig(() => {
     define,
     resolve: {
       alias: {
-        "@": path.resolve(__dirname, "/src"),
+        "@": path.resolve(__dirname, "./src"),
       },
     },
     test: {
@@ -40,7 +40,7 @@ export default defineConfig(() => {
           inline: ["antd"],
         },
       },
-      alias: [{ find: "@", replacement: path.resolve(__dirname, "/src") }],
+      alias: [{ find: "@", replacement: path.resolve(__dirname, "./src") }],
       restoreMocks: true,
       clearMocks: true,
       mockReset: true,
