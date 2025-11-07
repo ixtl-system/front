@@ -35,12 +35,14 @@ export const EventInfo = () => {
   const [isModalVisible, setIsModalVisible] = useState(false)
 
   const isSoldOut = event.userStatus === "OPEN" && event.availability === 0;
-  
+
   const event_status = {
     OPEN: "Registrar-se no Evento",
     RESERVED: "Reservado",
     CONFIRMED: "Confirmado",
     CANCELED: "Solicitado",
+    CHECKED_IN: "Check-in realizado",
+    NO_SHOW: "Não compareceu",
   }
 
   const handleRegister = async () => {

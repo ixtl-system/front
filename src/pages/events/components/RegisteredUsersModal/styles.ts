@@ -21,15 +21,17 @@ export const RegisterUsersModalContainer = styled(Modal)`
   top: 4vh;
 
   .ant-modal-content {
-    border-radius: 20px;
+    border-radius: 26px;
     padding: 0;
     max-height: 85vh;
     display: flex;
     flex-direction: column;
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.96) 0%, rgba(248, 236, 218, 0.96) 100%);
+    box-shadow: 0 36px 58px rgba(84, 70, 52, 0.18);
   }
 
   .ant-modal-body {
-    padding: 28px 32px;
+    padding: 32px 36px;
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -38,7 +40,7 @@ export const RegisterUsersModalContainer = styled(Modal)`
 
   @media (max-width: 768px) {
     .ant-modal-body {
-      padding: 20px 20px 24px;
+      padding: 24px 20px 26px;
     }
   }
 `;
@@ -62,7 +64,7 @@ export const SwitchBar = styled.div`
   flex-wrap: wrap;
   gap: 12px;
   padding: 8px 0 12px;
-  border-bottom: 1px solid #f1e7d8;
+  border-bottom: 1px solid rgba(124, 97, 70, 0.16);
 `;
 
 export const SwitchButton = styled.button<{ $active: boolean }>`
@@ -93,6 +95,15 @@ export const ParticipantsScrollArea = styled.div`
   min-height: 0;
   overflow-y: auto;
   padding: 8px 4px 4px;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(111, 143, 114, 0.35);
+    border-radius: 999px;
+  }
 `;
 
 export const UsersList = styled.ul`
@@ -110,10 +121,11 @@ export const UserListItem = styled.li`
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding: 20px;
-  border-radius: 16px;
-  border: 1px solid #f1e7d8;
-  background-color: #fff;
+  padding: 22px;
+  border-radius: 20px;
+  border: 1px solid rgba(124, 97, 70, 0.16);
+  background-color: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 12px 24px rgba(90, 72, 50, 0.08);
 `;
 
 export const ParticipantInfo = styled.div`
@@ -169,7 +181,7 @@ export const ActionsContainer = styled.div`
 `;
 
 export const CheckInButton = styled(DefaultButton)`
-  background-color: #1f9254;
+  background-color: #4c7d58;
   color: #ffffff;
   border: none;
   padding: 10px 18px;
@@ -177,38 +189,41 @@ export const CheckInButton = styled(DefaultButton)`
   font-size: 14px;
   min-width: 160px;
   justify-content: center;
+  box-shadow: 0 12px 22px rgba(76, 125, 88, 0.32);
 
   &:hover {
-    background-color: #187746;
+    background-color: #3f6b4a;
     color: #ffffff;
   }
 
   &:disabled {
-    opacity: 0.4;
+    opacity: 0.5;
     cursor: not-allowed;
-    background-color: #1f9254;
+    background-color: #4c7d58;
+    box-shadow: none;
   }
 `;
 
 export const ActionDropdownButton = styled(DefaultButton)`
   border-radius: 999px;
-  border: 1px solid #d9d9d9;
-  background-color: #fff;
-  color: #0c120c;
+  border: 1px solid rgba(124, 97, 70, 0.22);
+  background-color: rgba(255, 255, 255, 0.92);
+  color: #3d3227;
   padding: 10px 18px;
   font-size: 14px;
   gap: 8px;
   display: inline-flex;
   align-items: center;
+  transition: background 0.2s ease;
 
   &:hover {
-    background-color: #f5f5f5;
+    background-color: rgba(244, 232, 214, 0.9);
   }
 
   &:disabled {
-    opacity: 0.4;
+    opacity: 0.5;
     cursor: not-allowed;
-    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.92);
   }
 `;
 
@@ -239,15 +254,15 @@ export const FooterContainer = styled.div`
 `;
 
 export const BackButton = styled(DefaultButton)`
-  background: none;
-  color: #96ae8e;
-  padding: 10px 32px;
-  gap: 5px;
-  border: 1px solid #96ae8e;
+  background: rgba(255, 255, 255, 0.85);
+  color: #6f8f72;
+  padding: 10px 28px;
+  gap: 6px;
+  border: 1px solid rgba(111, 143, 114, 0.35);
   border-radius: 999px;
 
   &:hover {
-    background-color: #96ae8e;
-    color: #fafafa;
+    background-color: #6f8f72;
+    color: #fbf5ec;
   }
 `;
