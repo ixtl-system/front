@@ -14,12 +14,18 @@ import {
   ActionsContainer,
   BackButton,
   CheckInButton,
+  ContentWrapper,
+  EmptyStateWrapper,
   FirstTimerTag,
   FooterContainer,
   LoadingContainer,
+  ModalHeader,
   ParticipantInfo,
+  ParticipantsScrollArea,
   RegisterUsersModalContainer,
   StatusBadge,
+  SwitchBar,
+  SwitchButton,
   UserListItem,
   UsersList,
 } from "./styles";
@@ -38,6 +44,13 @@ type StatusToken = {
 };
 
 type MenuItems = NonNullable<MenuProps["items"]>;
+type ParticipantViewId = "reservedConfirmed" | "canceledNoShow" | "checkedIn";
+
+type ParticipantView = {
+  id: ParticipantViewId;
+  label: string;
+  statuses: EventStatus[];
+};
 
 const STATUS_TOKENS: Record<EventStatus, StatusToken> = {
   RESERVED: { label: "Reservado", color: "#6B6B80", background: "#F0F0F5" },
@@ -46,6 +59,24 @@ const STATUS_TOKENS: Record<EventStatus, StatusToken> = {
   CHECKED_IN: { label: "Check-in realizado", color: "#1F9254", background: "#E8F5E9" },
   NO_SHOW: { label: "Não compareceu", color: "#B17710", background: "#FFF4E0" },
 };
+
+const PARTICIPANT_VIEWS: ParticipantView[] = [
+  {
+    id: "reservedConfirmed",
+    label: "Reserved & Confirmed",
+    statuses: ["RESERVED", "CONFIRMED"],
+  },
+  {
+    id: "canceledNoShow",
+    label: "Canceled & No-Show",
+    statuses: ["CANCELED", "NO_SHOW"],
+  },
+  {
+    id: "checkedIn",
+    label: "Checked-In",
+    statuses: ["CHECKED_IN"],
+  },
+];
 
 const ACTIONS: {
   key: ActionKey;
@@ -83,8 +114,13 @@ export const RegisterUsersModal = ({ visible, onClose }: RegisterUsersModalProps
 
   const [isLoading, setIsLoading] = useState(false);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
+  const [activeView, setActiveView] = useState<ParticipantViewId>("reservedConfirmed");
 
   const eventId = params.id || event?.id;
+  const selectedView = PARTICIPANT_VIEWS.find((view) => view.id === activeView) ?? PARTICIPANT_VIEWS[0];
+  const filteredParticipants = (eventRegistrations ?? []).filter((participant) =>
+    selectedView.statuses.includes(participant.status)
+  );
 
   const fetchParticipants = useCallback(async () => {
     if (!eventId) return;
@@ -174,13 +210,17 @@ export const RegisterUsersModal = ({ visible, onClose }: RegisterUsersModalProps
       );
     }
 
-    if (!eventRegistrations?.length) {
-      return <Empty description="Não há participantes registrados neste evento." />;
+    if (!filteredParticipants.length) {
+      return (
+        <EmptyStateWrapper>
+          <Empty description="Nenhum participante com este status." />
+        </EmptyStateWrapper>
+      );
     }
 
     return (
-      <UsersList>
-        {(eventRegistrations ?? []).map((participant) => {
+      <UsersList key={selectedView.id}>
+        {filteredParticipants.map((participant) => {
           const statusToken = STATUS_TOKENS[participant.status];
           const menuItems = availableActions(participant.status);
           const isCheckInEnabled = participant.status === "CONFIRMED";
@@ -235,17 +275,35 @@ export const RegisterUsersModal = ({ visible, onClose }: RegisterUsersModalProps
 
   return (
     <RegisterUsersModalContainer open={visible} onCancel={handleClose} width={980} footer={null}>
-      <CustomTitle>Participantes cadastrados</CustomTitle>
-      <CustomSubtitle>Gerencie o status de cada participante durante o evento.</CustomSubtitle>
+      <ContentWrapper>
+        <ModalHeader>
+          <CustomTitle>Participantes cadastrados</CustomTitle>
+          <CustomSubtitle>Gerencie o status de cada participante durante o evento.</CustomSubtitle>
+        </ModalHeader>
 
-      {renderContent()}
+        <SwitchBar>
+          {PARTICIPANT_VIEWS.map((view) => (
+            <SwitchButton
+              key={view.id}
+              type="button"
+              $active={view.id === activeView}
+              aria-pressed={view.id === activeView}
+              onClick={() => setActiveView(view.id)}
+            >
+              {view.label}
+            </SwitchButton>
+          ))}
+        </SwitchBar>
 
-      <FooterContainer>
-        <BackButton type="button" onClick={handleClose}>
-          <ArrowLeftOutlined style={{ marginRight: 8 }} />
-          Voltar
-        </BackButton>
-      </FooterContainer>
+        <ParticipantsScrollArea>{renderContent()}</ParticipantsScrollArea>
+
+        <FooterContainer>
+          <BackButton type="button" onClick={handleClose}>
+            <ArrowLeftOutlined style={{ marginRight: 8 }} />
+            Voltar
+          </BackButton>
+        </FooterContainer>
+      </ContentWrapper>
     </RegisterUsersModalContainer>
   );
 };
