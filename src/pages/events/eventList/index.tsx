@@ -1,14 +1,15 @@
+import { DateTime } from "luxon";
 import { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { useNavigate } from "react-router-dom";
 import { FiPlus } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
-import { EventContent, EventHeader, EventsContainer, EventsList } from "./styles";
-import { UserContext } from "@/shared/context/UserContext";
-import { DateTime } from "luxon";
 import { SunHorizon } from "@/assets/icons/SunHorizon";
-import { CreateEventModal } from "../components/CreateEventModal";
+import { UserContext } from "@/shared/context/UserContext";
 import { useEvent } from "@/shared/hooks/useEvent";
+
+import { CreateEventModal } from "../components/CreateEventModal";
+import { EventContent, EventHeader, EventsContainer, EventsList } from "./styles";
 
 export const EventList = () => {
   const navigate = useNavigate();

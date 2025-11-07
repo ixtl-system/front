@@ -1,3 +1,4 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { DatePicker, message } from "antd";
 import dayjs from "dayjs";
 import { ChangeEvent, useContext, useEffect } from "react";
@@ -12,7 +13,7 @@ import { formatCep } from "@/shared/utils/formatCep";
 import { formatCpf } from "@/shared/utils/formatCpf";
 import { formatPhoneNumber, formatResidentialPhoneNumber } from "@/shared/utils/formatPhoneNumber";
 import { formatRg } from "@/shared/utils/formatRG";
-import { zodResolver } from "@hookform/resolvers/zod";
+
 import { IPersonalInformation } from "../../dtos";
 import { SaveButton } from "../styles";
 import { profileFormData, profileSchema } from "./schema";

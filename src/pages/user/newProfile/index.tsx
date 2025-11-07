@@ -1,11 +1,12 @@
+import { useContext, useEffect, useState } from "react";
+import { PiHospitalLight, PiPill, PiPlus, PiUser } from "react-icons/pi";
+
 import Loader from "@/shared/components/Loader";
 import { ProfileContext } from "@/shared/context/Profile";
 import { UserContext } from "@/shared/context/UserContext";
 import { useDiseases } from "@/shared/hooks/useDiseases";
-import { useContext, useEffect, useState } from "react";
-import { PiHospitalLight, PiPill, PiPlus, PiUser } from "react-icons/pi";
-
 import { useSurgery } from "@/shared/hooks/useSurgery";
+
 import { DiseasesHistory } from "./DiseasesHistory";
 import { DrugHistory } from "./DrugHistory";
 import { PersonalInfo } from "./PersonalInfo";

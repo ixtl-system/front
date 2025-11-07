@@ -1,6 +1,7 @@
-import { DefaultButton } from "@/shared/components/CustomStyled";
 import { Modal } from "antd";
 import styled from "styled-components";
+
+import { DefaultButton } from "@/shared/components/CustomStyled";
 
 export const RegisterUsersModalContainer = styled(Modal)`
   display: flex;

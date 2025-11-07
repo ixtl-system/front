@@ -1,6 +1,7 @@
-import { DefaultButton } from "@/shared/components/CustomStyled"
 import { DatePicker, Input } from "antd"
 import styled from "styled-components"
+
+import { DefaultButton } from "@/shared/components/CustomStyled"
 
 // Styled Components
 export const ProfileContainer = styled.div`

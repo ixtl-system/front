@@ -1,7 +1,8 @@
 "use client"
-import { DefaultButton } from "@/shared/components/CustomStyled"
 import { Typography } from "antd"
 import styled from "styled-components"
+
+import { DefaultButton } from "@/shared/components/CustomStyled"
 
 const {  Text } = Typography
 

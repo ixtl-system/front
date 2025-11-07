@@ -1,9 +1,10 @@
 import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import { PiCalendarDots, PiClipboardTextLight, PiSignOut, PiUser } from "react-icons/pi";
+import { useNavigate } from "react-router-dom";
 
 import LogoItem from "@/assets/icon.png";
 import { AuthContext } from "@/shared/context/AuthContext";
+
 import { CustomList, CustomListItem, CustomModalContainer } from "./styles"
 
 interface MobileMenuModalProps {

@@ -1,17 +1,19 @@
-import { useContext } from "react";
 import { message, Select } from "antd";
+import { useContext } from "react";
+import { PiFloppyDisk } from "react-icons/pi";
+
 import { ProfileContext } from "@/shared/context/Profile";
+import { IDrug } from "@/shared/types/Drug";
+
 import {
-  DrugHistoryContainer,
   DrugGrid,
+  DrugHistoryContainer,
   DrugSection,
   DrugTitle,
   FrequencyLabel,
-  SelectWrapper,
   SaveButton,
+  SelectWrapper,
 } from "./styles";
-import { PiFloppyDisk } from "react-icons/pi";
-import { IDrug } from "@/shared/types/Drug";
 
 type FrequencyType = "NEVER" | "ALWAYS" | "SOMETIMES" | "STOPPED"
 type TimeType = "SIX_MONTH" | "ONE_YEAR" | "TWO_YEARS" | "THREE_YEARS" | "MORE_THAN_THREE_YEARS"

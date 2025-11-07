@@ -1,8 +1,10 @@
-import { IPersonalInformation } from "@/pages/user/dtos";
+import { message } from "antd";
 import { jwtDecode } from "jwt-decode";
 import { createContext, ReactNode, useState } from "react";
+
+import { IPersonalInformation } from "@/pages/user/dtos";
+
 import { api } from "../infra/api";
-import { message } from "antd";
 import cleanString from "../utils/cleanString";
 
 export type UserContextData = {

@@ -1,5 +1,7 @@
-import { useDiseases } from '@/shared/hooks/useDiseases';
 import { PiXCircle } from 'react-icons/pi';
+
+import { useDiseases } from '@/shared/hooks/useDiseases';
+
 import { ActionButtons, DiseaseItem } from '../styles';
 
 export const DiseasesAndMedications = () => {

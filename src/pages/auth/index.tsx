@@ -4,6 +4,7 @@ import IxtlLogoMd from "@/assets/logo-md.png";
 import { ForgotPasswordForm } from "@/pages/auth/components/forgotPasswordForm";
 import { SignInForm } from "@/pages/auth/components/SignInForm";
 import { SignUpForm } from "@/pages/auth/components/SignUpForm";
+
 import { SignContainer } from "./styles";
 
 export type IPage = "signIn" | "signUp" | "forgotPassword";

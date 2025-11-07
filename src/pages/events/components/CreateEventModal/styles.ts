@@ -1,7 +1,8 @@
 
-import { DefaultButton } from "@/shared/components/CustomStyled";
-import { Modal, DatePicker } from "antd";
+import { DatePicker,Modal } from "antd";
 import styled from "styled-components";
+
+import { DefaultButton } from "@/shared/components/CustomStyled";
 
 export const StyledModal = styled(Modal)`
   .ant-modal-content {

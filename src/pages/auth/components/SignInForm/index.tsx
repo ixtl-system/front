@@ -1,3 +1,4 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useContext } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
@@ -6,7 +7,6 @@ import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { IPage } from "@/pages/auth";
 import { CustomInput } from "@/shared/components/CustomInput";
 import { AuthContext } from "@/shared/context/AuthContext";
-import { zodResolver } from "@hookform/resolvers/zod";
 
 import { ErrorMessage, OptionsButton, SignInButton, Subtitle, Title } from "../../styles";
 import { SignInFormData, signInSchema } from "./schema";

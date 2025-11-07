@@ -1,5 +1,6 @@
-import { validateCpf, validatePhone } from "@/shared/utils/validate";
 import { z } from "zod";
+
+import { validateCpf, validatePhone } from "@/shared/utils/validate";
 
 export const profileSchema = z.object({
   name: z

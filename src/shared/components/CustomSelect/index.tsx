@@ -1,5 +1,5 @@
-import { Controller, Control, FieldError } from "react-hook-form";
 import { Select } from "antd";
+import { Control, Controller, FieldError } from "react-hook-form";
 
 interface Option {
   label: string;
