@@ -42,3 +42,13 @@ export type EventType = {
   id: string;
   name: string;
 };
+
+export type CreateEventInvitationPayload = {
+  name: string;
+  status: Extract<EventStatus, "RESERVED" | "CONFIRMED">;
+  hasPaid: boolean;
+  email?: string;
+  phone?: string;
+  gender?: "MASCULINE" | "FEMININE" | "OTHER";
+  firstTimer?: boolean;
+};

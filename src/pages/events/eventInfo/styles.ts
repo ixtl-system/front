@@ -27,6 +27,13 @@ export const HeaderContainer = styled.div`
   align-items: center;
 `
 
+export const HeaderActions = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-end;
+`
+
 export const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;

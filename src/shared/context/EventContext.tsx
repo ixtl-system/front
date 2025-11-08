@@ -1,7 +1,14 @@
 import React, { createContext, useCallback, useState } from 'react';
 
 import { api } from '../infra/api';
-import { Event, EventData, EventRegistration, EventStatus, EventType } from '../types/Event';
+import {
+  CreateEventInvitationPayload,
+  Event,
+  EventData,
+  EventRegistration,
+  EventStatus,
+  EventType,
+} from '../types/Event';
 
 type ApiResponse = {
   success: boolean;
@@ -29,6 +36,10 @@ type EventContextType = {
   updateEvent: (eventId: string, eventData: EventData) => Promise<ApiResponse>;
   listEventRegistrations: (eventId: string) => Promise<ApiResponse>;
   updateUserRegistration: (props: UpdateUserRegistrationStatusProps) => Promise<ApiResponse>;
+  createEventInvitation: (
+    eventId: string,
+    payload: CreateEventInvitationPayload,
+  ) => Promise<ApiResponse>;
 };
 
 export const EventContext = createContext<EventContextType | undefined>(undefined);
@@ -139,6 +150,33 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   }, []);
 
+  const createEventInvitation = useCallback(
+    async (eventId: string, payload: CreateEventInvitationPayload) => {
+      try {
+        await api.post(`/events/${eventId}/invitations`, payload);
+
+        return {
+          success: true,
+          message: {
+            title: "Convite criado com sucesso!",
+            description: "O convidado foi reservado para o evento.",
+          },
+        };
+      } catch (error: any) {
+        return {
+          success: false,
+          message: {
+            title: "Erro ao criar convite!",
+            description:
+              error.response?.data?.message ||
+              "Não foi possível criar o convite para o convidado.",
+          },
+        };
+      }
+    },
+    [],
+  );
+
   const createEvent = async (eventData: EventData) => {
     try {
       await api.post("/events", { ...eventData });
@@ -202,6 +240,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       updateEvent,
       eventTypes,
       fetchEventTypes,
+      createEventInvitation,
     }}>
       {children}
     </EventContext.Provider>
