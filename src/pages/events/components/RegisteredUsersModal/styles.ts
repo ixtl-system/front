@@ -67,6 +67,61 @@ export const SwitchBar = styled.div`
   border-bottom: 1px solid rgba(124, 97, 70, 0.16);
 `;
 
+export const FiltersContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 4px 0 12px;
+`;
+
+export const FilterField = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1 1 220px;
+  min-width: 220px;
+`;
+
+export const FilterLabel = styled.label`
+  font-family: Montserrat;
+  font-weight: 600;
+  font-size: 14px;
+  color: #3d3227;
+  cursor: pointer;
+`;
+
+export const FilterSelect = styled.select`
+  display: flex;
+  width: 100%;
+  padding: 13px;
+  border-radius: 16px;
+  border: 2px solid #0c120c33;
+  font-family: Montserrat;
+  font-weight: 500;
+  font-size: 14px;
+  color: #0c120c;
+  background-color: #ffffff;
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, #7d7c83 50%),
+    linear-gradient(135deg, #7d7c83 50%, transparent 50%);
+  background-position: calc(100% - 24px) calc(50% - 3px), calc(100% - 18px) calc(50% - 3px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+
+  &:focus,
+  &:hover {
+    border-color: #8cc356;
+    box-shadow: 0 0 0 2px rgba(5, 145, 255, 0.1);
+  }
+
+  option {
+    font-family: Montserrat;
+    font-weight: 500;
+    font-size: 14px;
+    color: #0c120c;
+  }
+`;
+
 export const SwitchButton = styled.button<{ $active: boolean }>`
   border: none;
   border-radius: 999px;

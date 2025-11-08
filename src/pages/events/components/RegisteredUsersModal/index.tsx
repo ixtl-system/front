@@ -1,11 +1,12 @@
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Dropdown, Empty, Modal, notification, Spin } from "antd";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { PiCaretDownLight, PiSparkleFill } from "react-icons/pi";
 import { useParams } from "react-router-dom";
 
 import { CustomSubtitle, CustomTitle } from "@/shared/components/CustomStyled";
+import { CustomInput } from "@/shared/components/CustomInput";
 import { useEvent } from "@/shared/hooks/useEvent";
 import { EventRegistration, EventStatus } from "@/shared/types/Event";
 
@@ -16,6 +17,10 @@ import {
   CheckInButton,
   ContentWrapper,
   EmptyStateWrapper,
+  FilterField,
+  FilterLabel,
+  FilterSelect,
+  FiltersContainer,
   FirstTimerTag,
   FooterContainer,
   LoadingContainer,
@@ -52,6 +57,13 @@ type ParticipantView = {
   statuses: EventStatus[];
 };
 
+type GenderFilterValue = "all" | "MASCULINE" | "FEMININE" | "OTHER";
+
+type FilterParams = {
+  name?: string;
+  gender?: string;
+};
+
 const STATUS_TOKENS: Record<EventStatus, StatusToken> = {
   RESERVED: { label: "Reservado", color: "#6B6B80", background: "#F0F0F5" },
   CONFIRMED: { label: "Confirmado", color: "#1677FF", background: "#E6F4FF" },
@@ -77,6 +89,16 @@ const PARTICIPANT_VIEWS: ParticipantView[] = [
     statuses: ["CHECKED_IN"],
   },
 ];
+
+const GENDER_OPTIONS: { label: string; value: GenderFilterValue }[] = [
+  { label: "Todos os gêneros", value: "all" },
+  { label: "Masculino", value: "MASCULINE" },
+  { label: "Feminino", value: "FEMININE" },
+  { label: "Outro", value: "OTHER" },
+];
+
+const NAME_FILTER_ID = "participant-name-filter";
+const GENDER_FILTER_ID = "participant-gender-filter";
 
 const ACTIONS: {
   key: ActionKey;
@@ -115,31 +137,67 @@ export const RegisterUsersModal = ({ visible, onClose }: RegisterUsersModalProps
   const [isLoading, setIsLoading] = useState(false);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [activeView, setActiveView] = useState<ParticipantViewId>("reservedConfirmed");
+  const [nameFilter, setNameFilter] = useState("");
+  const [genderFilter, setGenderFilter] = useState<GenderFilterValue>("all");
+  const [debouncedName, setDebouncedName] = useState("");
 
   const eventId = params.id || event?.id;
   const selectedView = PARTICIPANT_VIEWS.find((view) => view.id === activeView) ?? PARTICIPANT_VIEWS[0];
+  const filters = useMemo(() => {
+    const currentFilters: FilterParams = {};
+    const trimmedName = debouncedName.trim();
+
+    if (trimmedName) {
+      currentFilters.name = trimmedName;
+    }
+
+    if (genderFilter !== "all") {
+      currentFilters.gender = genderFilter;
+    }
+
+    return currentFilters;
+  }, [debouncedName, genderFilter]);
+
+  const hasActiveFilters = Boolean(filters.name || filters.gender);
+
   const filteredParticipants = (eventRegistrations ?? []).filter((participant) =>
     selectedView.statuses.includes(participant.status)
   );
 
-  const fetchParticipants = useCallback(async () => {
+  const fetchParticipants = useCallback(async (currentFilters?: FilterParams) => {
     if (!eventId) return;
     setIsLoading(true);
-    const response = await listEventRegistrations(eventId);
-    if (!response.success) {
-      notification.error({
-        message: response.message?.title || "Erro ao listar participantes",
-        description: response.message?.description,
-      });
+
+    try {
+      const hasFilters = currentFilters && Object.keys(currentFilters).length > 0;
+      const response = await listEventRegistrations(eventId, hasFilters ? currentFilters : undefined);
+
+      if (!response.success) {
+        notification.error({
+          message: response.message?.title || "Erro ao listar participantes",
+          description: response.message?.description,
+        });
+      }
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   }, [eventId, listEventRegistrations]);
 
   useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedName(nameFilter);
+    }, 400);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [nameFilter]);
+
+  useEffect(() => {
     if (visible) {
-      fetchParticipants();
+      fetchParticipants(filters);
     }
-  }, [visible, fetchParticipants]);
+  }, [visible, fetchParticipants, filters]);
 
   const handleClose = () => onClose();
 
@@ -160,7 +218,7 @@ export const RegisterUsersModal = ({ visible, onClose }: RegisterUsersModalProps
       message: "Status atualizado",
       description: "O status do participante foi atualizado com sucesso.",
     });
-    fetchParticipants();
+    fetchParticipants(filters);
   };
 
   const confirmStatusChange = (
@@ -213,7 +271,13 @@ export const RegisterUsersModal = ({ visible, onClose }: RegisterUsersModalProps
     if (!filteredParticipants.length) {
       return (
         <EmptyStateWrapper>
-          <Empty description="Nenhum participante com este status." />
+          <Empty
+            description={
+              hasActiveFilters
+                ? "Nenhum participante encontrado com os filtros aplicados."
+                : "Nenhum participante com este status."
+            }
+          />
         </EmptyStateWrapper>
       );
     }
@@ -280,6 +344,33 @@ export const RegisterUsersModal = ({ visible, onClose }: RegisterUsersModalProps
           <CustomTitle>Participantes cadastrados</CustomTitle>
           <CustomSubtitle>Gerencie o status de cada participante durante o evento.</CustomSubtitle>
         </ModalHeader>
+
+        <FiltersContainer>
+          <FilterField>
+            <FilterLabel htmlFor={NAME_FILTER_ID}>Buscar por nome</FilterLabel>
+            <CustomInput
+              id={NAME_FILTER_ID}
+              placeholder="Digite o nome do participante"
+              value={nameFilter}
+              onChange={(event) => setNameFilter(event.target.value)}
+            />
+          </FilterField>
+
+          <FilterField>
+            <FilterLabel htmlFor={GENDER_FILTER_ID}>Filtrar por gênero</FilterLabel>
+            <FilterSelect
+              id={GENDER_FILTER_ID}
+              value={genderFilter}
+              onChange={(event) => setGenderFilter(event.target.value as GenderFilterValue)}
+            >
+              {GENDER_OPTIONS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </FilterSelect>
+          </FilterField>
+        </FiltersContainer>
 
         <SwitchBar>
           {PARTICIPANT_VIEWS.map((view) => (

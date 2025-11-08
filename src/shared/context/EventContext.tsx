@@ -23,6 +23,11 @@ type UpdateUserRegistrationStatusProps = {
   status: EventStatus;
 }
 
+type EventRegistrationsFilters = {
+  name?: string;
+  gender?: string;
+}
+
 type EventContextType = {
   event: Event;
   events: Event[];
@@ -34,7 +39,7 @@ type EventContextType = {
   registerUserInEvent: (id: string) => Promise<ApiResponse>;
   createEvent: (eventData: EventData) => Promise<ApiResponse>;
   updateEvent: (eventId: string, eventData: EventData) => Promise<ApiResponse>;
-  listEventRegistrations: (eventId: string) => Promise<ApiResponse>;
+  listEventRegistrations: (eventId: string, filters?: EventRegistrationsFilters) => Promise<ApiResponse>;
   updateUserRegistration: (props: UpdateUserRegistrationStatusProps) => Promise<ApiResponse>;
   createEventInvitation: (
     eventId: string,
@@ -132,10 +137,21 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   };
 
-  const listEventRegistrations = useCallback(async (eventId: string) => {
+  const listEventRegistrations = useCallback(async (eventId: string, filters?: EventRegistrationsFilters) => {
     try {
+      const params: Record<string, string> = {};
 
-      const response = await api.get<EventRegistration[]>(`/events/participants/${eventId}`);
+      if (filters?.name) {
+        params.name = filters.name;
+      }
+
+      if (filters?.gender) {
+        params.gender = filters.gender;
+      }
+
+      const response = await api.get<EventRegistration[]>(`/events/participants/${eventId}`, {
+        params: Object.keys(params).length ? params : undefined,
+      });
       setEventRegistrations(response.data);
 
       return { success: true }
