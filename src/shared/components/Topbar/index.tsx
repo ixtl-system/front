@@ -3,8 +3,9 @@ import { PiList } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
 
 import LogoItem from "@/assets/icon.png";
-import { TopbarContainer } from './styles'
+
 import { MobileMenu } from "../MobileMenu";
+import { TopbarContainer } from './styles'
 
 export const Topbar = () => {
   const navigate = useNavigate();

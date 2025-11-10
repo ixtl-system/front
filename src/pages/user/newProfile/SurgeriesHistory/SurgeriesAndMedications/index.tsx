@@ -2,6 +2,7 @@
 import { PiXCircle } from 'react-icons/pi';
 
 import { useSurgery } from '@/shared/hooks/useSurgery';
+
 import { ActionButtons, DiseaseItem } from '../styles';
 
 export const SurgeriesAndMedications = () => {

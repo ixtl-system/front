@@ -1,9 +1,16 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useCallback, useState } from 'react';
 
 import { api } from '../infra/api';
-import { Event, EventData, EventRegistration, EventStatus, EventType } from '../types/Event';
+import {
+  CreateEventInvitationPayload,
+  Event,
+  EventData,
+  EventRegistration,
+  EventStatus,
+  EventType,
+} from '../types/Event';
 
-type ReturnType = {
+type ApiResponse = {
   success: boolean;
   message?: {
     title: string;
@@ -12,9 +19,13 @@ type ReturnType = {
 }
 
 type UpdateUserRegistrationStatusProps = {
-  userId: string;
+  registrationId: string;
   status: EventStatus;
-  eventId: string;
+}
+
+type EventRegistrationsFilters = {
+  name?: string;
+  gender?: string;
 }
 
 type EventContextType = {
@@ -22,14 +33,18 @@ type EventContextType = {
   events: Event[];
   eventRegistrations: EventRegistration[] | null;
   eventTypes: EventType[];
-  fetchEventTypes: () => Promise<ReturnType>;
-  fetchEvent: (id: string) => Promise<ReturnType>;
-  fetchEvents: () => Promise<ReturnType>;
-  registerUserInEvent: (id: string) => Promise<ReturnType>;
-  createEvent: (eventData: EventData) => Promise<ReturnType>;
-  updateEvent: (eventId: string, eventData: EventData) => Promise<ReturnType>;
-  listEventRegistrations: (eventId: string) => Promise<[] | ReturnType>;
-  updateUserRegistration: (props: UpdateUserRegistrationStatusProps) => Promise<ReturnType>;
+  fetchEventTypes: () => Promise<ApiResponse>;
+  fetchEvent: (id: string) => Promise<ApiResponse>;
+  fetchEvents: () => Promise<ApiResponse>;
+  registerUserInEvent: (id: string) => Promise<ApiResponse>;
+  createEvent: (eventData: EventData) => Promise<ApiResponse>;
+  updateEvent: (eventId: string, eventData: EventData) => Promise<ApiResponse>;
+  listEventRegistrations: (eventId: string, filters?: EventRegistrationsFilters) => Promise<ApiResponse>;
+  updateUserRegistration: (props: UpdateUserRegistrationStatusProps) => Promise<ApiResponse>;
+  createEventInvitation: (
+    eventId: string,
+    payload: CreateEventInvitationPayload,
+  ) => Promise<ApiResponse>;
 };
 
 export const EventContext = createContext<EventContextType | undefined>(undefined);
@@ -59,7 +74,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const fetchEvents = async () => {
     try {
       const response = await api.get("/events");
-      setEvents(response.data.reverse());
+      setEvents([...response.data].reverse());
 
       return { success: true }
     } catch (error: any) {
@@ -70,9 +85,9 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   }
 
-  const updateUserRegistration = async ({ eventId, userId, status }: UpdateUserRegistrationStatusProps) => {
+  const updateUserRegistration = useCallback(async ({ registrationId, status }: UpdateUserRegistrationStatusProps) => {
     try {
-      await api.patch(`/events/registrations/${eventId}`, { userId, status });
+      await api.patch(`/events/registrations/${registrationId}`, { status });
 
       return { success: true }
     } catch (error: any) {
@@ -81,7 +96,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         message: { title: "Erro ao solicitar mudança de status!" },
       };
     }
-  }
+  }, []);
 
   const registerUserInEvent = async (id: string) => {
     try {
@@ -122,12 +137,22 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   };
 
-  const listEventRegistrations = async (eventId: string) => {
+  const listEventRegistrations = useCallback(async (eventId: string, filters?: EventRegistrationsFilters) => {
     try {
+      const params: Record<string, string> = {};
 
-      const response = await api.get<EventRegistration[]>(`/events/registrations/${eventId}`);
-      const guestList = await api.get<any>(`/events/guests/${eventId}`);
-      setEventRegistrations([...response.data, ...guestList.data]);
+      if (filters?.name) {
+        params.name = filters.name;
+      }
+
+      if (filters?.gender) {
+        params.gender = filters.gender;
+      }
+
+      const response = await api.get<EventRegistration[]>(`/events/participants/${eventId}`, {
+        params: Object.keys(params).length ? params : undefined,
+      });
+      setEventRegistrations(response.data);
 
       return { success: true }
     } catch (error: any) {
@@ -139,7 +164,34 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         },
       };
     }
-  };
+  }, []);
+
+  const createEventInvitation = useCallback(
+    async (eventId: string, payload: CreateEventInvitationPayload) => {
+      try {
+        await api.post(`/events/${eventId}/invitations`, payload);
+
+        return {
+          success: true,
+          message: {
+            title: "Convite criado com sucesso!",
+            description: "O convidado foi reservado para o evento.",
+          },
+        };
+      } catch (error: any) {
+        return {
+          success: false,
+          message: {
+            title: "Erro ao criar convite!",
+            description:
+              error.response?.data?.message ||
+              "Não foi possível criar o convite para o convidado.",
+          },
+        };
+      }
+    },
+    [],
+  );
 
   const createEvent = async (eventData: EventData) => {
     try {
@@ -204,6 +256,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       updateEvent,
       eventTypes,
       fetchEventTypes,
+      createEventInvitation,
     }}>
       {children}
     </EventContext.Provider>

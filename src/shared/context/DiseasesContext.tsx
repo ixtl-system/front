@@ -1,6 +1,8 @@
-import { api } from "@/shared/infra/api";
 import { message } from "antd";
 import React, { createContext, useState } from "react";
+
+import { api } from "@/shared/infra/api";
+
 import { IDisease, IUserDiseases, IUserDiseasesAndMedications } from "../types/Diseases";
 import { IMedication, IUserMedication } from "../types/Medication";
 

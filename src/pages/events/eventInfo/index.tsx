@@ -1,15 +1,16 @@
-import { LoadingOutlined } from '@ant-design/icons';
+import { LoadingOutlined } from "@ant-design/icons";
 import { notification, Spin } from "antd";
 import { DateTime } from "luxon";
 import { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { PiArrowLeftLight, PiUsers } from "react-icons/pi";
+import { PiArrowLeftLight, PiUserPlus, PiUsers } from "react-icons/pi";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { SunHorizon } from "@/assets/icons/SunHorizon";
 import { UserContext } from "@/shared/context/UserContext";
 import { useEvent } from "@/shared/hooks/useEvent";
 
+import { InviteGuestModal } from "../components/InviteGuestModal";
 import { RegisterUsersModal } from "../components/RegisteredUsersModal";
 import {
   ContentContainer,
@@ -20,6 +21,7 @@ import {
   EventRegisterContainer,
   EventSubtitle,
   EventTitle,
+  HeaderActions,
   HeaderContainer,
   InfoText,
   RequestButton,
@@ -32,16 +34,19 @@ export const EventInfo = () => {
   const { id } = useParams<{ id: string }>();
   const { fetchUserProfile, userProfile } = useContext(UserContext);
   const { event, fetchEvent, registerUserInEvent } = useEvent();
-  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [isAttendanceListVisible, setIsAttendanceListVisible] = useState(false);
+  const [isInviteModalVisible, setIsInviteModalVisible] = useState(false);
 
   const isSoldOut = event.userStatus === "OPEN" && event.availability === 0;
-  
-  const event_status = {
+
+  const eventStatusLabels = {
     OPEN: "Registrar-se no Evento",
     RESERVED: "Reservado",
     CONFIRMED: "Confirmado",
     CANCELED: "Solicitado",
-  }
+    CHECKED_IN: "Check-in realizado",
+    NO_SHOW: "Não compareceu",
+  };
 
   const handleRegister = async () => {
     const { success, message } = await registerUserInEvent(String(id));
@@ -51,13 +56,17 @@ export const EventInfo = () => {
     fetchEvent(String(params.id));
   };
 
-  const toggleModalVisibility = () => {
-    setIsModalVisible(!isModalVisible);
+  const toggleAttendanceListVisibility = () => {
+    setIsAttendanceListVisible((previous) => !previous);
+  };
+
+  const toggleInviteModalVisibility = () => {
+    setIsInviteModalVisible((previous) => !previous);
   };
 
   useEffect(() => {
     async function fetchEventDetails(id: string) {
-      const { success, message } = await fetchEvent(id)
+      const { success, message } = await fetchEvent(id);
       if (!success) notification.error({ message: message?.title, description: message?.description });
     }
 
@@ -67,16 +76,23 @@ export const EventInfo = () => {
     }
   }, []);
 
-  if (!event) return (
-    <Spin indicator={<LoadingOutlined spin />} size="large" />
-  )
+  if (!event)
+    return (
+      <Spin indicator={<LoadingOutlined spin />} size="large" />
+    );
 
   return (
     <EventRegisterContainer>
       <Helmet title={`Evento - ${event.name}`} />
 
       {userProfile.role === "ADMIN" ? (
-        <RegisterUsersModal visible={isModalVisible} onClose={toggleModalVisibility} />
+        <>
+          <RegisterUsersModal
+            visible={isAttendanceListVisible}
+            onClose={toggleAttendanceListVisibility}
+          />
+          <InviteGuestModal visible={isInviteModalVisible} onClose={toggleInviteModalVisibility} />
+        </>
       ) : null}
 
       <HeaderContainer>
@@ -86,10 +102,16 @@ export const EventInfo = () => {
         </StyledButton>
 
         {userProfile.role === "ADMIN" ? (
-          <StyledButton onClick={toggleModalVisibility}>
-            Ver clientes cadastrados
-            <PiUsers />
-          </StyledButton>
+          <HeaderActions>
+            <StyledButton onClick={toggleAttendanceListVisibility}>
+              Attendance List
+              <PiUsers />
+            </StyledButton>
+            <StyledButton onClick={toggleInviteModalVisibility}>
+              Invite
+              <PiUserPlus />
+            </StyledButton>
+          </HeaderActions>
         ) : null}
       </HeaderContainer>
 
@@ -105,7 +127,7 @@ export const EventInfo = () => {
         </EventInfoContainer>
 
         <RequestButton onClick={handleRegister} disabled={isSoldOut || event.userStatus !== "OPEN"}>
-          {isSoldOut ? "Esgotado" : event_status[event.userStatus] }
+          {isSoldOut ? "Esgotado" : eventStatusLabels[event.userStatus] }
         </RequestButton>
 
         <DescriptionTitle>Descrição do evento:</DescriptionTitle>

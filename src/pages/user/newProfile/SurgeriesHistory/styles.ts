@@ -1,6 +1,7 @@
-import { DefaultButton } from "@/shared/components/CustomStyled"
 import { Select } from "antd"
 import styled from "styled-components"
+
+import { DefaultButton } from "@/shared/components/CustomStyled"
 
 export const SurgeriesContainer = styled.form`
   font-family: 'Montserrat', sans-serif;

@@ -1,5 +1,5 @@
-import { Controller, Control, FieldError } from "react-hook-form";
 import { Select } from "antd";
+import { Control, Controller, FieldError } from "react-hook-form";
 
 interface Option {
   label: string;
@@ -15,6 +15,8 @@ interface CustomSelectProps {
   disabled?: boolean;
   placeholder?: string;
   onSelect?: (value: string) => void;
+  allowClear?: boolean;
+  onClear?: () => void;
 }
 
 export function CustomSelect({
@@ -25,7 +27,9 @@ export function CustomSelect({
   error,
   disabled = false,
   placeholder,
-  onSelect
+  onSelect,
+  allowClear = false,
+  onClear,
 }: CustomSelectProps) {
   return (
     <Controller
@@ -43,6 +47,8 @@ export function CustomSelect({
             value={field.value}
             onChange={field.onChange}
             onSelect={onSelect}
+            allowClear={allowClear}
+            onClear={onClear}
           />
           {error && <span className="error">{error.message}</span>}
         </div>

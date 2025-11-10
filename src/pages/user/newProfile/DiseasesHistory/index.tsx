@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { PiPlusCircle } from "react-icons/pi";
 
@@ -8,7 +9,7 @@ import { IDisease } from "@/shared/types/Diseases";
 import { IUsingTime } from "@/shared/types/Drug";
 import { IMedication } from "@/shared/types/Medication";
 import { findDiseaseName, findMedicationName } from "@/shared/utils/findDiseaseName";
-import { useState } from "react";
+
 import { DiseasesAndMedications } from "./DiseasesAndMedications";
 import {
   AddButton,

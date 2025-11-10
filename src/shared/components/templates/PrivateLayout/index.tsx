@@ -1,6 +1,6 @@
-import { Content, MainLayout } from "./styles";
 import { Sidebar } from "../../Sidebar";
 import { Topbar } from "../../Topbar";
+import { Content, MainLayout } from "./styles";
 
 interface ILayoutProps {
   children: React.ReactNode;

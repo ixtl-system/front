@@ -1,20 +1,19 @@
-import { Controller, useForm } from "react-hook-form"
-import { CalendarIcon } from "lucide-react"
+import { ArrowLeftOutlined, SaveOutlined } from "@ant-design/icons"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { notification } from "antd"
 import { Form } from "antd"
 import dayjs from "dayjs"
+import { CalendarIcon } from "lucide-react"
+import { Controller, useForm } from "react-hook-form"
 
-import { ArrowLeftOutlined, SaveOutlined } from "@ant-design/icons"
-import { zodResolver } from "@hookform/resolvers/zod"
-
-import { useEvent } from "@/shared/hooks/useEvent"
 import { CustomInput } from "@/shared/components/CustomInput"
 import { CustomSelect } from "@/shared/components/CustomSelect"
+import { CustomSubtitle, CustomTitle } from "@/shared/components/CustomStyled"
 import { CustomTextArea } from "@/shared/components/CustomTextArea"
+import { useEvent } from "@/shared/hooks/useEvent"
 
 import { EventFormData, eventSchema } from "./schema";
-import { StyledModal, ButtonContainer, BackButton, SaveButton, StyledDatePicker } from "./styles"
-import { CustomSubtitle, CustomTitle } from "@/shared/components/CustomStyled"
+import { BackButton, ButtonContainer, SaveButton, StyledDatePicker,StyledModal } from "./styles"
 
 interface CreateEventModalProps {
   visible: boolean
