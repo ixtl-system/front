@@ -1,6 +1,12 @@
 import { ReactElement, ReactNode } from "react";
 import { MemoryRouter, MemoryRouterProps } from "react-router-dom";
-import { RenderHookOptions, RenderHookResult, render, renderHook } from "@testing-library/react";
+import {
+  RenderHookOptions,
+  RenderHookResult,
+  RenderOptions,
+  render,
+  renderHook,
+} from "@testing-library/react";
 import { vi } from "vitest";
 
 import { AuthContext } from "@/shared/context/AuthContext";
@@ -9,9 +15,11 @@ import { UserContext } from "@/shared/context/UserContext";
 import { Event, EventRegistration, EventType } from "@/shared/types/Event";
 import { IPersonalInformation } from "@/pages/user/dtos";
 
+type EventContextValue = NonNullable<React.ContextType<typeof EventContext>>;
+
 export type ProvidersOverride = {
   auth?: Partial<React.ContextType<typeof AuthContext>>;
-  event?: Partial<React.ContextType<typeof EventContext>>;
+  event?: Partial<EventContextValue>;
   user?: Partial<React.ContextType<typeof UserContext>>;
 };
 
@@ -34,7 +42,7 @@ const createDefaultAuthValue = (): React.ContextType<typeof AuthContext> => ({
   LogOut: vi.fn(),
 });
 
-const createDefaultEventValue = (): React.ContextType<typeof EventContext> => ({
+const createDefaultEventValue = (): EventContextValue => ({
   event: {
     id: "event-1",
     name: "Cerimônia de Lua Cheia",
@@ -55,6 +63,7 @@ const createDefaultEventValue = (): React.ContextType<typeof EventContext> => ({
   updateEvent: vi.fn().mockResolvedValue({ success: true }),
   listEventRegistrations: vi.fn().mockResolvedValue({ success: true }),
   updateUserRegistration: vi.fn().mockResolvedValue({ success: true }),
+  createEventInvitation: vi.fn().mockResolvedValue({ success: true }),
 });
 
 const createDefaultUserValue = (): React.ContextType<typeof UserContext> => ({
