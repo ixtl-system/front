@@ -1,8 +1,9 @@
 import "@testing-library/jest-dom";
+
 import { vi } from "vitest";
 
-import { apiMock, resetApiMock } from "@/tests/mocks/api";
 import { messageMock, notificationMock, resetAntdMocks } from "@/tests/mocks/antd";
+import { apiMock, resetApiMock } from "@/tests/mocks/api";
 
 vi.mock("@/shared/infra/api", () => ({
   api: apiMock,
@@ -48,7 +49,6 @@ if (!window.ResizeObserver) {
     disconnect = vi.fn();
   }
 
-  // @ts-expect-error - assigning stub to window for testing environment
   window.ResizeObserver = ResizeObserverStub;
 }
 
@@ -63,11 +63,11 @@ Object.defineProperty(window, "open", {
 });
 
 declare global {
-  // eslint-disable-next-line no-var
+   
   var antdMessageMock: typeof messageMock;
-  // eslint-disable-next-line no-var
+   
   var antdNotificationMock: typeof notificationMock;
-  // eslint-disable-next-line no-var
+   
   var axiosApiMock: typeof apiMock;
 }
 

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const optionalTrimmedString = (schema: z.ZodString) =>
+const optionalTrimmedString = <T extends z.ZodTypeAny>(schema: T) =>
   z.preprocess((value) => {
     if (typeof value === "string") {
       const trimmed = value.trim();

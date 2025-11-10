@@ -27,7 +27,7 @@ export const MobileMenu = ({ visible, onClose }: MobileMenuModalProps) => {
   }
 
   return (
-    <CustomModalContainer open={visible} onClose={onClose} footer={false} onCancel={onClose}>
+    <CustomModalContainer open={visible} onCancel={onClose} footer={null}>
       <img src={LogoItem} alt="logo" onClick={() => handleNavigateTo("/")} />
 
       <CustomList>
