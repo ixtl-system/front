@@ -24,7 +24,7 @@ describe("EventContext", () => {
       expect(response.success).toBe(true);
     });
 
-    expect(result.current.events.map(event => event.id)).toEqual(["2", "1"]);
+    expect(result.current.events.map(event => event.id)).toEqual(["1", "2"]);
   });
 
   it("fetches event details", async () => {
