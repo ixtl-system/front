@@ -86,7 +86,7 @@ export const EventList = () => {
 
                 <h2>{event.name}</h2>
 
-                <p>{event.description}</p>
+                <p>{`${event.description.slice(0, 335)} ...`}</p>
 
                 <div className="card-footer">
                   <span>{event.availability} vagas disponíveis</span>
