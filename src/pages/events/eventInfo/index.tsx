@@ -1,6 +1,5 @@
 import { LoadingOutlined } from "@ant-design/icons";
 import { notification, Spin } from "antd";
-import { DateTime } from "luxon";
 import { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { PiArrowLeftLight, PiUserPlus, PiUsers } from "react-icons/pi";
@@ -9,6 +8,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { SunHorizon } from "@/assets/icons/SunHorizon";
 import { UserContext } from "@/shared/context/UserContext";
 import { useEvent } from "@/shared/hooks/useEvent";
+import { formatEventDateLabel, formatEventTimeLabel } from "@/shared/utils/eventDate";
 
 import { InviteGuestModal } from "../components/InviteGuestModal";
 import { RegisterUsersModal } from "../components/RegisteredUsersModal";
@@ -81,6 +81,9 @@ export const EventInfo = () => {
       <Spin indicator={<LoadingOutlined spin />} size="large" />
     );
 
+  const formattedEventDate = formatEventDateLabel(event.date);
+  const formattedEventTime = formatEventTimeLabel(event.date);
+
   return (
     <EventRegisterContainer>
       <Helmet title={`Evento - ${event.name}`} />
@@ -121,8 +124,8 @@ export const EventInfo = () => {
 
         <EventInfoContainer>
           <SunHorizon />
-          <InfoText>ás {DateTime.fromISO(event.date).toFormat("hh:mm")}</InfoText>
-          <DateBadge>{DateTime.fromISO(event.date).toFormat("dd/MM/yyyy")}</DateBadge>
+          <InfoText>às {formattedEventTime}</InfoText>
+          <DateBadge>{formattedEventDate}</DateBadge>
           <InfoText>{event.availability} Vagas disponíveis</InfoText>
         </EventInfoContainer>
 
