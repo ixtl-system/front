@@ -58,6 +58,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const fetchEvent = async (id: string) => {
     try {
       const response = await api.get(`/events/${id}`);
+      console.log("response: ", response.data);
       setEvent(response.data);
       return { success: true }
     } catch (error: any) {
@@ -74,7 +75,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const fetchEvents = async () => {
     try {
       const response = await api.get("/events");
-      setEvents([...response.data].reverse());
+      setEvents(response.data);
 
       return { success: true }
     } catch (error: any) {
