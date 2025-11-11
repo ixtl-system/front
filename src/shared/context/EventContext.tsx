@@ -169,7 +169,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const createEventInvitation = useCallback(
     async (eventId: string, payload: CreateEventInvitationPayload) => {
       try {
-        await api.post(`/events/${eventId}/invitations`, payload);
+        await api.post(`/events/${eventId}/invite`, payload);
 
         return {
           success: true,
