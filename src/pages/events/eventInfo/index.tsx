@@ -104,11 +104,11 @@ export const EventInfo = () => {
         {userProfile.role === "ADMIN" ? (
           <HeaderActions>
             <StyledButton onClick={toggleAttendanceListVisibility}>
-              Attendance List
+              Lista de presença
               <PiUsers />
             </StyledButton>
             <StyledButton onClick={toggleInviteModalVisibility}>
-              Invite
+              Convidar para o evento
               <PiUserPlus />
             </StyledButton>
           </HeaderActions>
