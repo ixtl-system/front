@@ -58,7 +58,6 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const fetchEvent = async (id: string) => {
     try {
       const response = await api.get(`/events/${id}`);
-      console.log("response: ", response.data);
       setEvent(response.data);
       return { success: true }
     } catch (error: any) {
