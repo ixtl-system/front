@@ -73,8 +73,12 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const fetchEvents = async () => {
     try {
-      const response = await api.get("/events");
-      setEvents(response.data);
+      const response = await api.get<Event[]>("/events");
+      const sortedEvents = [...response.data].sort(
+        (firstEvent, secondEvent) =>
+          new Date(secondEvent.date).getTime() - new Date(firstEvent.date).getTime(),
+      );
+      setEvents(sortedEvents);
 
       return { success: true }
     } catch (error: any) {
