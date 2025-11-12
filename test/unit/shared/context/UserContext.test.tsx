@@ -15,7 +15,7 @@ describe("UserContext", () => {
   );
 
   it("fetches user profile and updates state", async () => {
-    localStorage.setItem("token", "token-123");
+    sessionStorage.setItem("token", window.btoa("token-123"));
     globalThis.axiosApiMock.get.mockResolvedValueOnce({
       data: {
         email: "user@test.com",
@@ -35,7 +35,7 @@ describe("UserContext", () => {
   });
 
   it("updates user profile when record exists", async () => {
-    localStorage.setItem("token", "token-123");
+    sessionStorage.setItem("token", window.btoa("token-123"));
     globalThis.axiosApiMock.get.mockResolvedValueOnce({
       data: {
         email: "user@test.com",
@@ -67,7 +67,7 @@ describe("UserContext", () => {
   });
 
   it("creates user profile when record is missing", async () => {
-    localStorage.setItem("token", "token-123");
+    sessionStorage.setItem("token", window.btoa("token-123"));
     globalThis.axiosApiMock.get.mockResolvedValueOnce({
       data: {
         email: "user@test.com",
