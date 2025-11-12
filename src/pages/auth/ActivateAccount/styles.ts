@@ -86,7 +86,7 @@ export const ModalMessage = styled.p`
   line-height: 1.6;
 `;
 
-export const ErrorActions = styled.div`
+export const ModalActions = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 12px;

@@ -11,7 +11,7 @@ import {
   ActionButton,
   ActivationCard,
   ActivationContainer,
-  ErrorActions,
+  ModalActions,
   ModalMessage,
   ModalTitle,
   StyledModal,
@@ -32,6 +32,7 @@ export const ActivateAccount = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [isInvalidLink, setIsInvalidLink] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
   useEffect(() => {
     if (!userId || !activationToken) {
@@ -44,21 +45,13 @@ export const ActivateAccount = () => {
     const activateAccount = async () => {
       try {
         const response = await api.post(`${ACTIVATION_PATH}/${userId}/${activationToken}`);
-        console.log("response: ", response);
-
-        // const response = await api.post(ACTIVATION_PATH, {
-        //   userId,
-        //   activationToken,
-        // });
 
         if (response.status === 204 || response.status === 200) {
-          message.success("Your account has been successfully activated!");
-          navigate("/", { replace: true });
+          setIsSuccessModalOpen(true);
           return;
         }
 
-        message.success("Your account has been successfully activated!");
-        navigate("/", { replace: true });
+        throw new Error("Unexpected activation response");
       } catch (error) {
         if (!isMounted) return;
 
@@ -91,6 +84,11 @@ export const ActivateAccount = () => {
     navigate("/", { replace: true });
   };
 
+  const handleEnterPortal = () => {
+    setIsSuccessModalOpen(false);
+    navigate("/", { replace: true, state: { openAuthModal: true, authPage: "signIn" } });
+  };
+
   return (
     <ActivationContainer>
       <Helmet title="Ativar conta" />
@@ -120,7 +118,7 @@ export const ActivateAccount = () => {
           This activation link is no longer valid. Please contact Instituto Trabalhadores da Luz for assistance.
         </ModalMessage>
 
-        <ErrorActions>
+        <ModalActions>
           <ActionButton type="button" onClick={handleGoToLogin}>
             Ir para login
           </ActionButton>
@@ -133,7 +131,24 @@ export const ActivateAccount = () => {
           >
             Falar com o Instituto
           </ActionButton>
-        </ErrorActions>
+        </ModalActions>
+      </StyledModal>
+
+      <StyledModal
+        centered
+        closable={false}
+        footer={null}
+        maskClosable={false}
+        open={isSuccessModalOpen}
+      >
+        <ModalTitle>Conta ativada com sucesso!</ModalTitle>
+        <ModalMessage>Sua conta já está ativa. Você pode entrar agora para acessar o sistema.</ModalMessage>
+
+        <ModalActions>
+          <ActionButton type="button" autoFocus onClick={handleEnterPortal}>
+            Entrar
+          </ActionButton>
+        </ModalActions>
       </StyledModal>
     </ActivationContainer>
   );

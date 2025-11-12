@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { PiArrowRightThin, PiInstagramLogoBold, PiSparkleLight } from "react-icons/pi";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import IxtlLogoMd from "@/assets/logo-md.png";
 import { ForgotPasswordForm } from "@/pages/auth/components/forgotPasswordForm";
@@ -12,6 +13,8 @@ import { SignContainer } from "./styles";
 export type IPage = "signIn" | "signUp" | "forgotPassword";
 
 export function SignIn() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [page, setPage] = useState<IPage>("signIn");
   const [isAuthVisible, setIsAuthVisible] = useState(false);
 
@@ -29,6 +32,16 @@ export function SignIn() {
   const handleCloseAuth = () => {
     setIsAuthVisible(false);
   };
+
+  useEffect(() => {
+    const state = location.state as { openAuthModal?: boolean; authPage?: IPage } | null;
+
+    if (state?.openAuthModal) {
+      setPage(state.authPage ?? "signIn");
+      setIsAuthVisible(true);
+      navigate(location.pathname, { replace: true });
+    }
+  }, [location.pathname, location.state, navigate]);
 
   const highlights = [
     {
