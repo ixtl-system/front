@@ -5,8 +5,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { PiCaretDownLight, PiSparkleFill } from "react-icons/pi";
 import { useParams } from "react-router-dom";
 
-import { CustomSubtitle, CustomTitle } from "@/shared/components/CustomStyled";
 import { CustomInput } from "@/shared/components/CustomInput";
+import { CustomTitle } from "@/shared/components/CustomStyled";
 import { useEvent } from "@/shared/hooks/useEvent";
 import { EventRegistration, EventStatus } from "@/shared/types/Event";
 
@@ -19,11 +19,14 @@ import {
   EmptyStateWrapper,
   FilterField,
   FilterLabel,
-  FilterSelect,
   FiltersContainer,
+  FilterSelect,
   FirstTimerTag,
   FooterContainer,
   LoadingContainer,
+  MobileSwitchLabel,
+  MobileSwitchSelect,
+  MobileSwitchWrapper,
   ModalHeader,
   ParticipantInfo,
   ParticipantsScrollArea,
@@ -75,17 +78,17 @@ const STATUS_TOKENS: Record<EventStatus, StatusToken> = {
 const PARTICIPANT_VIEWS: ParticipantView[] = [
   {
     id: "reservedConfirmed",
-    label: "Reserved & Confirmed",
+    label: "Reservas",
     statuses: ["RESERVED", "CONFIRMED"],
   },
   {
     id: "canceledNoShow",
-    label: "Canceled & No-Show",
+    label: "Cancelados",
     statuses: ["CANCELED", "NO_SHOW"],
   },
   {
     id: "checkedIn",
-    label: "Checked-In",
+    label: "Check-ins",
     statuses: ["CHECKED_IN"],
   },
 ];
@@ -99,6 +102,7 @@ const GENDER_OPTIONS: { label: string; value: GenderFilterValue }[] = [
 
 const NAME_FILTER_ID = "participant-name-filter";
 const GENDER_FILTER_ID = "participant-gender-filter";
+const VIEW_SWITCH_ID = "participant-view-filter";
 
 const ACTIONS: {
   key: ActionKey;
@@ -338,11 +342,10 @@ export const RegisterUsersModal = ({ visible, onClose }: RegisterUsersModalProps
   };
 
   return (
-    <RegisterUsersModalContainer open={visible} onCancel={handleClose} width={980} footer={null}>
+    <RegisterUsersModalContainer open={visible} onCancel={handleClose} footer={null}>
       <ContentWrapper>
         <ModalHeader>
-          <CustomTitle>Participantes cadastrados</CustomTitle>
-          <CustomSubtitle>Gerencie o status de cada participante durante o evento.</CustomSubtitle>
+          <CustomTitle>Lista de presença</CustomTitle>
         </ModalHeader>
 
         <FiltersContainer>
@@ -372,7 +375,7 @@ export const RegisterUsersModal = ({ visible, onClose }: RegisterUsersModalProps
           </FilterField>
         </FiltersContainer>
 
-        <SwitchBar>
+        <SwitchBar role="tablist" aria-label="Filtro de status dos participantes">
           {PARTICIPANT_VIEWS.map((view) => (
             <SwitchButton
               key={view.id}
@@ -385,6 +388,21 @@ export const RegisterUsersModal = ({ visible, onClose }: RegisterUsersModalProps
             </SwitchButton>
           ))}
         </SwitchBar>
+
+        <MobileSwitchWrapper>
+          <MobileSwitchLabel htmlFor={VIEW_SWITCH_ID}>Filtrar por status</MobileSwitchLabel>
+          <MobileSwitchSelect
+            id={VIEW_SWITCH_ID}
+            value={activeView}
+            onChange={(event) => setActiveView(event.target.value as ParticipantViewId)}
+          >
+            {PARTICIPANT_VIEWS.map((view) => (
+              <option key={view.id} value={view.id}>
+                {view.label}
+              </option>
+            ))}
+          </MobileSwitchSelect>
+        </MobileSwitchWrapper>
 
         <ParticipantsScrollArea>{renderContent()}</ParticipantsScrollArea>
 

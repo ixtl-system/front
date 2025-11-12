@@ -18,16 +18,24 @@ const fadeInList = keyframes`
 export const RegisterUsersModalContainer = styled(Modal)`
   display: flex;
   flex-direction: column;
-  top: 4vh;
+  top: clamp(12px, 4vh, 56px);
+  width: min(1040px, calc(100vw - 32px));
+  max-width: 100%;
+  margin: 0 auto;
+  /* left: 50% important; */
+  /* transform: translateX(-50%) important; */
 
   .ant-modal-content {
     border-radius: 26px;
     padding: 0;
-    max-height: 85vh;
     display: flex;
     flex-direction: column;
     background: linear-gradient(160deg, rgba(255, 255, 255, 0.96) 0%, rgba(248, 236, 218, 0.96) 100%);
     box-shadow: 0 36px 58px rgba(84, 70, 52, 0.18);
+    min-height: min(720px, calc(100vh - 32px));
+    min-height: min(720px, calc(100dvh - 32px));
+    max-height: min(960px, calc(100vh - 24px));
+    max-height: min(960px, calc(100dvh - 24px));
   }
 
   .ant-modal-body {
@@ -38,9 +46,39 @@ export const RegisterUsersModalContainer = styled(Modal)`
     min-height: 0;
   }
 
+  @media (max-width: 1024px) {
+    width: min(980px, calc(100vw - 24px));
+  }
+
   @media (max-width: 768px) {
+    top: clamp(8px, 4vh, 32px);
+    width: min(720px, calc(100vw - 20px));
+
     .ant-modal-body {
-      padding: 24px 20px 26px;
+      padding: 24px 20px 22px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    width: calc(100vw - 16px);
+
+    .ant-modal-body {
+      padding: 20px 16px 18px;
+    }
+  }
+
+  @media (max-height: 700px) {
+    top: clamp(6px, 3vh, 20px);
+
+    .ant-modal-content {
+      min-height: calc(100vh - 16px);
+      min-height: calc(100dvh - 16px);
+      max-height: calc(100vh - 12px);
+      max-height: calc(100dvh - 12px);
+    }
+
+    .ant-modal-body {
+      padding: 20px 18px 16px;
     }
   }
 `;
@@ -51,20 +89,78 @@ export const ContentWrapper = styled.div`
   gap: 16px;
   flex: 1;
   min-height: 0;
+  height: 100%;
+  padding-bottom: 4px;
+  padding-bottom: calc(4px + env(safe-area-inset-bottom));
 `;
 
 export const ModalHeader = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
+
+  @media (max-width: 640px) {
+    text-align: center;
+    align-items: center;
+  }
 `;
 
 export const SwitchBar = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
   padding: 8px 0 12px;
   border-bottom: 1px solid rgba(124, 97, 70, 0.16);
+
+  @media (max-width: 900px) {
+    gap: 10px;
+  }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+export const MobileSwitchWrapper = styled.div`
+  display: none;
+
+  @media (max-width: 640px) {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 4px 0 10px;
+  }
+`;
+
+export const MobileSwitchLabel = styled.label`
+  font-family: Montserrat;
+  font-weight: 600;
+  font-size: 14px;
+  color: #3d3227;
+`;
+
+export const MobileSwitchSelect = styled.select`
+  width: 100%;
+  border-radius: 16px;
+  border: 2px solid #0c120c33;
+  font-family: Montserrat;
+  font-weight: 600;
+  font-size: 14px;
+  color: #0c120c;
+  padding: 12px 14px;
+  background-color: #ffffff;
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, #7d7c83 50%),
+    linear-gradient(135deg, #7d7c83 50%, transparent 50%);
+  background-position: calc(100% - 26px) calc(50% - 3px), calc(100% - 20px) calc(50% - 3px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+
+  &:focus,
+  &:hover {
+    border-color: #8cc356;
+    box-shadow: 0 0 0 2px rgba(5, 145, 255, 0.12);
+  }
 `;
 
 export const FiltersContainer = styled.div`
@@ -72,14 +168,33 @@ export const FiltersContainer = styled.div`
   flex-wrap: wrap;
   gap: 12px;
   padding: 4px 0 12px;
+  width: 100%;
+
+  @media (max-width: 768px) {
+    flex-wrap: nowrap;
+    gap: 10px;
+  }
+
+  @media (max-width: 480px) {
+    padding-bottom: 6px;
+  }
+
+  @media (max-height: 700px) {
+    padding-bottom: 6px;
+  }
 `;
 
 export const FilterField = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  flex: 1 1 220px;
-  min-width: 220px;
+  flex: 1 1 240px;
+  min-width: 0;
+
+  @media (max-width: 576px) {
+    flex-basis: 100%;
+    gap: 6px;
+  }
 `;
 
 export const FilterLabel = styled.label`
@@ -120,6 +235,10 @@ export const FilterSelect = styled.select`
     font-size: 14px;
     color: #0c120c;
   }
+
+  @media (max-width: 480px) {
+    padding: 11px 12px;
+  }
 `;
 
 export const SwitchButton = styled.button<{ $active: boolean }>`
@@ -134,6 +253,11 @@ export const SwitchButton = styled.button<{ $active: boolean }>`
   cursor: pointer;
   transition: all 0.25s ease;
   box-shadow: ${({ $active }) => ($active ? "0 6px 18px rgba(150, 174, 142, 0.35)" : "none")};
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 48px;
 
   &:hover {
     background: ${({ $active }) => ($active ? "#8BA581" : "#ECEFF1")};
@@ -148,8 +272,12 @@ export const SwitchButton = styled.button<{ $active: boolean }>`
 export const ParticipantsScrollArea = styled.div`
   flex: 1;
   min-height: 0;
+  height: 100%;
   overflow-y: auto;
-  padding: 8px 4px 4px;
+  padding: 8px 2px 0;
+  scroll-padding-bottom: 24px;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 
   &::-webkit-scrollbar {
     width: 8px;
@@ -159,6 +287,14 @@ export const ParticipantsScrollArea = styled.div`
     background: rgba(111, 143, 114, 0.35);
     border-radius: 999px;
   }
+
+  @media (max-width: 768px) {
+    padding: 6px 0 0;
+  }
+
+  @media (max-height: 700px) {
+    padding-top: 4px;
+  }
 `;
 
 export const UsersList = styled.ul`
@@ -167,9 +303,14 @@ export const UsersList = styled.ul`
   list-style: none;
   width: 100%;
   gap: 16px;
-  padding: 8px 0 32px;
+  padding: 4px 0 18px;
   margin: 0;
   animation: ${fadeInList} 0.25s ease;
+
+  @media (max-width: 480px) {
+    gap: 12px;
+    padding-bottom: 16px;
+  }
 `;
 
 export const UserListItem = styled.li`
@@ -181,6 +322,15 @@ export const UserListItem = styled.li`
   border: 1px solid rgba(124, 97, 70, 0.16);
   background-color: rgba(255, 255, 255, 0.92);
   box-shadow: 0 12px 24px rgba(90, 72, 50, 0.08);
+
+  @media (max-width: 768px) {
+    padding: 18px;
+  }
+
+  @media (max-width: 480px) {
+    gap: 12px;
+    padding: 16px;
+  }
 `;
 
 export const ParticipantInfo = styled.div`
@@ -233,6 +383,13 @@ export const ActionsContainer = styled.div`
   flex-wrap: wrap;
   gap: 12px;
   align-items: center;
+  justify-content: flex-start;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+  }
 `;
 
 export const CheckInButton = styled(DefaultButton)`
@@ -257,6 +414,11 @@ export const CheckInButton = styled(DefaultButton)`
     background-color: #4c7d58;
     box-shadow: none;
   }
+
+  @media (max-width: 640px) {
+    width: 100%;
+    min-width: 0;
+  }
 `;
 
 export const ActionDropdownButton = styled(DefaultButton)`
@@ -279,6 +441,10 @@ export const ActionDropdownButton = styled(DefaultButton)`
     opacity: 0.5;
     cursor: not-allowed;
     background-color: rgba(255, 255, 255, 0.92);
+  }
+
+  @media (max-width: 640px) {
+    width: 100%;
   }
 `;
 
@@ -305,16 +471,25 @@ export const EmptyStateWrapper = styled.div`
 export const FooterContainer = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin-top: 16px;
+  margin-top: auto;
+  padding: 14px 0 4px;
+  padding-bottom: 4px;
+  padding-bottom: calc(4px + env(safe-area-inset-bottom));
+  border-top: 1px solid rgba(124, 97, 70, 0.16);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(248, 236, 218, 0.6) 50%, rgba(248, 236, 218, 0.92) 100%);
+  position: sticky;
+  bottom: 0;
 `;
 
 export const BackButton = styled(DefaultButton)`
   background: rgba(255, 255, 255, 0.85);
   color: #6f8f72;
-  padding: 10px 28px;
+  padding: 8px 24px;
   gap: 6px;
   border: 1px solid rgba(111, 143, 114, 0.35);
   border-radius: 999px;
+  min-height: 44px;
+  line-height: 1.1;
 
   &:hover {
     background-color: #6f8f72;
