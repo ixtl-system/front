@@ -279,13 +279,12 @@ export const ParticipantsScrollArea = styled.div`
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
 
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
+  /* Esconde visualmente a barra de rolagem, mantendo o scroll ativo */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE e Edge Legacy */
 
-  &::-webkit-scrollbar-thumb {
-    background: rgba(111, 143, 114, 0.35);
-    border-radius: 999px;
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari e Edge moderno */
   }
 
   @media (max-width: 768px) {
@@ -308,7 +307,7 @@ export const UsersList = styled.ul`
   animation: ${fadeInList} 0.25s ease;
 
   @media (max-width: 480px) {
-    gap: 12px;
+    gap: 10px;
     padding-bottom: 16px;
   }
 `;
@@ -316,7 +315,7 @@ export const UsersList = styled.ul`
 export const UserListItem = styled.li`
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
   padding: 22px;
   border-radius: 20px;
   border: 1px solid rgba(124, 97, 70, 0.16);
