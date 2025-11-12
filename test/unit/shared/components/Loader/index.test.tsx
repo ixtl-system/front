@@ -10,5 +10,13 @@ describe("Loader", () => {
     expect(container.querySelector(".ant-spin")).toBeTruthy();
     const wrapper = container.querySelector(".ant-flex");
     expect(wrapper).toBeTruthy();
+    expect(wrapper?.getAttribute("style")).toContain("height: 40vh");
+  });
+
+  it("occupies the full viewport when requested", () => {
+    const { container } = render(<Loader fullScreen />);
+
+    const wrapper = container.querySelector(".ant-flex");
+    expect(wrapper?.getAttribute("style")).toContain("height: 100vh");
   });
 });
