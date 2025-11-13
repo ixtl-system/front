@@ -78,8 +78,6 @@ The interface follows a calm, nature-inspired art direction to honour Brazilian 
 2. Install dependencies:
 
    ```bash
-   npm install
-   # or
    yarn install
    ```
 3. Configure environment variables:
@@ -90,8 +88,6 @@ The interface follows a calm, nature-inspired art direction to honour Brazilian 
 4. Run the development server:
 
    ```bash
-   npm start
-   # or
    yarn start
    ```
 
