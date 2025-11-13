@@ -2,7 +2,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { notification, Spin } from "antd";
 import { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { PiArrowLeftLight, PiUserPlus, PiUsers } from "react-icons/pi";
+import { PiArrowLeftLight, PiPencilSimpleLine, PiUserPlus, PiUsers } from "react-icons/pi";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { SunHorizon } from "@/assets/icons/SunHorizon";
@@ -14,10 +14,12 @@ import { EditEventModal } from "../components/EditEventModal";
 import { InviteGuestModal } from "../components/InviteGuestModal";
 import { RegisterUsersModal } from "../components/RegisteredUsersModal";
 import {
+  BackButton,
   ContentContainer,
   DateBadge,
   DescriptionText,
   DescriptionTitle,
+  EditIconButton,
   EventInfoContainer,
   EventRegisterContainer,
   EventSubtitle,
@@ -82,6 +84,8 @@ export const EventInfo = () => {
     }
   }, []);
 
+  const isAdmin = userProfile.role === "ADMIN";
+
   if (!event)
     return (
       <Spin indicator={<LoadingOutlined spin />} size="large" />
@@ -94,7 +98,7 @@ export const EventInfo = () => {
     <EventRegisterContainer>
       <Helmet title={`Evento - ${event.name}`} />
 
-      {userProfile.role === "ADMIN" ? (
+      {isAdmin ? (
         <>
           <RegisterUsersModal
             visible={isAttendanceListVisible}
@@ -106,16 +110,13 @@ export const EventInfo = () => {
       ) : null}
 
       <HeaderContainer>
-        <StyledButton onClick={() => navigate("/events")}>
+        <BackButton onClick={() => navigate("/events")}>
           <PiArrowLeftLight />
           Voltar
-        </StyledButton>
+        </BackButton>
 
-        {userProfile.role === "ADMIN" ? (
+        {isAdmin ? (
           <HeaderActions>
-            <StyledButton onClick={toggleEditModalVisibility}>
-              Editar evento
-            </StyledButton>
             <StyledButton onClick={toggleAttendanceListVisibility}>
               Lista de presença
               <PiUsers />
@@ -129,6 +130,12 @@ export const EventInfo = () => {
       </HeaderContainer>
 
       <ContentContainer>
+        {isAdmin ? (
+          <EditIconButton type="button" onClick={toggleEditModalVisibility} aria-label="Editar evento" title="Editar evento">
+            <PiPencilSimpleLine />
+          </EditIconButton>
+        ) : null}
+
         <EventTitle>{event.name}</EventTitle>
         <EventSubtitle>Cerimônias programadas</EventSubtitle>
 
