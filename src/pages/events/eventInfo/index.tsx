@@ -10,6 +10,7 @@ import { UserContext } from "@/shared/context/UserContext";
 import { useEvent } from "@/shared/hooks/useEvent";
 import { formatEventDateLabel, formatEventTimeLabel } from "@/shared/utils/eventDate";
 
+import { EditEventModal } from "../components/EditEventModal";
 import { InviteGuestModal } from "../components/InviteGuestModal";
 import { RegisterUsersModal } from "../components/RegisteredUsersModal";
 import {
@@ -36,6 +37,7 @@ export const EventInfo = () => {
   const { event, fetchEvent, registerUserInEvent } = useEvent();
   const [isAttendanceListVisible, setIsAttendanceListVisible] = useState(false);
   const [isInviteModalVisible, setIsInviteModalVisible] = useState(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
 
   const isSoldOut = event.userStatus === "OPEN" && event.availability === 0;
 
@@ -62,6 +64,10 @@ export const EventInfo = () => {
 
   const toggleInviteModalVisibility = () => {
     setIsInviteModalVisible((previous) => !previous);
+  };
+
+  const toggleEditModalVisibility = () => {
+    setIsEditModalVisible((previous) => !previous);
   };
 
   useEffect(() => {
@@ -95,6 +101,7 @@ export const EventInfo = () => {
             onClose={toggleAttendanceListVisibility}
           />
           <InviteGuestModal visible={isInviteModalVisible} onClose={toggleInviteModalVisibility} />
+          <EditEventModal visible={isEditModalVisible} onClose={toggleEditModalVisibility} eventId={event?.id} />
         </>
       ) : null}
 
@@ -106,6 +113,9 @@ export const EventInfo = () => {
 
         {userProfile.role === "ADMIN" ? (
           <HeaderActions>
+            <StyledButton onClick={toggleEditModalVisibility}>
+              Editar evento
+            </StyledButton>
             <StyledButton onClick={toggleAttendanceListVisibility}>
               Lista de presença
               <PiUsers />

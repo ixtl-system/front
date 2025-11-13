@@ -10,11 +10,14 @@ import {
   EventType,
 } from '../types/Event';
 
+type FeedbackAction = "redirect-to-events" | "retry";
+
 type ApiResponse = {
   success: boolean;
   message?: {
     title: string;
     description?: string;
+    actions?: FeedbackAction[];
   }
 }
 
@@ -38,7 +41,7 @@ type EventContextType = {
   fetchEvents: () => Promise<ApiResponse>;
   registerUserInEvent: (id: string) => Promise<ApiResponse>;
   createEvent: (eventData: EventData) => Promise<ApiResponse>;
-  updateEvent: (eventId: string, eventData: EventData) => Promise<ApiResponse>;
+  updateEvent: (eventId: string, eventData: Partial<EventData>) => Promise<ApiResponse>;
   listEventRegistrations: (eventId: string, filters?: EventRegistrationsFilters) => Promise<ApiResponse>;
   updateUserRegistration: (props: UpdateUserRegistrationStatusProps) => Promise<ApiResponse>;
   createEventInvitation: (
@@ -215,14 +218,46 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   };
 
-  const updateEvent = async () => {
-    return {
-      success: false,
-      message: {
-        title: "Rota não implementada!",
-        description: "A rota para atualização de eventos ainda não está disponível.",
-      },
-    };
+  const updateEvent = async (eventId: string, eventData: Partial<EventData>) => {
+    try {
+      await api.put(`/events/${eventId}`, eventData);
+
+      setEvent((previous) => previous?.id === eventId
+        ? { ...previous, ...eventData }
+        : previous,
+      );
+
+      setEvents((previous) => previous.map((currentEvent) => (
+        currentEvent.id === eventId ? { ...currentEvent, ...eventData } : currentEvent
+      )));
+
+      return {
+        success: true,
+        message: {
+          title: "Evento atualizado com sucesso!",
+        },
+      };
+    } catch (error: any) {
+      if (error.response?.status === 409) {
+        return {
+          success: false,
+          message: {
+            title: "O evento não foi encontrado.",
+            description: error.response?.data?.message || "O evento não está mais disponível para atualização.",
+            actions: ["redirect-to-events", "retry"] as FeedbackAction[],
+          },
+        };
+      }
+
+      return {
+        success: false,
+        message: {
+          title: "Erro ao atualizar evento!",
+          description: error.response?.data?.message || "Não foi possível atualizar o evento. Tente novamente.",
+          actions: ["retry"] as FeedbackAction[],
+        },
+      };
+    }
   };
 
   const fetchEventTypes = async () => {
