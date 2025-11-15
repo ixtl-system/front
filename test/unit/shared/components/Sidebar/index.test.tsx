@@ -1,4 +1,4 @@
-import { fireEvent, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
@@ -20,27 +20,28 @@ describe("Sidebar", () => {
     navigateMock.mockClear();
   });
 
-  it("expands navigation labels on hover", () => {
-    const { container } = renderWithProviders(<Sidebar />);
+  it("expands navigation labels when toggled", async () => {
+    const user = userEvent.setup();
+    renderWithProviders(<Sidebar />);
 
-    const content = container.querySelector("#sidebar section");
-    expect(content).toBeTruthy();
-
-    fireEvent.mouseEnter(content as HTMLElement);
+    const toggleButton = screen.getByRole("button", { name: /expandir menu/i });
+    await user.click(toggleButton);
 
     expect(screen.getByText("Perfil")).toBeInTheDocument();
   });
 
   it("logs out and navigates home", async () => {
     const logOut = vi.fn();
+    const user = userEvent.setup();
+
     renderWithProviders(<Sidebar />, {
       providers: { auth: { LogOut: logOut } },
     });
 
-    const content = document.querySelector("#sidebar section");
-    fireEvent.mouseEnter(content as HTMLElement);
+    const toggleButton = screen.getByRole("button", { name: /expandir menu/i });
+    await user.click(toggleButton);
 
-    await userEvent.click(screen.getByText("Sair"));
+    await user.click(screen.getByRole("button", { name: "Sair" }));
 
     expect(logOut).toHaveBeenCalled();
     expect(navigateMock).toHaveBeenCalledWith("/");

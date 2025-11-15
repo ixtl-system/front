@@ -6,7 +6,7 @@ import { AuthContext, AuthContextProvider } from "@/shared/context/AuthContext";
 
 describe("AuthContext", () => {
   it("initializes from stored token", async () => {
-    localStorage.setItem("token", "token-123");
+    sessionStorage.setItem("token", window.btoa("token-123"));
 
     const { result } = renderHook(() => useContext(AuthContext), {
       wrapper: ({ children }) => <AuthContextProvider>{children}</AuthContextProvider>,
@@ -33,7 +33,7 @@ describe("AuthContext", () => {
       email: "user@test.com",
       password: "123456",
     });
-    expect(localStorage.getItem("token")).toBe("jwt-token");
+    expect(sessionStorage.getItem("token")).toBe(window.btoa("jwt-token"));
     expect(result.current.isLoggedIn).toBe(true);
     expect(globalThis.axiosApiMock.defaults.headers.common["Authorization"]).toBe("Bearer jwt-token");
   });
@@ -89,7 +89,8 @@ describe("AuthContext", () => {
   });
 
   it("clears token on logout", async () => {
-    localStorage.setItem("token", "token-123");
+    sessionStorage.setItem("token", window.btoa("token-123"));
+    localStorage.setItem("token", window.btoa("token-123"));
     const { result } = renderHook(() => useContext(AuthContext), {
       wrapper: ({ children }) => <AuthContextProvider>{children}</AuthContextProvider>,
     });
@@ -99,6 +100,7 @@ describe("AuthContext", () => {
     });
 
     expect(localStorage.getItem("token")).toBeNull();
+    expect(sessionStorage.getItem("token")).toBeNull();
     expect(result.current.isLoggedIn).toBe(false);
   });
 });
